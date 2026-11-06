@@ -1,0 +1,9 @@
+# Optional Qwen3-ASR environment, intended for a separate Linux/Modal image.
+# python -m pip install -r requirements-qwen-asr.txt
+# For CUDA 12.6, install matching torch/torchaudio/torchvision wheels first:
+# python -m pip install torch==2.7.1 torchaudio==2.7.1 torchvision==0.22.1 --index-url https://download.pytorch.org/whl/cu126
+# qwen-asr pulls extra text/audio/UI dependencies; the vLLM extra is not enabled.
+
+-r requirements.txt
+torchvision==0.22.1
+qwen-asr==0.0.6

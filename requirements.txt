@@ -1,0 +1,29 @@
+# Python 3.11: Modal client + PhoWhisper / Whisper ASR evaluation.
+# The metrics/ package itself only needs the Python standard library.
+#
+# For NVIDIA CUDA 12.6, install the matching PyTorch wheels first:
+# python -m pip install torch==2.7.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu126
+# Then: python -m pip install -r requirements.txt
+# CPU-only wheels can instead be selected with PyTorch's /whl/cpu index.
+
+# Modal is used for development/cloud execution and billing, not inference APIs.
+modal==1.6.3
+python-dotenv==1.2.4
+
+# These Transformers/Accelerate pins also match qwen-asr==0.0.6.
+torch==2.7.1
+torchaudio==2.7.1
+transformers==4.57.6
+accelerate==1.12.0
+huggingface-hub==0.36.0
+safetensors==0.8.0
+
+# WAV loading, resampling and ASR metrics (WER/CER).
+numpy==2.2.6
+soundfile==0.13.1
+librosa==0.11.0
+jiwer==4.0.0
+tqdm==4.70.1
+PyYAML==6.0.3
+
+# Optional Qwen3-ASR runtime: see requirements-qwen-asr.txt.

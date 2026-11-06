@@ -2,6 +2,8 @@
 
 Kho dữ liệu hiện có trong repository phục vụ cuộc thi LifeMate. Đây là bài toán trợ lý giọng nói tiếng Việt: hiểu yêu cầu của người dùng, chọn và gọi công cụ trong các ứng dụng mô phỏng, rồi tạo đúng trạng thái ứng dụng sau khi thực thi.
 
+Test ASR: xem [kế hoạch](plans/asr_baseline.md), [runner PhoWhisper-small trên Modal](asr/README.md) và [metrics WER/CER](metrics/README.md#metrics-asr).
+
 ## Dữ liệu hiện có
 
 Gói dữ liệu nằm tại `data/train+public_test/`.
