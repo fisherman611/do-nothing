@@ -106,7 +106,7 @@ File `submission.jsonl` phải là UTF-8 JSON Lines, có đúng một dòng cho 
 
 ## Cách tính điểm
 
-Mỗi mẫu được chấm theo trạng thái ứng dụng cuối cùng và mức độ khớp giữa các tool call đã nộp với danh sách chuẩn (`gold`). Điểm tổng là trung bình điểm của `N` mẫu trong tập kiểm tra.
+Mỗi mẫu được chấm theo trạng thái ứng dụng cuối cùng và mức độ khớp giữa các tool call đã nộp với danh sách chuẩn (`gold`). Điểm mẫu nằm trong khoảng 0–1; điểm tổng là trung bình điểm của `N` mẫu nhân 100.
 
 ### Khớp trạng thái
 
@@ -133,8 +133,10 @@ Nếu không có call nào khớp thì `F1ᵢ = 0`. Gọi `Cᵢ` là điểm kh�
 
 ```text
 Điểm mẫuᵢ = 1[state_hash đã nộp = state_hash chuẩn] × Cᵢ
-Điểm tổng = (1 / N) × Σᵢ Điểm mẫuᵢ
+Điểm tổng = (100 / N) × Σᵢ Điểm mẫuᵢ
 ```
+
+Đã đối chiếu với [ảnh công thức chính thức](metrics/reference/official_formula.png) từ mục Evaluation trên [trang LifeMate](https://challenge.zalo.ai/portal/lifemate). Bộ chấm local, xác minh hash qua `zaic_tools`, xử lý runtime và tie-break nằm trong [metrics/](metrics/README.md).
 
 ## Lưu ý về dữ liệu
 
