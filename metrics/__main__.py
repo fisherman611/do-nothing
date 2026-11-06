@@ -1,4 +1,4 @@
-"""Run with python -m metrics score / prepare-gold."""
+"""Run with python -m metrics score / prepare-gold / asr."""
 
 from __future__ import annotations
 
@@ -80,6 +80,12 @@ def main(argv: list[str] | None = None) -> int:
     rank = commands.add_parser("rank", help="Rank reports by score, tool F1, then inference time")
     rank.add_argument("--entry", action="append", required=True, metavar="NAME=REPORT.json")
     rank.add_argument("--output", type=Path, required=True)
+    asr = commands.add_parser("asr", help="Evaluate raw/normalized WER and CER for labeled train audio")
+    asr.add_argument("--references", type=Path, required=True, help="Train JSONL with id/audio_text")
+    asr.add_argument("--predictions", type=Path, required=True, help="ASR JSONL with id/text/status/timing")
+    asr.add_argument("--output", type=Path, required=True)
+    asr.add_argument("--worst-output", type=Path, help="Save 25 samples with highest normalized WER")
+    asr.add_argument("--require-all", action="store_true")
     args = parser.parse_args(argv)
     try:
         if args.command == "score":
@@ -118,6 +124,17 @@ def main(argv: list[str] | None = None) -> int:
             _different_output(args.output, *args.reports)
             result = aggregate_five_runs([load_json(path) for path in args.reports])
             write_json(args.output, result)
+            print(json.dumps(result["summary"], ensure_ascii=True, indent=2, allow_nan=False))
+        elif args.command == "asr":
+            from .asr import evaluate_asr
+            _different_output(args.output, args.references, args.predictions)
+            if args.worst_output:
+                _different_output(args.worst_output, args.references, args.predictions, args.output)
+            result = evaluate_asr(read_jsonl(args.predictions), read_jsonl(args.references), require_all=args.require_all)
+            write_json(args.output, result)
+            if args.worst_output:
+                worst = sorted(result["samples"], key=lambda sample: sample["normalized"]["wer"], reverse=True)[:25]
+                write_json(args.worst_output, worst)
             print(json.dumps(result["summary"], ensure_ascii=True, indent=2, allow_nan=False))
         else:
             entries = []

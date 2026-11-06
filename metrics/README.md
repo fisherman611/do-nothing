@@ -1,6 +1,6 @@
 # Metrics LifeMate
 
-Bộ chấm local bằng Python 3.10+, chỉ dùng thư viện chuẩn. Đã đối chiếu [ảnh công thức chính thức](reference/official_formula.png) trong mục Evaluation LifeMate ngày 06/11/2026; [nguồn](reference/README.md). Chạy các lệnh bên dưới từ thư mục gốc repository.
+Bộ chấm local bằng Python 3.10+. Phần tool-call/state chỉ dùng thư viện chuẩn; ASR WER/CER dùng `jiwer==4.0.0` trong `requirements.txt`. Đã đối chiếu [ảnh công thức chính thức](reference/official_formula.png) trong mục Evaluation LifeMate ngày 06/11/2026; [nguồn](reference/README.md). Chạy các lệnh bên dưới từ thư mục gốc repository.
 
 ## Quy tắc đang triển khai
 
@@ -123,3 +123,26 @@ python -m unittest discover -s metrics/tests -v
 ```
 
 Các case kiểm tra gồm Unicode NFC, dấu câu, token lặp, ngưỡng chính xác 0,6, ghép tối đa, call trùng/sai, thang 100, hash replay có thẩm quyền, thứ tự replay, gold rỗng, ID thiếu/trùng/dư, mốc 30 giây, hard timeout/error, timing coverage, ba bước tie-break, trung bình 5 lượt và CLI.
+
+## Metrics ASR
+
+Đầu vào tham chiếu là các dòng train có `id`, `audio_text`. Prediction có dạng:
+
+```json
+{"id":"train_0001","text":"transcript do ASR sinh ra","status":"ok","elapsed_seconds":0.5,"audio_seconds":4.2}
+```
+
+```powershell
+python -m metrics asr --references data/train+public_test/train/train.jsonl --predictions data/results/asr/phowhisper-small/train-full/predictions.jsonl --output data/results/asr/phowhisper-small/train-full/metrics.json --worst-output data/results/asr/phowhisper-small/train-full/worst_samples.json --require-all
+```
+
+`metrics.asr.evaluate_asr` báo WER/CER corpus theo tổng số lỗi chia tổng độ dài tham chiếu, không lấy trung bình WER từng câu. Các metric gồm:
+
+- Raw: Unicode NFC và gộp khoảng trắng, giữ nguyên hoa/thường và dấu câu.
+- Normalized: thêm lowercase và bỏ dấu câu; giữ dấu tiếng Việt, chữ số, dấu âm như `-5`, ký hiệu tiền, `%` và dấu phân cách nằm giữa chữ số như `09:30`, `1.500.000`, `2/3`. Không tự chuyển số thành chữ hoặc ngược lại.
+- CER tính cả khoảng trắng sau chuẩn hóa. WER/CER có thể vượt 100% khi có nhiều insertion. Quy ước tham chiếu rỗng theo jiwer 4: rỗng/rỗng có lỗi 0; rỗng/prediction có rate bằng số token/ký tự chèn.
+- Exact match, counts substitution/deletion/insertion, số mẫu thiếu/lỗi/timeout, latency mean/p50/p95/max và real-time factor (tổng latency/tổng giây audio có đủ timing).
+
+Prediction thiếu hoặc có status lỗi/timeout được chấm như chuỗi rỗng, giữ nguyên mẫu số. Transcript thực tế vẫn lưu trong report để chẩn đoán. ID lặp/dư, thiếu transcript tham chiếu, timing âm/NaN/vô cực gây lỗi. `--require-all` bắt thiếu ID; khi chấm subset hãy truyền đúng file references của subset. Các mẫu chưa có timing không bị gán số đo giả; report nêu rõ số timing đã đo.
+
+Đây là metric nhận dạng tiếng nói, không phải điểm tool-call/state chính thức của cuộc thi. Chi tiết chuẩn edit-distance và empty reference dựa trên [jiwer](https://jitsi.github.io/jiwer/usage/).
