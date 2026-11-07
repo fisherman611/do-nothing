@@ -22,19 +22,42 @@ offline = {
     "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1",
     "CUBLAS_WORKSPACE_CONFIG": ":4096:8", "TOKENIZERS_PARALLELISM": "false",
 }
-whisper_image = base.run_function(download_family, args=("whisper",)).env(offline).add_local_python_source("asr")
-qwen_image = (
-    base.apt_install("sox", "libsndfile1")
-    .pip_install("torchaudio==2.7.1", "torchvision==0.22.1", index_url="https://download.pytorch.org/whl/cu126")
-    .pip_install("qwen-asr==0.0.6")
-    .run_function(download_family, args=("qwen",)).env(offline).add_local_python_source("asr")
-)
+large_v3_image = base.run_function(download_family, args=("whisper", "whisper-large-v3")).env(offline).add_local_python_source("asr")
+if os.environ.get("ASR_ONLY_LARGE_V3") == "1":
+    whisper_image = qwen_image = large_v3_image
+else:
+    whisper_image = base.run_function(download_family, args=("whisper",)).env(offline).add_local_python_source("asr")
+    qwen_image = (
+        base.apt_install("sox", "libsndfile1")
+        .pip_install("torchaudio==2.7.1", "torchvision==0.22.1", index_url="https://download.pytorch.org/whl/cu126")
+        .pip_install("qwen-asr==0.0.6")
+        .run_function(download_family, args=("qwen",)).env(offline).add_local_python_source("asr")
+    )
+
 options = dict(gpu="T4", cpu=2, memory=8192, timeout=30, startup_timeout=600,
                max_containers=1, scaledown_window=60, retries=0, block_network=True, include_source=False)
 
 
 @app.cls(image=whisper_image, **options)
 class WhisperWorker:
+    model_slug: str = modal.parameter()
+
+    @modal.enter()
+    def load(self):
+        from asr.runtime import Runtime
+        self.engine = Runtime(self.model_slug)
+
+    @modal.method()
+    def describe(self):
+        return self.engine.metadata
+
+    @modal.method()
+    def transcribe(self, payload: dict):
+        return self.engine.transcribe(payload)
+
+
+@app.cls(image=large_v3_image, **options)
+class WhisperLargeV3Worker:
     model_slug: str = modal.parameter()
 
     @modal.enter()
@@ -88,8 +111,10 @@ def main(
     from asr.benchmark import Budget, digest, prepare_dataset, run_phase, select_smoke
     from metrics.io import checked_path, write_json, write_jsonl
 
+    if os.environ.get("ASR_ONLY_LARGE_V3") == "1" and models != "whisper-large-v3":
+        raise ValueError("ASR_ONLY_LARGE_V3 requires --models whisper-large-v3")
     budget = Budget(budget_usd, reserve=budget_reserve_usd)
-    slugs = models.split(",") if models else list(MODELS)
+    slugs = models.split(",") if models else [s for s in MODELS if s != "whisper-large-v3"]
     if len(slugs) != len(set(slugs)) or not slugs or any(s not in MODELS for s in slugs):
         raise ValueError("Select unique model slugs from asr.registry.MODELS")
     if phase not in ('all', 'full', 'repeat100') or (phase != 'all' and len(slugs) != 1):
@@ -119,7 +144,7 @@ def main(
         "worker_rate_usd_second": WORKER_RATE_USD_SECOND,
         "budget_scope": "wall-clock compute estimate, not a provider hard cap", "reserve_usd": budget_reserve_usd,
     })
-    workers = {s: (WhisperWorker if MODELS[s]["family"] == "whisper" else QwenWorker)(model_slug=s) for s in slugs}
+    workers = {s: (WhisperLargeV3Worker if s == "whisper-large-v3" else WhisperWorker if MODELS[s]["family"] == "whisper" else QwenWorker)(model_slug=s) for s in slugs}
     results = []
 
     if phase != 'all':

@@ -11,6 +11,11 @@ MODELS = {
         "revision": "b9136a44b5f2ca664bd0b8f74baecf1715f6eeeb",
         "checkpoint_date": "2024-11-12", "license": "bsd-3-clause", "safetensors": False,
     },
+    "whisper-large-v3": {
+        "model_id": "openai/whisper-large-v3", "family": "whisper",
+        "revision": "06f233fe06e710322aca913c1bc4249a0d71fce1",
+        "checkpoint_date": "2024-08-12", "license": "apache-2.0", "safetensors": True,
+    },
     "whisper-large-v3-turbo": {
         "model_id": "openai/whisper-large-v3-turbo", "family": "whisper",
         "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
@@ -34,10 +39,10 @@ WORKER_RATE_USD_SECOND = 0.000164 + 2 * 0.0000131 + 8 * 0.00000222
 MODEL_ROOT = "/opt/models"
 
 
-def download_family(family):
+def download_family(family, selected=None):
     from huggingface_hub import snapshot_download
     for slug, spec in MODELS.items():
-        if spec["family"] != family:
+        if spec["family"] != family or (selected is not None and slug != selected) or (selected is None and slug == "whisper-large-v3"):
             continue
         weight = "*.safetensors" if spec["safetensors"] else "pytorch_model*.bin"
         snapshot_download(

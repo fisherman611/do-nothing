@@ -100,7 +100,7 @@ class BenchmarkTests(unittest.TestCase):
             self.assertEqual(result["summary"]["num_missing"], 3)
 
     def test_checkpoint_locks_predate_cutoff(self):
-        self.assertEqual(len(MODELS), 5)
+        self.assertEqual(MODELS["whisper-large-v3"]["model_id"], "openai/whisper-large-v3")
         for spec in MODELS.values():
             self.assertLess(spec["checkpoint_date"], "2026-10-26")
             self.assertEqual(len(spec["revision"]), 40)

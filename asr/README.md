@@ -50,3 +50,13 @@ Runner gửi từng nhóm 25 WAV vào hàng đợi, GPU vẫn xử lý **batch s
 Output launcher gồm log riêng từng client, `status.json`, `summary.json`; mỗi attempt có predictions/metrics/config, manifest và provenance riêng. Sau full, launcher chạy lại 100 ID cho 2 model WER tốt nhất. Cấu hình lỗi/timeout và lượt chưa đủ ID được báo rõ, không bỏ mẫu khỏi WER/CER.
 
 Kiểm tra: `python -m unittest discover -s asr/tests -v` và `python -m unittest discover -s metrics/tests -v`.
+
+## Benchmark Whisper Large V3
+
+Model `openai/whisper-large-v3` dùng revision `06f233fe06e710322aca913c1bc4249a0d71fce1`, license Apache-2.0. Worker dùng image riêng để chỉ tải checkpoint này, T4, FP16, greedy, cùng manifest và metrics với các baseline. Chạy smoke 100 mẫu rồi full khi smoke đạt và chi phí dự kiến nằm trong ngân sách:
+
+```bash
+ASR_ONLY_LARGE_V3=1 python -m modal run --profile vyvy372004 -m asr.modal_suite --models whisper-large-v3 --output-dir data/results/asr/comparison/whisper-large-v3-run --budget-usd 10
+```
+
+Output phải là thư mục mới. Ngân sách là ước tính compute, không phải hard cap của Modal. Chỉ audio yêu cầu cuối của train được dùng; nhãn được chấm local.

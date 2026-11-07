@@ -1,0 +1,41 @@
+{
+  "whisper-large-v3": {
+    "n": 1029,
+    "wer_norm": 0.2457177636727241,
+    "wer_raw": 0.28404237143345296,
+    "wer_nodia": 0.22063298843578819,
+    "S": 4810,
+    "D": 509,
+    "I": 333,
+    "S_tone": 518,
+    "number_recall": [
+      1022,
+      847
+    ],
+    "name_recall": [
+      775,
+      470,
+      513
+    ],
+    "cat_err": {
+      "động từ lệnh": 713,
+      "từ nội dung khác": 3040,
+      "tên riêng": 366,
+      "trợ từ / từ đệm": 661,
+      "từ chỉ thời gian": 295,
+      "số (số lượng, tiền, SĐT…)": 178,
+      "phủ định": 43,
+      "từ mượn / tiếng Anh": 23
+    },
+    "cat_ref": {
+      "từ nội dung khác": 13545,
+      "từ chỉ thời gian": 1682,
+      "trợ từ / từ đệm": 3106,
+      "động từ lệnh": 2269,
+      "số (số lượng, tiền, SĐT…)": 1022,
+      "tên riêng": 1003,
+      "phủ định": 313,
+      "từ mượn / tiếng Anh": 62
+    }
+  }
+}
