@@ -44,9 +44,25 @@ Code: `zaic/modal/` (`make_manifest.py`, `app.py`).
 |---|---|---|---|
 | 0 | Manifest + upload data | `make_manifest.py`, `modal volume put` | Xong |
 | 1 | Baseline zero-shot (go/no-go) | `modal run app.py --step baseline` | **Xong: WER 25.3%, CER 14.8%** → đi tiếp |
-| 2 | LoRA | `modal run app.py --step train --mode lora --epochs 6` | **Đang chạy**, ~45–60 phút |
-| 3 | Full fine-tune (nếu LoRA chưa đủ) | `--mode full` (LR 5e-6, grad ckpt) | Chưa |
-| 4 | Train lại bản cuối trên 100% data | `--full_data` (cùng cấu hình tốt nhất) | Chưa |
+| 2 | LoRA | `modal run app.py --step train --mode lora --epochs 6` | **Xong: WER 7.6%, CER 4.8%** (beam 5, best epoch 3) |
+| 2b | Thử loss: label smoothing / weighted CE / CTC+attention | `asr/modal_finetune_phowhisper.py` (xem bảng dưới) | **Xong: tốt nhất LS 0.1 + CTC 0.3, WER 6.6%** |
+| 2c | Contextual biasing: prompt từ history | `--use-prompt --label-smoothing 0.1 --ctc-weight 0.3` | Code xong, chưa chạy |
+| 2d | Bổ sung dữ liệu | xem `PLAN_data_bo_sung.md` | Chưa |
+| 3 | Full fine-tune (nếu LoRA chưa đủ) | `--mode full` (LR 5e-6, grad ckpt) | Bỏ: loss đã bão hòa, capacity không phải nút thắt |
+| 4 | Train lại bản cuối trên 100% data | `--full_data` (cùng cấu hình tốt nhất) | Chưa, chờ chốt 2c/2d |
+
+Kết quả các cấu hình loss (cùng split, LoRA r=32, 6 epoch, early stop patience 2, beam 5 trên val 405 utt):
+
+| Cấu hình | WER | CER | WER sau quy đổi số/chính tả | Ghi chú | HF |
+|---|---|---|---|---|---|
+| CE thường | 7.6% | 4.8% | 6.7% | eval dao động 12.7 → 15.1 → 11.0 | `fisherman611/pw-tmp-7f3a` |
+| Label smoothing 0.1 | 7.0% | 4.4% | 6.3% | eval ổn định hơn | `fisherman611/pw-tmp-a81e` |
+| Weighted CE β=2 (từ hiếm, số, tên) | 8.0% | 5.1% | 6.9% | không giúp: lỗi số đã ~1.5% | `fisherman611/pw-tmp-5b27` |
+| **LS 0.1 + CTC 0.3** | **6.6%** | **4.0%** | **5.9%** | chạy đủ 6 epoch, eval phẳng từ epoch 3 | `fisherman611/pw-tmp-c3d9` |
+
+Chênh lệch dưới ~1.5 điểm nằm trong nhiễu (hai lần chạy cùng cấu hình weighted CE lệch 1.4 điểm ở epoch 3). Cả 4 model sai cùng chỗ: ~27 token tên riêng (tên nước ngoài, thương hiệu), ~125 câu sai từ nội dung; số gần như không sai. Chi tiết trong `PLAN_data_bo_sung.md` mục 0.
+
+Hạ tầng: workspace Modal đã chuyển sang `trangntt03724` (volume `zaic-data`, `zaic-out`, secret `hf-token` tạo lại). Model cũ (CE, LS, weighted) vẫn nằm ở workspace `vyvy372004`. Chạy job bằng `modal deploy` + `Function.spawn` để tắt máy local vẫn chạy (xem docstring script).
 | 5 | Đánh giá end-to-end | chạy agent với `audio_text` vs transcript ASR | Chưa |
 | 6 | Đóng gói cho Docker | merge, fp16, thử faster-whisper/CTranslate2 | Chưa |
 
