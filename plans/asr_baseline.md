@@ -93,11 +93,11 @@ Trước smoke, ghi SHA revision, thời điểm checkpoint, license và dung l�
 
 | Model | WER chuẩn hóa | CER chuẩn hóa | Mean latency |
 | --- | ---: | ---: | ---: |
-| PhoWhisper-large | 25,69% | 14,76% | 2,306 giây |
-| Qwen3-ASR-1.7B | 27,58% | 16,00% | 1,880 giây |
-| PhoWhisper-medium | 28,33% | 16,30% | 1,728 giây |
-| Whisper-large-v3-turbo | 32,07% | 19,40% | 0,469 giây |
-| Qwen3-ASR-0.6B | 33,88% | 19,29% | 1,939 giây |
+| vinai/PhoWhisper-large | 25,69% | 14,76% | 2,306 giây |
+| Qwen/Qwen3-ASR-1.7B | 27,58% | 16,00% | 1,880 giây |
+| vinai/PhoWhisper-medium | 28,33% | 16,30% | 1,728 giây |
+| openai/whisper-large-v3-turbo | 32,07% | 19,40% | 0,469 giây |
+| Qwen/Qwen3-ASR-0.6B | 33,88% | 19,29% | 1,939 giây |
 
 Mỗi model có 1.545/1.545 transcript, không lỗi hoặc timeout. Repeat 100 mẫu cho PhoWhisper-large và Qwen3-ASR-1.7B cho kết quả giống hệt full ở cả 100 mẫu. Xem [báo cáo chi tiết](../data/results/asr/comparison/20261107-isolated/report.md) và [artifact so sánh](../data/results/asr/comparison/20261107-isolated/comparison.csv).
 

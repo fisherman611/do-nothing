@@ -6,12 +6,12 @@
 
 | Model | Tham số thực | WER chuẩn hóa | CER chuẩn hóa | Mean / p95 (giây) | Lỗi / timeout |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| phowhisper-large | 1,543,304,960 | 25.69% | 14.76% | 2.306 / 3.826 | 0 / 0 |
-| qwen3-asr-1.7b | 2,038,052,480 | 27.58% | 16.00% | 1.880 / 2.971 | 0 / 0 |
-| phowhisper-medium | 763,857,920 | 28.33% | 16.30% | 1.728 / 2.897 | 0 / 0 |
-| whisper-large-v3-turbo | 808,878,080 | 32.07% | 19.40% | 0.469 / 0.671 | 0 / 0 |
-| qwen3-asr-0.6b | 782,426,112 | 33.88% | 19.29% | 1.939 / 3.080 | 0 / 0 |
-| PhoWhisper-small, baseline cũ* | 241,734,912 | 34.20% | 19.49% | 0.970 / 1.607 | 0 / 0 |
+| vinai/PhoWhisper-large | 1,543,304,960 | 25.69% | 14.76% | 2.306 / 3.826 | 0 / 0 |
+| Qwen/Qwen3-ASR-1.7B | 2,038,052,480 | 27.58% | 16.00% | 1.880 / 2.971 | 0 / 0 |
+| vinai/PhoWhisper-medium | 763,857,920 | 28.33% | 16.30% | 1.728 / 2.897 | 0 / 0 |
+| openai/whisper-large-v3-turbo | 808,878,080 | 32.07% | 19.40% | 0.469 / 0.671 | 0 / 0 |
+| Qwen/Qwen3-ASR-0.6B | 782,426,112 | 33.88% | 19.29% | 1.939 / 3.080 | 0 / 0 |
+| vinai/PhoWhisper-small, baseline cũ* | 241,734,912 | 34.20% | 19.49% | 0.970 / 1.607 | 0 / 0 |
 
 *Dòng PhoWhisper-small trích báo cáo ngày 06/11, không phải một job mới. Prediction gốc chưa có trong repo D nên chưa xác minh được input hash của dòng lịch sử. Bản nguồn được lưu tại `historical_phowhisper_small.md`.
 
