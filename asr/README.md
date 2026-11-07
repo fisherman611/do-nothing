@@ -1,5 +1,7 @@
 # Test PhoWhisper-small bằng Modal
 
+Tạo transcript tham chiếu cho test qua Alibaba Cloud: xem [runner Qwen Cloud](QWEN_CLOUD.md). Dùng riêng cho đánh giá local, không thuộc pipeline inference offline của cuộc thi.
+
 Kế hoạch: [plans/asr_baseline.md](../plans/asr_baseline.md). Runner chỉ dùng audio cuối của train; nhãn `audio_text` được giữ local để chấm sau inference. Mã không truy cập app environment.
 
 Kết quả lượt đầu: [PhoWhisper-small trên đủ 1.545 mẫu train](RESULTS.md).
