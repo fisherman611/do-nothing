@@ -27,6 +27,8 @@ MODELS = {
     "sailor2_3b": ("sail/Sailor2-3B-Chat", "d60722644e700133576489719dcbc288036628d5", []),
     # Qwen3.5-4B with vision encoder + MTP head removed (strip_qwen35.py); a local path on the hf-cache volume
     "qwen35_4b_text": ("/hf/qwen35_4b_text", None, []),
+    # Clef-token P2 (agent/clef): LoRA 1 epoch gộp vào trọng số bằng agent/clef/modal_merge.py
+    "qwen35_4b_clef_p2": ("/hf/qwen35_4b_clef_p2", None, []),
 }
 
 app = modal.App("lifemate-llm-zeroshot")
@@ -85,3 +87,10 @@ def serve_sailor2_3b():
 @modal.web_server(8000, startup_timeout=1200)
 def serve_qwen35_4b_text():
     _serve("qwen35_4b_text")
+
+
+@_fn()
+@modal.concurrent(max_inputs=256)
+@modal.web_server(8000, startup_timeout=1200)
+def serve_qwen35_4b_clef_p2():
+    _serve("qwen35_4b_clef_p2")

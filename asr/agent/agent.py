@@ -23,6 +23,8 @@ import urllib.request
 
 MAX_STEPS = 8
 MAX_INVALID = 3
+CONTEXT_LIMIT = 16384   # luật: context LLM ≤ 16,384 token (prompt + phần sinh)
+MAX_LIST = 20           # kết quả tool dạng danh sách dài hơn thì cắt (train: tối đa 14 phần tử, không bị ảnh hưởng)
 WEEKDAYS = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"]
 
 # key -> (tokenizer repo used to render the prompt, revision, output format, chat-template kwargs)
@@ -101,6 +103,29 @@ def _dump(o):
     return json.dumps(o, ensure_ascii=False, separators=(",", ":"))
 
 
+def clip_result(o):
+    """Cắt danh sách dài trong kết quả tool (giữ MAX_LIST phần tử đầu, ghi số phần tử bị bỏ) để prompt không vượt context."""
+    if isinstance(o, dict):
+        out = {}
+        for k, v in o.items():
+            if isinstance(v, list) and len(v) > MAX_LIST:
+                out[k] = [clip_result(x) for x in v[:MAX_LIST]]
+                out[f"{k}_omitted"] = len(v) - MAX_LIST
+            else:
+                out[k] = clip_result(v)
+        return out
+    if isinstance(o, list):
+        return [clip_result(x) for x in o]
+    return o
+
+
+def fit_max_tokens(tok, prompt, max_tokens, min_tokens=64):
+    """Số token sinh còn được phép sao cho prompt + sinh ≤ CONTEXT_LIMIT; None nếu không còn đủ chỗ."""
+    n = len(tok(prompt, add_special_tokens=False).input_ids)
+    room = CONTEXT_LIMIT - n
+    return None if room < min_tokens else min(max_tokens, room)
+
+
 def build_messages(item, asr=None):
     ctx = item["context"]
     p = ctx.get("user_profile", {})
@@ -117,7 +142,7 @@ def build_messages(item, asr=None):
             if t.get("tool_calls"):
                 msgs.append(_call_msg(t["tool_calls"]))
                 for r in t.get("tool_results", []):
-                    msgs.append({"role": "tool", "content": _dump(r)})
+                    msgs.append({"role": "tool", "content": _dump(clip_result(r))})
             msgs.append({"role": "assistant", "content": t.get("text", "")})
     final = asr.get(item["id"]) if asr is not None else item.get("audio_text", "")
     msgs.append({"role": "user", "content": final or ""})
@@ -191,7 +216,11 @@ def run_one(item, args, tok, catalog, ToolEnv, asr):
     try:
         for step in range(MAX_STEPS):
             prompt = tok.apply_chat_template(msgs, tools=tools, add_generation_prompt=True, tokenize=False, **tkw)
-            out, usage = complete(args.url, args.key, prompt, max_tokens=max_tokens)
+            mt = fit_max_tokens(tok, prompt, max_tokens)
+            if mt is None:                                  # hết chỗ trong 16,384 token: dừng lượt
+                err = "context_limit"
+                break
+            out, usage = complete(args.url, args.key, prompt, max_tokens=mt)
             ptoks.append(usage.get("prompt_tokens"))
             ctoks.append(usage.get("completion_tokens"))
             raw.append(out)
@@ -220,7 +249,7 @@ def run_one(item, args, tok, catalog, ToolEnv, asr):
                     res = env.call(c["name"], c["arguments"])
                     if c["name"] == "sys.ask_missing_info" or seen[sig] >= 3:
                         stop = True
-                msgs.append({"role": "tool", "content": _dump(res)})
+                msgs.append({"role": "tool", "content": _dump(clip_result(res))})
             if stop or n_invalid >= MAX_INVALID:
                 break
     except Exception as e:

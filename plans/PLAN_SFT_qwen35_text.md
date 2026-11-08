@@ -2,6 +2,8 @@
 
 Cập nhật: 2026-11-08. Đi kèm `PLAN_tool_calling_LLM.md` (bài toán, pipeline) và `REPORT_zeroshot_LLM.md` (baseline).
 
+> Cập nhật 2026-11-08: đã chốt Qwen3.5-4B cắt, **không thinking**. Thiết kế chính là hệ lai kiểu Clef (`PLAN_FC_clef_qwen35.md`); SFT hướng A ở đây là mốc so sánh và khởi tạo LoRA cho nó. Hướng B (thinking) tạm bỏ.
+
 ## 0. Mục tiêu và mốc so sánh
 
 - Model: Qwen3.5-4B bản cắt `/hf/qwen35_4b_text` (4.206B, `Qwen3_5ForCausalLM`), bf16.

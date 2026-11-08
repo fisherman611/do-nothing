@@ -1,6 +1,6 @@
 # Việc cần làm tiếp – ZAC 2026 LifeMate
 
-Cập nhật: 2026-11-08. Tổng hợp các plan chi tiết: `PLAN_ASR_bias_v2.md`, `PLAN_SFT_qwen35_text.md`, `PLAN_tool_calling_LLM.md`, `REPORT_zeroshot_LLM.md`.
+Cập nhật: 2026-11-08. Tổng hợp các plan chi tiết: `PLAN_FC_clef_qwen35.md` (model gọi tool kiểu Clef ở mức token, serve bằng vLLM; đã chốt Qwen3.5-4B cắt, không thinking), `PLAN_ASR_bias_v2.md`, `PLAN_SFT_qwen35_text.md`, `PLAN_tool_calling_LLM.md`, `REPORT_zeroshot_LLM.md`.
 
 ## 0. Hiện trạng
 
