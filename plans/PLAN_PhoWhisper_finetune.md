@@ -47,6 +47,7 @@ Code: `zaic/modal/` (`make_manifest.py`, `app.py`).
 | 2 | LoRA | `modal run app.py --step train --mode lora --epochs 6` | **Xong: WER 7.6%, CER 4.8%** (beam 5, best epoch 3) |
 | 2b | Thử loss: label smoothing / weighted CE / CTC+attention | `asr/modal_finetune_phowhisper.py` (xem bảng dưới) | **Xong: tốt nhất LS 0.1 + CTC 0.3, WER 6.6%** |
 | 2c | Contextual biasing: prompt từ history | `--use-prompt --label-smoothing 0.1 --ctc-weight 0.3` | **Xong: WER 6.2% (điều kiện thi), 6.1% (prompt nhãn thật), lỗi tên 27→17, câu khớp 231→253** |
+| 2c' | Contextual biasing v2: thêm `user_profile` + tên từ `tool_results` history (+ tên từ label kèm nhiễu khi train) | xem `PLAN_ASR_bias_v2.md` | Chưa |
 | 2d | Bổ sung dữ liệu | xem `PLAN_data_bo_sung.md` | Chưa |
 | 3 | Full fine-tune (nếu LoRA chưa đủ) | `--mode full` (LR 5e-6, grad ckpt) | Bỏ: loss đã bão hòa, capacity không phải nút thắt |
 | 4 | Train lại bản cuối trên 100% data | `--full_data` (cùng cấu hình tốt nhất) | Chưa, chờ chốt 2c/2d |

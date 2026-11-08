@@ -45,7 +45,7 @@ Hệ quả thiết kế:
 
 ## 1. Ràng buộc chọn model (AGENT.md)
 
-- Tổng hệ thống < 6B: PhoWhisper-large 1.55B → **LLM ≤ 4.4B**. LLM < 5B, context ≤ 16,384.
+- Tổng hệ thống < 6B: PhoWhisper-large 1.543B → **LLM ≤ 4.45B**. LLM < 5B, context ≤ 16,384. Qwen3.5-4B gốc (4.66B) phải cắt visual + mtp còn 4.206B (đã làm, `agent/strip_qwen35.py`).
 - Phát hành trước **26/10/2026**, license cho phép dùng và phân phối trong Docker. Offline hoàn toàn.
 - A30 24GB, **30 s/mẫu** gồm cả ASR history (tối đa 12 audio) + nhiều bước LLM. Giải mã xác định (greedy).
 
@@ -63,7 +63,7 @@ Hệ quả thiết kế:
 | xLAM-2-3b-fc-r, Hammer2.1-3b | 3B | CC-BY-NC | 2025 | – | Rất mạnh tool calling | Trung bình | **Loại**: license phi thương mại, rủi ro với luật phân phối |
 | Ministral-3B | 3B | Mistral Research | – | – | Có | – | **Loại**: license nghiên cứu |
 
-Chọn: **Qwen3-4B-Instruct-2507 làm mặc định**, chạy zero-shot ngay để có baseline; **Qwen3.5-4B** là ứng viên thay thế nếu xác minh được ngày phát hành và tham số; **Gemma 4 E4B** chỉ xét sau khi đếm tham số thật. Mọi số liệu trên lấy từ web (nguồn ở mục 7), trước khi chốt phải mở model card đọc lại license, ngày, tham số.
+Chọn (cập nhật 2026-11-08 sau zero-shot): **Qwen3.5-4B bản cắt làm mặc định** (zero-shot 37.5 điểm không thinking, 45.2 có thinking); Qwen3-4B-Instruct-2507 dự phòng (25.5). **Gemma 4 loại**: E4B-it 7.996B, E2B-it 5.12B tổng tham số, vượt LLM < 5B. Kết quả: `REPORT_zeroshot_LLM.md`. Plan train: `PLAN_SFT_qwen35_text.md`.
 
 ## 3. Pipeline suy luận
 
@@ -99,6 +99,8 @@ Chi tiết:
 - Báo theo nhóm: 0-call, ask_missing_info, 1 call, chuỗi ≥3, mẫu điều kiện (weather), mẫu tham chiếu history.
 
 ## 5. Train
+
+> Plan chi tiết, cập nhật: `PLAN_SFT_qwen35_text.md`. Phần dưới là bản ban đầu.
 
 ### 5.1 Bước 0: zero-shot (chưa train) — làm trước
 
