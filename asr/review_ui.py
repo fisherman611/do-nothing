@@ -50,6 +50,9 @@ class Store:
         self.audio_root = audio_root
         self.state_path = results / "review_state.json"
         self.final_path = results / "final_reviewed.jsonl"
+        self.suggestions_path = results / "review_suggestions.jsonl"
+        self.suggestions: dict[str, dict] = {}
+        self._suggestions_mtime: int | None = None
         self.samples: list[dict] = []
         with (results / "predictions.jsonl").open(encoding="utf-8") as fh:
             for line in fh:
@@ -70,18 +73,45 @@ class Store:
             self.state = json.loads(self.state_path.read_text(encoding="utf-8"))
 
     def payload(self) -> list[dict]:
+        self._load_suggestions()
         out = []
         for s in self.samples:
             st = self.state.get(s["id"], {})
+            suggestion = self.suggestions.get(s["id"], {})
+            use_suggestion = bool(suggestion) and "text" not in st and not st.get("approved")
+            text = st.get("text", suggestion.get("audio_text", s["pred"]) if use_suggestion else s["pred"])
             out.append(
                 {
                     **s,
-                    "text": st.get("text", s["pred"]),
-                    "edited": "text" in st and st["text"] != s["pred"],
+                    "text": text,
+                    "edited": text != s["pred"],
                     "approved": bool(st.get("approved")),
+                    "has_suggestion": use_suggestion,
+                    "suggestion_source": suggestion.get("source") if use_suggestion else None,
+                    "models_differ": bool(suggestion.get("models_differ")) if use_suggestion else False,
+                    "qwen_message_text": suggestion.get("qwen_message_text", "") if use_suggestion else "",
+                    "qwen_flash_text": suggestion.get("qwen_flash_text", "") if use_suggestion else "",
                 }
             )
         return out
+
+    def _load_suggestions(self) -> None:
+        if not self.suggestions_path.exists():
+            self.suggestions = {}
+            self._suggestions_mtime = None
+            return
+        mtime = self.suggestions_path.stat().st_mtime_ns
+        if mtime == self._suggestions_mtime:
+            return
+        suggestions = {}
+        with self.suggestions_path.open(encoding="utf-8") as fh:
+            for line in fh:
+                if line.strip():
+                    item = json.loads(line)
+                    if item.get("id") in self.by_id and item.get("human_reviewed") is False:
+                        suggestions[item["id"]] = item
+        self.suggestions = suggestions
+        self._suggestions_mtime = mtime
 
     def save(self, sid: str, text: str, approved: bool) -> None:
         if sid not in self.by_id:
@@ -213,6 +243,7 @@ kbd{border:1px solid var(--bd);border-radius:4px;padding:0 5px;font-size:12px}
   <button id="next">→</button>
   <select id="filter">
     <option value="todo">Chưa duyệt</option>
+    <option value="suggested">Có gợi ý (chưa duyệt)</option>
     <option value="sus">Nghi ngờ (chưa duyệt)</option>
     <option value="done">Đã duyệt</option>
     <option value="all">Tất cả</option>
@@ -234,6 +265,8 @@ kbd{border:1px solid var(--bd);border-radius:4px;padding:0 5px;font-size:12px}
     <div id="badges"></div>
     <textarea id="text" spellcheck="false"></textarea>
     <div class="orig" id="orig"></div>
+    <div class="orig" id="suggestionInfo"></div>
+    <div class="orig" id="otherAsr"></div>
     <div class="row">
       <button id="save">Lưu nháp <kbd>Ctrl+S</kbd></button>
       <button id="reset">Khôi phục bản gốc</button>
@@ -255,7 +288,7 @@ async function load(keepId){
 }
 function rebuild(keepId){
   const f=$('filter').value;
-  view=all.filter(s=>f==='all'||(f==='todo'&&!s.approved)||(f==='sus'&&!s.approved&&s.suspicious)||(f==='done'&&s.approved));
+  view=all.filter(s=>f==='all'||(f==='todo'&&!s.approved)||(f==='suggested'&&!s.approved&&s.has_suggestion)||(f==='sus'&&!s.approved&&s.suspicious)||(f==='done'&&s.approved));
   const i=keepId?view.findIndex(s=>s.id===keepId):-1;
   cur=i>=0?i:Math.min(cur,Math.max(view.length-1,0));
   show();
@@ -268,14 +301,17 @@ function show(autoplay=false){
   progress();
   const s=view[cur];
   $('pos').textContent=view.length?`${cur+1} / ${view.length}`:'0 / 0';
-  if(!s){$('text').value='';$('meta').textContent='Không có mẫu nào trong bộ lọc này.';$('player').removeAttribute('src');$('badges').innerHTML='';$('orig').textContent='';return}
+  if(!s){$('text').value='';$('meta').textContent='Không có mẫu nào trong bộ lọc này.';$('player').removeAttribute('src');$('badges').innerHTML='';$('orig').textContent='';$('suggestionInfo').textContent='';$('otherAsr').textContent='';return}
   $('player').src='/audio/'+encodeURIComponent(s.id);
   $('player').playbackRate=+$('rate').value;
   $('text').value=s.text;
   $('approved').checked=s.approved;
   $('meta').textContent=`${s.id} · ${s.seconds.toFixed(1)}s · ${s.audio}`;
-  $('badges').innerHTML=(s.suspicious?'<span class="badge warn">nghi ngờ</span>':'')+(s.edited?'<span class="badge">đã sửa</span>':'')+(s.approved?'<span class="badge ok">đã chuẩn</span>':'');
+  $('badges').innerHTML=(s.suspicious?'<span class="badge warn">nghi ngờ</span>':'')+(s.has_suggestion?'<span class="badge warn">gợi ý chưa duyệt</span>':'')+(s.edited?'<span class="badge">khác bản gốc</span>':'')+(s.approved?'<span class="badge ok">đã chuẩn</span>':'');
   $('orig').textContent=s.edited?'Bản gốc: '+s.pred:'';
+  const sources={assistant_context_reconstruction:'suy đoán từ ngữ cảnh',qwen_audio_asr_flash:'Qwen ASR Flash',qwen_audio_asr_flash_message:'Qwen ASR Flash Message'};
+  $('suggestionInfo').textContent=s.has_suggestion?`Gợi ý chưa xác minh · nguồn: ${sources[s.suggestion_source]||s.suggestion_source}. Dấu [ ] chỉ chỗ chưa chắc.`:'';
+  $('otherAsr').textContent=s.has_suggestion&&s.qwen_message_text?'Qwen ASR Flash Message: '+s.qwen_message_text:'';
   $('status').textContent='';
   $('text').focus();
   if($('auto').checked){$('player').play().catch(()=>{})}
@@ -285,10 +321,11 @@ async function persist(approved){
   const text=$('text').value;
   const r=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:s.id,text,approved})});
   if(!(await r.json()).ok){$('status').textContent='Lỗi lưu!';return false}
-  s.text=text;s.approved=approved;s.edited=text!==s.pred;
+  s.text=text;s.approved=approved;s.edited=text!==s.pred;s.has_suggestion=false;
   $('status').textContent=approved?'Đã lưu vào file final ✔':'Đã lưu nháp ✔';
   $('badges').innerHTML=(s.suspicious?'<span class="badge warn">nghi ngờ</span>':'')+(s.edited?'<span class="badge">đã sửa</span>':'')+(s.approved?'<span class="badge ok">đã chuẩn</span>':'');
   $('orig').textContent=s.edited?'Bản gốc: '+s.pred:'';
+  $('suggestionInfo').textContent='';$('otherAsr').textContent='';
   progress();return true;
 }
 function go(d){ if(!view.length)return; cur=Math.min(Math.max(cur+d,0),view.length-1); show(); }
@@ -297,7 +334,7 @@ async function approveNext(){
   if(!await persist(true))return;
   // mẫu vừa duyệt rời khỏi danh sách "chưa duyệt": giữ nguyên vị trí để mẫu kế tiếp trượt lên
   const f=$('filter').value;
-  if(f==='todo'||f==='sus'){view.splice(cur,1);if(cur>=view.length)cur=Math.max(view.length-1,0)}
+  if(f==='todo'||f==='sus'||f==='suggested'){view.splice(cur,1);if(cur>=view.length)cur=Math.max(view.length-1,0)}
   else if(cur<view.length-1)cur++;
   show();
 }
