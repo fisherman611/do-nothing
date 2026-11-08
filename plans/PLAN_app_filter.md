@@ -94,6 +94,67 @@ Chưa xác minh ngày phát hành và số tham số chính xác của từng mo
 
 Tiêu chí giữ bộ lọc: E5 không giảm điểm val_ood (cho phép chênh trong mức nhiễu khoảng ±5), và giảm rõ token hoặc độ trễ. Nếu recall của embedding không đạt khoảng 98% trên val_ood thì dùng E3, hoặc nới k.
 
+## 6b. Kế hoạch train bộ lọc (cập nhật 2026-11-08)
+
+Dựa trên `REPORT_app_filter.md`. Lượt đã chạy dùng loss "tổng xác suất các dương", 3 epoch, lr 2e-5, batch 32, chưa có augment, chưa có nhiễu ASR, chỉ một lần giữ lại 5 app.
+
+### Chọn k tạm thời
+
+Tầng 1 lấy `k = min(số app cài, 5)` cộng luật history và `x-ref` (giữ trung bình khoảng 6 app). Lý do: ở val_ood sau fine-tune, k=3 đạt 75–87%, k=4 đạt 92–95%, k=5 đạt 95–98,5%, các app thêm vào sau 5 tốn khoảng 480 token catalog mà chỉ tăng vài điểm. Con số này chỉ dựa trên recall nên là tạm thời; chốt bằng E5 (mục 6). Số app cài từ 3 đến 18 (train: trung vị 9, p95 14; public: trung vị 8, p95 13), nên lợi ích lọc nằm chủ yếu ở nhóm cài ≥ 10 app.
+
+### 1. Chuẩn bị dữ liệu
+
+| Việc | Chi tiết |
+|---|---|
+| Bộ nhãn | Mỗi ví dụ: query, các app đã cài, app vàng. Nguồn: 1.006 lượt cuối và 1.965 lượt history có call (split train của clef) |
+| Bỏ dương do luật tự thêm | App được luật `x-ref` thêm (ví dụ `contacts` khi có `sms`) không làm dương, vì câu nói không nhắc tới nó |
+| Chia theo app | Chia app thành 3–4 nhóm (leave-app-out); mỗi lần giữ một nhóm ngoài train. Không dùng nhóm giữ lại làm dương **hay âm** |
+| Tập hiệu chỉnh | Một fold riêng để chọn k, ngưỡng và epoch. Không dùng val_ood vừa chọn vừa báo cáo |
+| Query nhiễu ASR | Đã có transcript PhoWhisper-large **zero-shot** cho 1.545 lượt cuối ở `data/results/asr/comparison/20261107-isolated/phowhisper-large-full-attempt1/` (chưa fine-tune). Các lượt user trong history (khoảng 3.000 audio) chưa có; cần chạy ASR nếu muốn nhiễu cho cả phần này. Nhớ ghi rõ model nào sinh transcript |
+| Augment | Viết lại mô tả app/tool bằng LLM, đổi tên app, bỏ ngẫu nhiên một phần mô tả; app tổng hợp từ `PLAN_data_augment_v3.md` thêm sau |
+| Luật | Không dùng public_test hay `*_environment/` (AGENT.md) |
+
+### 2. Thí nghiệm (mỗi cấu hình 3 seed, đổi một yếu tố mỗi lượt)
+
+| # | So sánh | Câu hỏi |
+|---|---|---|
+| T1 | Loss tổng xác suất dương (đang dùng) / loss từng dương / loss dương tệ nhất (margin) / BCE theo từng app | Có tăng recall mẫu nhiều app (cần ≥ 2 app) không |
+| T2 | Dương đầy đủ / bỏ dương do luật tự thêm | Bớt nhãn khó đoán không |
+| T3 | Bi-encoder / cross-encoder (cùng cỡ ~100–130M) | Cross-encoder (9 cặp mỗi mẫu) có đáng không |
+| T4 | Có / không tách câu nhiều ý và lấy max theo đoạn | Giúp mẫu 3–4 app không |
+| T5 | Có / không augment mô tả và nhiễu ASR | Chịu app lạ, lỗi ASR tốt hơn không |
+| T6 | Chọn 1–2 model nền (e5-small, vietnamese-bi-encoder) | Chốt model |
+
+Mốc giữ nguyên: lr 2e-5, 3 epoch, batch 32, InfoNCE trong tập app đã cài của mẫu. Chỉ dùng BCE (T1) nếu muốn k thích nghi theo ngưỡng xác suất.
+
+### 3. Đánh giá và cổng chấp nhận
+
+- Chỉ số: recall theo k, số app giữ, khoảng tin cậy Wilson; báo riêng theo nhóm số app cài (3–6, 7–10, 11+) và theo query sạch / nhiễu ASR.
+- **Cổng 1 (chọn bản):** cận dưới khoảng tin cậy của recall ≥ 98% trên fold hiệu chỉnh ở k ≤ 5, và tụt ≤ 3 điểm khi chuyển sang query nhiễu ASR.
+- **Cổng 2 (dùng trong hệ thống):** E5 — điểm `metrics/` val_ood không thấp hơn bản không lọc quá khoảng 1–2 điểm.
+- Không qua cổng: chuyển sang catalog hai tầng (tầng 1 top-k mô tả đầy đủ, tầng 2 chỉ tên tool) và hạ yêu cầu recall tầng 1 xuống khoảng 90–95%.
+
+### 4. Hạ tầng
+
+- Kaggle T4 (kernel và dataset riêng tư như `asr/agent/clef/app_filter/`). Mỗi lượt 2–5 phút; bảng T1–T6 với 3 seed ước khoảng 2–3 giờ GPU, trong hạn mức 30 giờ/tuần/tài khoản.
+- Bản cuối: train trên toàn bộ train (kể cả val_in), 3 seed, chọn bản ổn định, lưu trọng số fp32.
+- Dùng vietnamese-bi-encoder thì phải thêm bộ tách từ (pyvi) vào Docker và đo lại độ trễ.
+
+### 5. Trước khi đưa vào Docker
+
+- Kiểm số tham số, license, ngày phát hành theo model card chính thức (AGENT.md).
+- Chạy CPU fp32, hai lần cho cùng kết quả.
+- Cộng tham số của model lọc vào tổng hệ thống (còn dư khoảng 0,25B).
+- Chép mã, cấu hình, seed và kết quả vào repo cạnh `asr/agent/clef/app_filter/`.
+
+### 6. Thứ tự và điểm dừng
+
+1. Dựng dữ liệu, các fold, transcript nhiễu ASR.
+2. T1–T2; dừng và giữ loss cũ nếu không tăng recall mẫu nhiều app.
+3. T3–T6, chọn cấu hình.
+4. Train bản cuối, đo theo cổng 1.
+5. E5 trong vòng Clef (cổng 2), quyết định lọc cứng hay hai tầng.
+
 ## 7. Tích hợp vào Docker
 
 - Model embedding chạy trên CPU fp32 (tất định), batch các app của sample: dưới khoảng 50 ms.
