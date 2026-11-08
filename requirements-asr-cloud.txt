@@ -1,4 +1,3 @@
 # Local reference transcription only; no Torch, GPU or DashScope SDK needed.
 python-dotenv==1.2.4
-websocket-client==1.9.2
 tqdm==4.70.1

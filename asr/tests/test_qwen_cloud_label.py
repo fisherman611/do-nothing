@@ -3,7 +3,6 @@ import io
 import json
 from pathlib import Path
 import tempfile
-import threading
 import unittest
 from unittest.mock import patch
 import wave
@@ -29,48 +28,6 @@ def dataset(root):
     return path
 
 
-class FakeSocket:
-    def __init__(self):
-        self.task_id = None
-        self.finish = threading.Event()
-        self.commands, self.binary = [], []
-        self.position = 0
-
-    def settimeout(self, timeout):
-        pass
-
-    def send_binary(self, data):
-        self.binary.append(data)
-
-    def send(self, text):
-        command = json.loads(text)
-        self.commands.append(command)
-        self.task_id = command["header"]["task_id"]
-        if command["header"]["action"] == "finish-task":
-            self.finish.set()
-
-    def recv(self):
-        events = [
-            ("task-started", {}),
-            ("result-generated", {"output": {"sentence": {"sentence_id": 1, "sentence_end": False, "text": "partial"}}}),
-            ("result-generated", {"output": {"sentence": {"sentence_id": 2, "sentence_end": True, "text": "world"}}}),
-            ("result-generated", {"output": {"sentence": {"sentence_id": 1, "sentence_end": True, "text": "wrong"}}}),
-            ("result-generated", {"output": {"sentence": {"sentence_id": 1, "sentence_end": True, "text": "hello"}}}),
-            ("task-finished", {"usage": {"input_tokens": 8, "output_tokens": 2, "total_tokens": 10}}),
-        ]
-        if self.position == len(events) - 1 and not self.finish.wait(2):
-            raise TimeoutError("Sender did not finish")
-        kind, payload = events[self.position]
-        self.position += 1
-        return json.dumps({"header": {"event": kind, "task_id": self.task_id}, "payload": payload})
-
-    def recv_data(self, control_frame=False):
-        return 1, self.recv().encode("utf-8")
-
-    def close(self, timeout=1):
-        pass
-
-
 class CloudLabelTests(unittest.TestCase):
     def test_manifest_scopes_and_forbidden_paths(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -86,6 +43,30 @@ class CloudLabelTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     prepare_manifest(source)
 
+    def setUp(self):
+        patcher = patch("asr.qwen_cloud_label.load_state", return_value={
+            "contacts": {"contacts": [{"id": "c_1", "name": "Nguyễn Thị Lan", "phone": "0901234567"}]},
+            "music": {"tracks": [{"id": "trk_1", "title": "Nơi này có anh", "artist": "Sơn Tùng M-TP"}]},
+        })
+        self.load_state = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_hotwords_from_profile_and_state_and_context_from_earlier_replies(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = dataset(Path(temp))
+            row = json.loads(source.read_text())
+            row["context"] = {"user_profile": {"name": "Anh Thành", "home_address": "77 Hoàng Văn Thụ, Phú Nhuận"}}
+            source.write_text(json.dumps(row), encoding="utf-8")
+            final, history = prepare_manifest(source)
+            self.assertEqual(list(final["vocabulary"]), [
+                "Anh Thành", "77 Hoàng Văn Thụ", "Phú Nhuận", "Nguyễn Thị Lan", "Nơi này có anh", "Sơn Tùng M-TP"])
+            self.assertEqual(set(final["vocabulary"].values()), {3})
+            self.assertEqual(final["context"], ["ignored"])
+            self.assertEqual(history["context"], [])
+            self.assertEqual(history["vocabulary"], final["vocabulary"])
+            self.assertEqual(prepare_manifest(source, hotwords="none", context=False)[0]["vocabulary"], {})
+            self.assertEqual(len(prepare_manifest(source, max_hotwords=2)[0]["vocabulary"]), 2)
+
     def test_credentials_use_workspace_host_without_printing_or_modifying_env(self):
         with tempfile.TemporaryDirectory() as temp, patch.dict("os.environ", {}, clear=True):
             env = Path(temp) / ".env"
@@ -93,67 +74,78 @@ class CloudLabelTests(unittest.TestCase):
             env.write_text(content, encoding="utf-8")
             key, endpoint = load_credentials(env)
             self.assertEqual(key, "test-secret")
-            self.assertEqual(endpoint, "wss://ws-example.ap-southeast-1.maas.aliyuncs.com/api-ws/v1/inference")
+            self.assertEqual(endpoint, "https://ws-example.ap-southeast-1.maas.aliyuncs.com"
+                                       "/api/v1/services/aigc/multimodal-generation/generation")
             self.assertEqual(env.read_text(), content)
             with patch.dict("os.environ", {"API_HOST": "example.com"}):
                 with self.assertRaises(ValueError):
                     load_credentials(env)
 
-    def test_full_duplex_final_sentences_replace_intermediate_and_duplicates(self):
+    def test_http_request_carries_audio_hotwords_context_and_parses_usage(self):
         with tempfile.TemporaryDirectory() as temp:
             path = dataset(Path(temp)).parent / "audio/final.wav"
-            socket = FakeSocket()
-            with patch("websocket.create_connection", return_value=socket) as connect:
-                result = transcribe(path, "test-secret", "wss://example", 3)
+            response = {"request_id": "r1", "output": {"text": " xin chào Lan ", "sentence": {"text": "xin chào Lan"}},
+                        "usage": {"duration": 1, "input_tokens": 8, "output_tokens": 2}}
+            with patch("asr.qwen_cloud_label._post", return_value=(200, json.dumps(response).encode())) as post:
+                result = transcribe(path, "test-secret", "https://example", 3, {"Lan": 3}, ["Bạn muốn gọi ai?"])
             self.assertEqual(result["status"], "ok")
-            self.assertEqual(result["text"], "hello world")
+            self.assertEqual(result["text"], "xin chào Lan")
             self.assertTrue(result["usage_final"])
             self.assertEqual(result["usage"]["total_tokens"], 10)
-            self.assertEqual(len(b"".join(socket.binary)), 320)
-            self.assertEqual([c["header"]["action"] for c in socket.commands], ["run-task", "finish-task"])
-            self.assertFalse(socket.commands[0]["payload"]["parameters"]["disfluency_removal_enabled"])
-            self.assertEqual(connect.call_args.kwargs["redirect_limit"], 0)
+            body = json.loads(post.call_args.args[1])
+            self.assertEqual(body["model"], "qwen-audio-3.1-asr-flash")
+            self.assertEqual(body["parameters"]["vocabulary"], {"Lan": 3})
+            messages = body["input"]["messages"]
+            self.assertEqual(messages[0], {"role": "assistant", "content": [{"type": "text", "text": "Bạn muốn gọi ai?"}]})
+            self.assertTrue(messages[-1]["content"][0]["input_audio"]["data"].startswith("data:audio/wav;base64,"))
+            self.assertEqual(post.call_args.args[2]["Authorization"], "Bearer test-secret")
 
-    def test_handshake_error_never_persists_secret(self):
+    def test_http_errors_are_sanitized_and_classified(self):
+        import urllib.error
+
+        def http_error(status, code):
+            body = io.BytesIO(json.dumps({"code": code, "message": "Bearer test-secret bad",
+                                          "request_id": "r2"}).encode())
+            return urllib.error.HTTPError("https://example", status, "x", {}, body)
+
         with tempfile.TemporaryDirectory() as temp:
             path = dataset(Path(temp)).parent / "audio/final.wav"
-            with patch("websocket.create_connection", side_effect=RuntimeError("Bearer test-secret")):
-                result = transcribe(path, "test-secret", "wss://example")
-            self.assertEqual(result["status"], "error")
-            self.assertNotIn("test-secret", json.dumps(result))
-            self.assertEqual(result["diagnostics"]["phase"], "connecting")
+            for status, code, retryable in [(429, "Throttling", True), (400, "InvalidParameter", False),
+                                            (503, "ServiceUnavailable", True)]:
+                with patch("asr.qwen_cloud_label._post", side_effect=http_error(status, code)):
+                    result = transcribe(path, "test-secret", "https://example")
+                self.assertEqual(result["status"], "error")
+                self.assertEqual(result["retryable"], retryable)
+                self.assertEqual(result["diagnostics"]["http_status"], status)
+                self.assertNotIn("test-secret", json.dumps(result))
+            with patch("asr.qwen_cloud_label._post", side_effect=TimeoutError("timed out")):
+                result = transcribe(path, "test-secret", "https://example")
+            self.assertEqual((result["status"], result["retryable"]), ("timeout", True))
+            with patch("asr.qwen_cloud_label._post", side_effect=RuntimeError("Bearer test-secret")):
+                result = transcribe(path, "test-secret", "https://example")
             self.assertEqual(result["diagnostics"]["message"], "[REDACTED]")
-
-    def test_close_frame_records_reason_and_does_not_retry_policy_failure(self):
-        class PolicySocket(FakeSocket):
-            def recv_data(self, control_frame=False):
-                return 8, (1008).to_bytes(2, "big") + b"policy error Bearer test-secret"
-
-        with tempfile.TemporaryDirectory() as temp:
-            path = dataset(Path(temp)).parent / "audio/final.wav"
-            with patch("websocket.create_connection", return_value=PolicySocket()):
-                result = transcribe(path, "test-secret", "wss://example")
-            self.assertEqual(result["diagnostics"]["close_code"], 1008)
-            self.assertIn("policy error", result["diagnostics"]["close_reason"])
             self.assertFalse(result["retryable"])
-            self.assertNotIn("test-secret", json.dumps(result))
 
-    def test_task_deadline_stops_streaming_and_preserves_timeout_status(self):
-        import websocket
-
-        class StalledSocket(FakeSocket):
-            def recv(self):
-                if self.position == 0:
-                    self.position += 1
-                    return json.dumps({"header": {"task_id": self.task_id, "event": "task-started"}})
-                raise websocket.WebSocketTimeoutException()
-
+    def test_concurrent_workers_label_every_audio_once(self):
         with tempfile.TemporaryDirectory() as temp:
-            path = dataset(Path(temp)).parent / "audio/final.wav"
-            with patch("websocket.create_connection", return_value=StalledSocket()):
-                result = transcribe(path, "test-secret", "wss://example", 0.03)
-            self.assertEqual(result["status"], "timeout")
-            self.assertFalse(result["usage_final"])
+            root = Path(temp)
+            source, output = dataset(root), root / "results"
+            args = parser().parse_args(["--input", str(source), "--output-dir", str(output),
+                                        "--workers", "4", "--log-format", "jsonl"])
+            calls = []
+
+            def recognize(path, *a):
+                calls.append(path.name)
+                return {"status": "ok", "text": path.stem, "usage_final": True,
+                        "usage": {"input_tokens": 8, "output_tokens": 2, "total_tokens": 10}}
+
+            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(run(args, recognize), 0)
+            self.assertEqual(sorted(calls), ["final.wav", "history.wav"])
+            summary = json.loads((output / "summary.json").read_text())
+            self.assertEqual((summary["confirmed_tokens"], summary["reserved_unknown_tokens"]), (20, 0))
+            journal = (output / "attempts.jsonl").read_text(encoding="utf-8")
+            self.assertNotIn("vocabulary", journal)
 
     def test_pending_request_keeps_reserve_and_corrupt_journal_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -181,7 +173,7 @@ class CloudLabelTests(unittest.TestCase):
 
             base = ["--input", str(source), "--output-dir", str(output),
                     "--reserve-tokens", "200", "--token-budget", "250"]
-            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "wss://example")), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(run(parser().parse_args(base), recognize), 2)
                 self.assertEqual(len(calls), 1)
                 self.assertEqual(run(parser().parse_args(base), recognize), 2)
@@ -203,7 +195,7 @@ class CloudLabelTests(unittest.TestCase):
             root = Path(temp)
             source, output = dataset(root), root / "results"
             args = parser().parse_args(["--input", str(source), "--output-dir", str(output), "--scope", "final"])
-            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "wss://example")), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 with patch("builtins.print"):
                     self.assertEqual(run(args, lambda *a: (_ for _ in ()).throw(KeyboardInterrupt())), 130)
                 self.assertEqual(run(args, lambda *a: self.fail("Must not retry pending request")), 2)
@@ -216,7 +208,7 @@ class CloudLabelTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             source, output = dataset(root), root / "results"
-            args = parser().parse_args(["--input", str(source), "--output-dir", str(output)])
+            args = parser().parse_args(["--input", str(source), "--output-dir", str(output), "--workers", "1"])
             calls = []
 
             def fail(*a):
@@ -224,7 +216,7 @@ class CloudLabelTests(unittest.TestCase):
                 return {"status": "error", "text": "partial", "usage_final": False,
                         "usage": {"input_tokens": 3, "output_tokens": 1, "total_tokens": 4}}
 
-            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "wss://example")), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(run(args, fail), 1)
             self.assertEqual(len(calls), 1)
             summary = json.loads((output / "summary.json").read_text())
@@ -248,13 +240,35 @@ class CloudLabelTests(unittest.TestCase):
                 return {"status": "ok", "text": "hello", "usage_final": True,
                         "usage": {"input_tokens": 8, "output_tokens": 2, "total_tokens": 10}}
 
-            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "wss://example")), contextlib.redirect_stdout(io.StringIO()):
+            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(run(args, recognize), 0)
             summary = json.loads((output / "summary.json").read_text())
             self.assertEqual(summary["attempt_count"], 2)
             self.assertEqual(summary["confirmed_tokens"], 10)
             self.assertEqual(summary["reserved_unknown_tokens"], args.reserve_tokens)
             self.assertEqual(summary["status_counts"], {"ok": 1})
+
+    def test_success_missing_final_usage_preserves_reserve_and_continues(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source, output = dataset(root), root / "results"
+            args = parser().parse_args(["--input", str(source), "--output-dir", str(output),
+                                        "--log-format", "jsonl", "--reserve-tokens", "200"])
+            calls = []
+
+            def recognize(*a):
+                calls.append(a[0])
+                usage = {"input_tokens": 80, "output_tokens": 20, "total_tokens": 100}
+                return {"status": "ok", "text": "xin chào", "usage": usage,
+                        "usage_final": len(calls) > 1}
+
+            with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(run(args, recognize), 0)
+            summary = json.loads((output / "summary.json").read_text())
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(summary["status_counts"], {"ok": 2})
+            self.assertEqual(summary["confirmed_tokens"], 100)
+            self.assertEqual(summary["reserved_unknown_tokens"], 200)
 
     def test_dry_run_does_not_load_key_call_api_or_write_outputs(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -272,7 +286,8 @@ class CloudLabelTests(unittest.TestCase):
                 source, output = dataset(root), root / "results"
                 args = parser().parse_args(["--input", str(source), "--output-dir", str(output),
                                             "--scope", "final", "--log-format", "jsonl", "--retry-delay", "0",
-                                            "--max-retries", "1", "--token-budget", str(budget)])
+                                            "--max-retries", "1", "--token-budget", str(budget),
+                                            "--reserve-tokens", "10000"])
                 failure = {"status": "error", "text": "", "error": "WebSocketConnectionClosedException",
                            "usage_final": False, "retryable": True}
                 capture = io.StringIO()
@@ -282,7 +297,7 @@ class CloudLabelTests(unittest.TestCase):
                     calls.append(a[0])
                     return failure
 
-                with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "wss://example")), contextlib.redirect_stdout(capture):
+                with patch("asr.qwen_cloud_label.load_credentials", return_value=("test-secret", "https://example")), contextlib.redirect_stdout(capture):
                     self.assertEqual(run(args, recognize), expected_exit)
                 self.assertEqual(len(calls), expected_calls)
                 for line in capture.getvalue().splitlines():

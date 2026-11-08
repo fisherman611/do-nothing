@@ -1,26 +1,32 @@
-"""Create evaluation-only ASR references using Qwen's DashScope WebSocket API.
+"""Create evaluation-only ASR references with Qwen's DashScope HTTP ASR API.
 
 python -m asr.qwen_cloud_label --dry-run
 python -m asr.qwen_cloud_label --limit 20
 
-Credentials are loaded at runtime, never persisted. No app environment access.
+Hotwords come from user_profile and the sample's app state (read through zaic_tools.ToolEnv,
+never by opening *_environment/ directly); context comes from earlier assistant replies.
+Credentials are loaded at runtime, never persisted.
 """
 
 from __future__ import annotations
 
 import argparse
-from collections import Counter
+import base64
+from collections import Counter, deque
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
+import heapq
 import json
 import math
 import os
 from pathlib import Path
 import re
 import sys
-import threading
 import time
+import urllib.error
+import urllib.request
 from urllib.parse import urlsplit
 import uuid
 import wave
@@ -28,13 +34,21 @@ import wave
 from metrics.io import checked_path, read_jsonl, write_json, write_jsonl
 
 
-MODEL = "qwen-audio-3.1-asr-flash-message"
-PARAMETERS = {
-    "format": "pcm", "sample_rate": 16000, "language_hints": ["vi", "en"],
-    "disfluency_removal_enabled": False, "intermediate_result_enabled": False,
-}
+MODEL = "qwen-audio-3.1-asr-flash"
+PARAMETERS = {"format": "wav", "sample_rate": "16000", "language_hints": ["vi", "en"]}
+HOTWORD_VERSION = 1
+# State fields that hold names people say aloud (contacts, songs, places, shops...).
+HOTWORD_KEYS = (
+    "name", "title", "artist", "members", "from_name", "bank", "seller", "venue", "location",
+    "address", "area", "stop", "stops", "origin", "destination", "operator", "airline",
+    "provider", "channel", "channels", "room", "label", "symbol", "tags",
+)
+CONTEXT_TURNS, CONTEXT_CHARS = 3, 400  # API keeps at most 5 messages, 400 chars per turn
 DEFAULT_INPUT = Path("data/train+public_test/public_test/public_test.jsonl")
-DEFAULT_OUTPUT = Path("data/results/asr/qwen-cloud/public-test-references")
+DEFAULT_OUTPUT = Path("data/results/asr/qwen-cloud/public-test-asr-flash")
+RETRYABLE_STATUS = {408, 429, 500, 502, 503, 504}
+RETRYABLE_CODES = {"throttling", "throttling.ratequota", "toomanyrequests", "internalerror",
+                   "internalservererror", "serviceunavailable", "requesttimeout"}
 
 
 def now():
@@ -45,7 +59,75 @@ def sha256(path):
     return hashlib.sha256(checked_path(path).read_bytes()).hexdigest()
 
 
-def prepare_manifest(input_path, scope="all"):
+_TOOL_ENV = None
+
+
+def load_state(input_path, sample_id):
+    """Initial app state of one sample via the official ToolEnv (no tool calls are made)."""
+    global _TOOL_ENV
+    split_dir = input_path.parent
+    if _TOOL_ENV is None:
+        sys.path.insert(0, str(split_dir))
+        try:
+            from zaic_tools import ToolEnv
+        except ImportError:
+            raise ValueError(f"zaic_tools not found in {split_dir}; use --hotwords profile or none") from None
+        _TOOL_ENV = ToolEnv
+    state = _TOOL_ENV(split_dir.name, sample_id, root=str(split_dir.parent)).get_state()
+    return {k: v for k, v in state.items() if k != "_meta"}
+
+
+def _phrases(value):
+    if isinstance(value, str):
+        for part in value.split(","):
+            part = " ".join(part.split())
+            # Skip codes, dates, e-mails and long sentences; keep spoken names.
+            if 2 <= len(part) <= 40 and "@" not in part and not re.fullmatch(r"[\d\s:/+.T-]+", part):
+                yield part
+    elif isinstance(value, list):
+        for x in value:
+            yield from _phrases(x)
+
+
+def extract_hotwords(profile, state, limit):
+    found, seen = [], set()
+
+    def add(text):
+        for phrase in _phrases(text):
+            if phrase.casefold() not in seen:
+                seen.add(phrase.casefold())
+                found.append(phrase)
+
+    for key in ("name", "home_address", "work_address", "city"):
+        add((profile or {}).get(key))
+    by_key = {key: [] for key in HOTWORD_KEYS}
+
+    def walk(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in by_key and isinstance(child, (str, list)) and not (
+                        isinstance(child, list) and child and isinstance(child[0], dict)):
+                    by_key[key].append(child)
+                else:
+                    walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+
+    walk(state or {})
+    for key in HOTWORD_KEYS:  # priority order: people and titles before rooms and tags
+        for value in by_key[key]:
+            add(value)
+    return found[:limit]
+
+
+def build_context(history, before):
+    texts = [t["text"] for t in history[:before] if t.get("role") == "assistant" and t.get("text")]
+    return [" ".join(t.split())[:CONTEXT_CHARS] for t in texts[-CONTEXT_TURNS:]]
+
+
+def prepare_manifest(input_path, scope="all", hotwords="profile+state", context=True,
+                     max_hotwords=300, hotword_weight=3):
     """Only follow WAV references in the split JSONL, never scan directories."""
     input_path = checked_path(input_path).resolve()
     root = input_path.parent
@@ -58,14 +140,17 @@ def prepare_manifest(input_path, scope="all"):
         if not isinstance(sample_id, str) or not sample_id or sample_id in sample_ids:
             raise ValueError("Invalid or duplicate sample ID")
         sample_ids.add(sample_id)
-        refs = [(sample_id, row.get("audio"), None)]
+        history = row.get("history", [])
+        vocabulary = {}
+        if hotwords != "none":
+            profile = (row.get("context") or {}).get("user_profile")
+            state = load_state(input_path, sample_id) if hotwords == "profile+state" else {}
+            vocabulary = {w: hotword_weight for w in extract_hotwords(profile, state, max_hotwords)}
+        refs = [(sample_id, row.get("audio"), None, len(history))]
         if scope == "all":
-            refs += [
-                (f"{sample_id}:history:{i}", turn.get("audio"), i)
-                for i, turn in enumerate(row.get("history", []))
-                if turn.get("role") == "user"
-            ]
-        for item_id, relative, history_index in refs:
+            refs += [(f"{sample_id}:history:{i}", turn.get("audio"), i, i)
+                     for i, turn in enumerate(history) if turn.get("role") == "user"]
+        for item_id, relative, history_index, before in refs:
             if item_id in ids or not isinstance(relative, str) or not relative:
                 raise ValueError("Invalid audio reference or duplicate utterance ID")
             ids.add(item_id)
@@ -78,14 +163,23 @@ def prepare_manifest(input_path, scope="all"):
                 frames = audio.getnframes()
                 if not frames or len(audio.readframes(frames)) != frames * 2:
                     raise ValueError("Empty or truncated WAV")
+            if frames / 16000 > 300:
+                raise ValueError("Audio longer than the 5-minute API limit")
             items.append({
                 "id": item_id, "sample_id": sample_id, "audio": relative,
                 "history_index": history_index, "audio_seconds": frames / 16000,
-                "audio_sha256": sha256(path),
+                "audio_sha256": sha256(path), "vocabulary": vocabulary,
+                "context": build_context(history, before) if context else [],
             })
     if not items:
         raise ValueError("Input contains no audio")
     return items
+
+
+def slim(item):
+    """Journal/prediction rows omit the bulky per-request hints kept in manifest.jsonl."""
+    return {k: v for k, v in item.items() if k not in ("vocabulary", "context")} | {
+        "hotword_count": len(item.get("vocabulary") or {}), "context_count": len(item.get("context") or [])}
 
 
 def load_credentials(env_file):
@@ -103,14 +197,13 @@ def load_credentials(env_file):
         host = urlsplit(values.get("DASHSCOPE_URL", "")).hostname
     if not host:
         raise ValueError("Set API_HOST or DASHSCOPE_URL in .env/environment")
-    # Derive the WS path from the host, not the OpenAI-compatible HTTP endpoint.
-    parsed = urlsplit("wss://" + host)
+    parsed = urlsplit("https://" + host)
     hostname = parsed.hostname or ""
     if (parsed.netloc != hostname or parsed.path or parsed.query or parsed.fragment
             or not (hostname.endswith(".maas.aliyuncs.com")
                     or hostname in {"dashscope.aliyuncs.com", "dashscope-intl.aliyuncs.com"})):
         raise ValueError("API_HOST must be an Alibaba DashScope hostname without a path")
-    return key, f"wss://{hostname}/api-ws/v1/inference"
+    return key, f"https://{hostname}/api/v1/services/aigc/multimodal-generation/generation"
 
 
 def valid_usage(value):
@@ -132,140 +225,87 @@ def safe_message(value, api_key):
     return message.replace("\r", " ").replace("\n", " ")[:500]
 
 
-def transcribe(path, api_key, endpoint, timeout=120):
-    """One task per audio, with sanitized diagnostics and no transport retries."""
-    import websocket
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, *args, **kwargs):
+        return None  # never forward the Authorization header to another host
 
-    with wave.open(str(path), "rb") as audio:
-        pcm = audio.readframes(audio.getnframes())
-    task_id = uuid.uuid4().hex
+
+def _post(url, data, headers, timeout):
+    opener = urllib.request.build_opener(_NoRedirect)
+    request = urllib.request.Request(url, data=data, headers=headers, method="POST")
+    with opener.open(request, timeout=timeout) as response:
+        return response.status, response.read()
+
+
+def build_request(path, vocabulary=None, context=None):
+    audio = base64.b64encode(checked_path(path).read_bytes()).decode("ascii")
+    messages = [{"role": "assistant", "content": [{"type": "text", "text": text}]} for text in context or []]
+    messages.append({"role": "user", "content": [
+        {"type": "input_audio", "input_audio": {"data": f"data:audio/wav;base64,{audio}"}}]})
+    parameters = dict(PARAMETERS)
+    if vocabulary:
+        parameters["vocabulary"] = vocabulary
+    return {"model": MODEL, "input": {"messages": messages}, "parameters": parameters}
+
+
+def transcribe(path, api_key, endpoint, timeout=120, vocabulary=None, context=None):
+    """One synchronous HTTP request per audio, with sanitized diagnostics and no internal retries."""
     started = time.monotonic()
-    stopped = threading.Event()
-    sender_errors, sentences = [], {}
-    sock, sender, usage = None, None, None
-    diagnostics = {"phase": "connecting", "audio_bytes_sent": 0, "events_received": 0,
-                   "last_event": None, "task_started": False, "finish_sent": False}
+    diagnostics = {"phase": "requesting"}
     result = {"status": "error", "text": "", "usage": None, "usage_final": False,
-              "task_id": task_id, "retryable": False, "diagnostics": diagnostics}
-
-    def send_audio():
-        try:
-            # Pace 100 ms PCM chunks; receive events concurrently to avoid backpressure.
-            for offset in range(0, len(pcm), 3200):
-                if stopped.is_set():
-                    return
-                sock.send_binary(pcm[offset:offset + 3200])
-                diagnostics["audio_bytes_sent"] += min(3200, len(pcm) - offset)
-                if stopped.wait(min(3200, len(pcm) - offset) / 32000):
-                    return
-            sock.send(json.dumps({
-                "header": {"action": "finish-task", "task_id": task_id, "streaming": "duplex"},
-                "payload": {"input": {}},
-            }))
-            diagnostics.update(finish_sent=True, phase="waiting_task_finished")
-        except Exception as error:
-            sender_errors.append(error)
-
+              "retryable": False, "diagnostics": diagnostics}
+    body = json.dumps(build_request(path, vocabulary, context), ensure_ascii=False).encode("utf-8")
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json",
+               "X-DashScope-SSE": "disable"}
     try:
-        sock = websocket.create_connection(
-            endpoint, header={"Authorization": f"Bearer {api_key}"},
-            timeout=min(15, timeout), enable_multithread=True,
-            redirect_limit=0,
-        )
-        sock.settimeout(min(1, timeout))
-        diagnostics["phase"] = "sending_run_task"
-        sock.send(json.dumps({
-            "header": {"action": "run-task", "task_id": task_id, "streaming": "duplex"},
-            "payload": {"task_group": "audio", "task": "asr", "function": "recognition",
-                        "model": MODEL, "parameters": PARAMETERS, "input": {}},
-        }))
-        diagnostics["phase"] = "waiting_task_started"
-        while True:
-            if time.monotonic() - started >= timeout:
-                raise TimeoutError("Task deadline exceeded")
-            if sender_errors:
-                raise sender_errors[0]
-            try:
-                opcode, raw = sock.recv_data(control_frame=True)
-            except websocket.WebSocketTimeoutException:
-                continue
-            if opcode == websocket.ABNF.OPCODE_CLOSE:
-                diagnostics["close_code"] = int.from_bytes(raw[:2], "big") if len(raw) >= 2 else None
-                diagnostics["close_reason"] = safe_message(raw[2:].decode("utf-8", errors="replace"), api_key)
-                raise ConnectionError("Server sent a close frame before task-finished")
-            if opcode in (websocket.ABNF.OPCODE_PING, websocket.ABNF.OPCODE_PONG):
-                continue
-            if not raw:
-                raise ConnectionError("WebSocket closed before task-finished")
-            event = json.loads(raw)
-            header, payload = event.get("header", {}), event.get("payload", {})
-            if header.get("task_id") != task_id:
-                raise ValueError("Unexpected task ID")
-            reported = valid_usage(payload.get("usage"))
-            if reported is not None:
-                usage = reported
-            kind = header.get("event")
-            diagnostics["events_received"] += 1
-            diagnostics["last_event"] = kind
-            if kind == "task-failed":
-                code = str(header.get("error_code", "UNKNOWN"))
-                # Never persist raw error bodies/headers, which can contain credentials.
-                code = re.sub(r"[^A-Za-z0-9_.-]", "_", code.replace(api_key, "REDACTED"))[:100]
-                result["error"] = f"DashScope task-failed: {code}"
-                diagnostics["server_message"] = safe_message(header.get("error_message", ""), api_key)
-                result["retryable"] = code.lower() in {"throttling", "toomanyrequests", "internalerror", "internalservererror", "serviceunavailable"}
-                break
-            if kind == "task-started":
-                if sender is not None:
-                    raise ValueError("Duplicate task-started event")
-                diagnostics.update(task_started=True, phase="streaming_audio")
-                sender = threading.Thread(target=send_audio, daemon=True)
-                sender.start()
-            elif kind == "result-generated":
-                sentence = payload.get("output", {}).get("sentence", {})
-                if sentence.get("sentence_end") is True and not sentence.get("heartbeat"):
-                    sentence_id = sentence.get("sentence_id")
-                    if type(sentence_id) is not int or not isinstance(sentence.get("text"), str):
-                        raise ValueError("Invalid final sentence")
-                    sentences[sentence_id] = sentence
-            elif kind == "task-finished":
-                if sender is None:
-                    raise ValueError("task-finished before task-started")
-                result.update(status="ok", usage_final=reported is not None)
-                diagnostics["phase"] = "finished"
-                break
+        status, raw = _post(endpoint, body, headers, timeout)
+        diagnostics.update(phase="parsing", http_status=status)
+        data = json.loads(raw)
+        diagnostics["request_id"] = data.get("request_id")
+        if data.get("code"):
+            raise _ServerError(status, data)
+        output = data.get("output") or {}
+        text = output.get("text")
+        if not isinstance(text, str):
+            sentences = output.get("sentences") or [output.get("sentence") or {}]
+            text = " ".join(s.get("text", "") for s in sentences if isinstance(s, dict))
+        usage = dict(data.get("usage") or {})
+        if "total_tokens" not in usage and all(type(usage.get(k)) is int for k in ("input_tokens", "output_tokens")):
+            usage["total_tokens"] = usage["input_tokens"] + usage["output_tokens"]
+        tokens = valid_usage(usage)
+        result.update(status="ok", text=text.strip(), usage=tokens, usage_final=tokens is not None,
+                      audio_duration=usage.get("duration"),
+                      sentence=output.get("sentence"), words=output.get("words"))
+        diagnostics["phase"] = "finished"
+    except urllib.error.HTTPError as error:
+        try:
+            data = json.loads(error.read() or b"{}")
+        except ValueError:
+            data = {}
+        _record_server_error(result, error.code, data if isinstance(data, dict) else {}, api_key)
+    except _ServerError as error:
+        _record_server_error(result, error.status, error.data, api_key)
     except Exception as error:
-        result["status"] = "timeout" if isinstance(error, (TimeoutError, websocket.WebSocketTimeoutException)) else "error"
-        result["error"] = type(error).__name__
-        status_code = getattr(error, "status_code", None)
-        if status_code is not None:
-            # Handshake exceptions embed raw response headers and body in str(error).
-            diagnostics["http_status"] = status_code
-            diagnostics["message"] = f"WebSocket handshake HTTP {status_code}"
-        else:
-            diagnostics["message"] = safe_message(error, api_key)
-        result["retryable"] = (
-            isinstance(error, (ConnectionError, TimeoutError, websocket.WebSocketConnectionClosedException,
-                               websocket.WebSocketTimeoutException))
-            or status_code in {408, 429, 500, 502, 503, 504}
-            or isinstance(error, OSError) and getattr(error, "errno", None) in {54, 104, 110, 10053, 10054, 10060}
-        ) and diagnostics.get("close_code") not in {1002, 1003, 1007, 1008, 1009, 1010}
-    finally:
-        stopped.set()
-        if sock is not None:
-            try:
-                sock.close(timeout=1)
-            except Exception:
-                # Closing a failed transport must not discard its partial usage.
-                pass
-        if sender is not None:
-            sender.join(timeout=2)
-    ordered = [sentences[k] for k in sorted(sentences)]
-    result.update(
-        text=" ".join(s["text"].strip() for s in ordered).strip(),
-        sentences=ordered, usage=usage, elapsed_seconds=time.monotonic() - started,
-    )
+        timed_out = isinstance(error, TimeoutError) or "timed out" in str(error).lower()
+        result.update(status="timeout" if timed_out else "error", error=type(error).__name__,
+                      retryable=isinstance(error, (urllib.error.URLError, ConnectionError, TimeoutError, OSError)))
+        diagnostics["message"] = safe_message(error, api_key)
+    result["elapsed_seconds"] = time.monotonic() - started
     return result
+
+
+class _ServerError(Exception):
+    def __init__(self, status, data):
+        super().__init__(data.get("code"))
+        self.status, self.data = status, data
+
+
+def _record_server_error(result, status, data, api_key):
+    code = re.sub(r"[^A-Za-z0-9_.-]", "_", str(data.get("code") or f"HTTP{status}").replace(api_key, "REDACTED"))[:100]
+    result.update(error=f"DashScope {code}",
+                  retryable=status in RETRYABLE_STATUS or code.lower() in RETRYABLE_CODES)
+    result["diagnostics"].update(http_status=status, request_id=data.get("request_id"),
+                                 server_message=safe_message(data.get("message", ""), api_key))
 
 
 def append_event(path, value):
@@ -356,18 +396,27 @@ def run(args, recognizer=transcribe):
         raise ValueError("Timeout must be finite and positive")
     if args.max_retries < 0 or not math.isfinite(args.retry_delay) or args.retry_delay < 0:
         raise ValueError("Retry count and delay must be non-negative")
+    if not 1 <= args.workers <= 16 or args.max_hotwords <= 0:
+        raise ValueError("workers must be 1-16 and max-hotwords positive")
+    if not (1 <= args.hotword_weight <= 5 or args.hotword_weight == 50):
+        raise ValueError("hotword-weight must be 1-5 (or 50)")
     input_path = checked_path(args.input).resolve()
-    manifest = prepare_manifest(input_path, args.scope)
+    manifest = prepare_manifest(input_path, args.scope, args.hotwords, args.context == "history",
+                                args.max_hotwords, args.hotword_weight)
     selected = manifest[:args.limit] if args.limit is not None else manifest
+    counts = [len(r["vocabulary"]) for r in selected]
     overview = {"model": MODEL, "scope": args.scope, "audio_count": len(manifest),
-                      "selected_audio_count": len(selected),
-                      "selected_audio_hours": round(sum(r["audio_seconds"] for r in selected) / 3600, 4),
-                      "token_budget": args.token_budget}
+                "selected_audio_count": len(selected),
+                "selected_audio_hours": round(sum(r["audio_seconds"] for r in selected) / 3600, 4),
+                "hotwords_mean": round(sum(counts) / len(counts), 1), "hotwords_max": max(counts),
+                "with_context": sum(bool(r["context"]) for r in selected),
+                "token_budget": args.token_budget, "workers": args.workers}
     if args.dry_run or args.log_format == "jsonl":
         print(json.dumps(overview, ensure_ascii=True), flush=True)
     else:
-        print(f"Qwen Cloud | {len(selected)}/{len(manifest)} audio | scope={args.scope} | "
-              f"{overview['selected_audio_hours']:.3f} h | budget={args.token_budget:,} tokens", flush=True)
+        print(f"Qwen Cloud {MODEL} | {len(selected)}/{len(manifest)} audio | scope={args.scope} | "
+              f"{overview['selected_audio_hours']:.3f} h | hotwords~{overview['hotwords_mean']} | "
+              f"workers={args.workers} | budget={args.token_budget:,} tokens", flush=True)
     if args.dry_run:
         return 0
     if args.reserve_tokens > args.token_budget:
@@ -378,18 +427,14 @@ def run(args, recognizer=transcribe):
         except ImportError:
             raise ValueError("Install requirements-asr-cloud.txt first (tqdm is required)") from None
     api_key, endpoint = load_credentials(args.env_file)
-    if recognizer is transcribe:
-        try:
-            import websocket  # noqa: F401
-        except ImportError:
-            raise ValueError("Install requirements-asr-cloud.txt first") from None
     output = checked_path(args.output_dir).resolve()
     if output.is_relative_to(input_path.parent):
         raise ValueError("Output must be outside the input split directory")
     output.mkdir(parents=True, exist_ok=True)
     config = {
-        "schema_version": 1, "model": MODEL, "parameters": PARAMETERS,
+        "schema_version": 2, "model": MODEL, "parameters": PARAMETERS,
         "input_sha256": sha256(input_path), "scope": args.scope,
+        "hotwords": args.hotwords, "hotword_version": HOTWORD_VERSION, "context": args.context,
         "manifest_sha256": hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest(),
         "endpoint": endpoint, "purpose": "evaluation_only",
     }
@@ -405,11 +450,12 @@ def run(args, recognizer=transcribe):
             write_jsonl(output / "manifest.jsonl", manifest)
         latest, charged, unknown, _ = read_journal(journal_path)
         confirmed = confirmed_tokens(journal_path)
+        todo = deque((item, 0) for item in selected if not (
+            item["id"] in latest and (latest[item["id"]]["status"] == "ok" or not args.retry_errors)))
         progress = None
         if args.log_format == "tqdm":
-            initial = sum(item["id"] in latest and (latest[item["id"]]["status"] == "ok" or not args.retry_errors)
-                          for item in selected)
-            progress = tqdm(total=len(selected), initial=initial, desc="ASR", unit="audio", dynamic_ncols=True)
+            progress = tqdm(total=len(selected), initial=len(selected) - len(todo), desc="ASR",
+                            unit="audio", dynamic_ncols=True)
 
         def log(message):
             if progress is not None:
@@ -417,72 +463,99 @@ def run(args, recognizer=transcribe):
             else:
                 print(json.dumps({"event": "message", "message": message}, ensure_ascii=True), flush=True)
 
-        def refresh(item_id):
+        def refresh():
             if progress is not None:
-                counts = Counter(latest[item["id"]]["status"] for item in selected if item["id"] in latest)
-                progress.set_postfix(id=item_id, ok=counts["ok"], errors=sum(v for k, v in counts.items() if k != "ok"),
+                done = Counter(latest[item["id"]]["status"] for item in selected if item["id"] in latest)
+                progress.set_postfix(ok=done["ok"], errors=sum(v for k, v in done.items() if k != "ok"),
                                      tokens=confirmed, reserve=charged - confirmed, unknown=unknown)
 
-        refresh("resume")
-        exit_code = 0
+        refresh()
+        exit_code, stopping = 0, False
+        inflight, delayed, sequence = {}, [], 0
+        pool = ThreadPoolExecutor(max_workers=args.workers)
         try:
-            for item in selected:
-                previous = latest.get(item["id"])
-                if previous and (previous["status"] == "ok" or not args.retry_errors):
-                    continue
-                path = checked_path(input_path.parent / item["audio"])
-                if sha256(path) != item["audio_sha256"]:
-                    raise ValueError("Audio changed since preflight")
-                result = None
-                for retry in range(args.max_retries + 1):
+            while todo or delayed or inflight:
+                clock = time.monotonic()
+                while delayed and delayed[0][0] <= clock and not stopping:
+                    _, _, item, retry = heapq.heappop(delayed)
+                    todo.appendleft((item, retry))
+                while todo and not stopping and len(inflight) < args.workers:
                     if charged + args.reserve_tokens > args.token_budget:
                         log("Stopped before next request: token budget reserve reached.")
-                        exit_code = 2
+                        exit_code, stopping = 2, True
                         break
-                    refresh(item["id"])
+                    item, retry = todo.popleft()
+                    path = checked_path(input_path.parent / item["audio"])
+                    if sha256(path) != item["audio_sha256"]:
+                        raise ValueError("Audio changed since preflight")
                     attempt_id = uuid.uuid4().hex
                     append_event(journal_path, {
                         "event": "started", "attempt_id": attempt_id, "started_at": now(),
-                        "item": item, "reserved_tokens": args.reserve_tokens,
+                        "item": slim(item), "reserved_tokens": args.reserve_tokens,
                     })
-                    result = recognizer(path, api_key, endpoint, args.timeout)
+                    charged += args.reserve_tokens
+                    unknown += 1
+                    future = pool.submit(recognizer, path, api_key, endpoint, args.timeout,
+                                         item["vocabulary"], item["context"])
+                    inflight[future] = (item, retry, attempt_id)
+                if stopping and not inflight:
+                    break
+                if not inflight:
+                    if delayed:
+                        time.sleep(max(0.0, delayed[0][0] - time.monotonic()))
+                        continue
+                    break
+                finished, _ = wait(inflight, timeout=0.5, return_when=FIRST_COMPLETED)
+                for future in finished:
+                    item, retry, attempt_id = inflight.pop(future)
+                    try:
+                        result = future.result()
+                    except Exception as error:  # recognizer bug: record, never retry
+                        result = {"status": "error", "text": "", "usage_final": False, "retryable": False,
+                                  "error": type(error).__name__, "diagnostics": {"message": safe_message(error, api_key)}}
                     append_event(journal_path, {
                         "event": "completed", "attempt_id": attempt_id, "completed_at": now(), "result": result,
                     })
-                    latest, charged, unknown, _ = read_journal(journal_path)
-                    if result.get("usage_final") and valid_usage(result.get("usage")) is not None:
-                        confirmed += result["usage"]["total_tokens"]
-                    refresh(item["id"])
+                    usage = valid_usage(result.get("usage"))
+                    if result.get("usage_final") is True and usage is not None:
+                        charged += usage["total_tokens"] - args.reserve_tokens
+                        confirmed += usage["total_tokens"]
+                        unknown -= 1
+                    else:
+                        charged += max(0, (usage or {}).get("total_tokens", 0) - args.reserve_tokens)
+                    latest[item["id"]] = {**slim(item), **result, "attempt_id": attempt_id}
                     if args.log_format == "jsonl":
                         print(json.dumps({"id": item["id"], "status": result["status"],
-                                        "accounted_tokens": charged, "attempts_with_unknown_usage": unknown,
-                                        "retry": retry, "error": result.get("error"),
-                                        "diagnostics": result.get("diagnostics")}, ensure_ascii=True), flush=True)
+                                          "accounted_tokens": charged, "attempts_with_unknown_usage": unknown,
+                                          "retry": retry, "error": result.get("error"),
+                                          "diagnostics": result.get("diagnostics")}, ensure_ascii=True), flush=True)
                     if result["status"] == "ok":
-                        break
-                    details = result.get("diagnostics", {})
-                    log(f"{item['id']}: {result.get('error')} | phase={details.get('phase', 'unknown')} | "
-                        f"sent={details.get('audio_bytes_sent', '?')} bytes | "
-                        f"detail={details.get('message', details.get('server_message', ''))}"
-                        + (f" | close={details['close_code']} {details.get('close_reason', '')}"
-                           if "close_code" in details else ""))
-                    if not result.get("retryable") or retry == args.max_retries:
-                        break
-                    delay = args.retry_delay * 2 ** retry
-                    log(f"Retry {retry + 1}/{args.max_retries} in {delay:g}s (prior request may have been billed).")
-                    time.sleep(delay)
-                if progress is not None and result is not None:
-                    progress.update(1)
-                if exit_code == 2:
-                    break
-                if result["status"] != "ok" or not result.get("usage_final"):
-                    log("Stopped after failed request or missing final usage; inspect predictions.jsonl.")
-                    exit_code = 1
-                    break
+                        if progress is not None:
+                            progress.update(1)
+                        if not result.get("usage_final"):
+                            log(f"{item['id']}: final usage missing; retained token reserve and continued.")
+                    else:
+                        details = result.get("diagnostics") or {}
+                        log(f"{item['id']}: {result.get('error')} | http={details.get('http_status', '-')} | "
+                            f"request_id={details.get('request_id', '-')} | "
+                            f"detail={details.get('server_message') or details.get('message', '')}")
+                        if result.get("retryable") and retry < args.max_retries and not stopping:
+                            delay = args.retry_delay * 2 ** retry
+                            log(f"Retry {retry + 1}/{args.max_retries} in {delay:g}s (prior request may have been billed).")
+                            heapq.heappush(delayed, (time.monotonic() + delay, sequence, item, retry + 1))
+                            sequence += 1
+                        else:
+                            if progress is not None:
+                                progress.update(1)
+                            if not stopping:
+                                log("Stopped after failed request; finishing in-flight requests. Inspect predictions.jsonl.")
+                            exit_code, stopping = exit_code or 1, True
+                    refresh()
         except KeyboardInterrupt:
-            log("Interrupted. The pending attempt keeps its token reserve; rerun to resume.")
+            log("Interrupted. Pending attempts keep their token reserve; rerun to resume.")
             exit_code = 130
         finally:
+            pool.shutdown(wait=False, cancel_futures=True)
             if progress is not None:
                 progress.close()
             summary = export_results(output, manifest)
@@ -491,7 +564,7 @@ def run(args, recognizer=transcribe):
                 "reserve_tokens": args.reserve_tokens, "limit": args.limit,
                 "retry_errors": args.retry_errors, "timeout": args.timeout,
                 "max_retries": args.max_retries, "retry_delay": args.retry_delay,
-                "log_format": args.log_format,
+                "workers": args.workers, "log_format": args.log_format,
             })
             if args.log_format == "jsonl":
                 print(json.dumps(summary, ensure_ascii=True), flush=True)
@@ -511,15 +584,22 @@ def parser():
     result.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     result.add_argument("--env-file", type=Path, default=Path(".env"))
     result.add_argument("--scope", choices=("all", "final"), default="all", help="All user audio, or final requests only")
+    result.add_argument("--hotwords", choices=("profile+state", "profile", "none"), default="profile+state",
+                        help="Hotword source: user_profile plus app state (via ToolEnv), profile only, or none")
+    result.add_argument("--max-hotwords", type=int, default=300, help="Hotwords per sample, profile first")
+    result.add_argument("--hotword-weight", type=int, default=3, help="Hotword weight, 1-5 (50 = super hotword)")
+    result.add_argument("--context", choices=("history", "none"), default="history",
+                        help="Send up to 3 earlier assistant replies as context")
     result.add_argument("--limit", type=int, help="Select first N audio entries; omit for entire manifest")
+    result.add_argument("--workers", type=int, default=4, help="Concurrent requests (API limit: 600 requests/minute)")
     result.add_argument("--token-budget", type=int, default=900_000, help="Cumulative accounting limit in this output directory")
-    result.add_argument("--reserve-tokens", type=int, default=10_000, help="Headroom required before each request; estimate, not hard cap")
-    result.add_argument("--timeout", type=float, default=120, help="Deadline per audio including streaming, in seconds")
+    result.add_argument("--reserve-tokens", type=int, default=2_000, help="Headroom required before each request; estimate, not hard cap")
+    result.add_argument("--timeout", type=float, default=60, help="Socket timeout per request, in seconds")
     result.add_argument("--retry-errors", action="store_true", help="Explicitly retry prior failures/interrupted requests (may be billed again)")
     result.add_argument("--max-retries", type=int, default=3, help="Additional attempts per audio for transient transport/server errors")
     result.add_argument("--retry-delay", type=float, default=2, help="Exponential retry backoff starts at this many seconds")
     result.add_argument("--log-format", choices=("tqdm", "jsonl"), default="tqdm", help="Progress bar by default; jsonl for machine-readable logs")
-    result.add_argument("--dry-run", action="store_true", help="Validate audio and print counts without credentials, network or output writes")
+    result.add_argument("--dry-run", action="store_true", help="Validate audio and hotwords; no credentials, network or output writes")
     return result
 
 
