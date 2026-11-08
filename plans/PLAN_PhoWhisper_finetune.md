@@ -46,7 +46,7 @@ Code: `zaic/modal/` (`make_manifest.py`, `app.py`).
 | 1 | Baseline zero-shot (go/no-go) | `modal run app.py --step baseline` | **Xong: WER 25.3%, CER 14.8%** → đi tiếp |
 | 2 | LoRA | `modal run app.py --step train --mode lora --epochs 6` | **Xong: WER 7.6%, CER 4.8%** (beam 5, best epoch 3) |
 | 2b | Thử loss: label smoothing / weighted CE / CTC+attention | `asr/modal_finetune_phowhisper.py` (xem bảng dưới) | **Xong: tốt nhất LS 0.1 + CTC 0.3, WER 6.6%** |
-| 2c | Contextual biasing: prompt từ history | `--use-prompt --label-smoothing 0.1 --ctc-weight 0.3` | Code xong, chưa chạy |
+| 2c | Contextual biasing: prompt từ history | `--use-prompt --label-smoothing 0.1 --ctc-weight 0.3` | **Xong: WER 6.2% (điều kiện thi), 6.1% (prompt nhãn thật), lỗi tên 27→17, câu khớp 231→253** |
 | 2d | Bổ sung dữ liệu | xem `PLAN_data_bo_sung.md` | Chưa |
 | 3 | Full fine-tune (nếu LoRA chưa đủ) | `--mode full` (LR 5e-6, grad ckpt) | Bỏ: loss đã bão hòa, capacity không phải nút thắt |
 | 4 | Train lại bản cuối trên 100% data | `--full_data` (cùng cấu hình tốt nhất) | Chưa, chờ chốt 2c/2d |
@@ -58,7 +58,8 @@ Kết quả các cấu hình loss (cùng split, LoRA r=32, 6 epoch, early stop p
 | CE thường | 7.6% | 4.8% | 6.7% | eval dao động 12.7 → 15.1 → 11.0 | `fisherman611/pw-tmp-7f3a` |
 | Label smoothing 0.1 | 7.0% | 4.4% | 6.3% | eval ổn định hơn | `fisherman611/pw-tmp-a81e` |
 | Weighted CE β=2 (từ hiếm, số, tên) | 8.0% | 5.1% | 6.9% | không giúp: lỗi số đã ~1.5% | `fisherman611/pw-tmp-5b27` |
-| **LS 0.1 + CTC 0.3** | **6.6%** | **4.0%** | **5.9%** | chạy đủ 6 epoch, eval phẳng từ epoch 3 | `fisherman611/pw-tmp-c3d9` |
+| LS 0.1 + CTC 0.3 | 6.6% | 4.0% | 5.9% | chạy đủ 6 epoch, eval phẳng từ epoch 3 | `fisherman611/pw-tmp-c3d9` |
+| **LS 0.1 + CTC 0.3 + prompt history** | **6.2%** | **3.9%** | **5.4%** | prompt = transcript model sinh cho lượt user trước + text assistant; bỏ prompt lúc infer vẫn 6.7% | `fisherman611/pw-tmp-e46f` |
 
 Chênh lệch dưới ~1.5 điểm nằm trong nhiễu (hai lần chạy cùng cấu hình weighted CE lệch 1.4 điểm ở epoch 3). Cả 4 model sai cùng chỗ: ~27 token tên riêng (tên nước ngoài, thương hiệu), ~125 câu sai từ nội dung; số gần như không sai. Chi tiết trong `PLAN_data_bo_sung.md` mục 0.
 

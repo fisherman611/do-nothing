@@ -27,12 +27,10 @@ Dữ liệu hiện có: 5036 utt, 6.8h, 1545 hội thoại. Public test có 1933
 
 ## 2. Các nguồn dữ liệu, xếp theo thứ tự nên làm
 
-### 2.1 Pseudo-label public test (ưu tiên 1, gần như miễn phí)
+### 2.1 Pseudo-label public test — **KHÔNG ĐƯỢC LÀM** (vi phạm luật)
 
-- 1933 audio public test là dữ liệu **đúng phân phối thi nhất** có thể có. Dùng model tốt nhất transcribe (có prompt từ history), lọc, rồi trộn vào train.
-- Lọc: giữ câu mà 2–3 model (LS, CTC, prompt) cho cùng transcript sau chuẩn hóa, hoặc độ tin cậy trung bình token > ngưỡng; bỏ câu có lặp n-gram. Dự kiến giữ 60–70%.
-- Kỳ vọng: giảm lỗi từ nội dung và câu dài. Không giúp tên riêng mới (model đã sai thì nhãn giả cũng sai).
-- Chi phí: 1 lần infer (~15 phút GPU) + 1 lần train (~2.5 USD). Rủi ro: học lại lỗi của chính mình, nên bắt buộc lọc.
+- `AGENT.md`: "Không gán nhãn public_test hoặc private_test, bằng tay hay qua dịch vụ/model bên ngoài, để huấn luyện hoặc tinh chỉnh giải pháp." Pseudo-label bằng chính model của mình cũng là gán nhãn test để train → bỏ mục này.
+- Được phép: **dữ liệu tổng hợp** (TTS, LLM sinh câu) ở giai đoạn phát triển, miễn inference offline. Các mục 2.2–2.5 vẫn hợp lệ.
 
 ### 2.2 Dữ liệu tiếng Việt nói tự nhiên, nhiều vùng miền (ưu tiên 2)
 
@@ -75,8 +73,8 @@ Dữ liệu hiện có: 5036 utt, 6.8h, 1545 hội thoại. Public test có 1933
 | # | Việc | Chi phí | Đo bằng |
 |---|---|---|---|
 | 1 | Train LS + CTC + prompt trên split hiện tại (code đã có) | ~2.5 USD | WER real-prompt vs 6.6%; lỗi tên vs 27 |
-| 2 | Pseudo-label public test bằng model #1, lọc, train lại | ~3 USD | WER quy đổi, lỗi từ nội dung |
-| 3 | Tăng cường on-the-fly (speed, nhiễu) gộp vào #2 | +0 | Đường eval có bớt overfit không |
+| 2 | ~~Pseudo-label public test~~ — bị cấm theo AGENT.md | – | – |
+| 3 | Tăng cường on-the-fly (speed, nhiễu) | ~2.5 USD | Đường eval có bớt overfit không |
 | 4 | Danh sách thực thể + TTS 1–2h câu có tên/số | 1 ngày làm + ~3 USD | Lỗi tên chưa thấy, lỗi số |
 | 5 | Bud500/VLSP lọc 10–15h, train 2 giai đoạn | ~5 USD | Câu dài, giọng vùng |
 | 6 | Đo end-to-end tool call với agent (chưa chọn agent) | – | Số thật để quyết định dừng ở đâu |
