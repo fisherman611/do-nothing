@@ -60,42 +60,64 @@ def lora_targets(model):
     return sorted(names)
 
 
-def losses(model, batch, ls, brier_w, device):
+def make_batches(idx, lengths, bs, rng):
+    """Chia các chỉ số đã xáo thành batch `bs` chuỗi: gom theo nhóm bs*16, sắp theo độ dài để ít pad, rồi xáo batch."""
+    if bs <= 1:
+        return [[i] for i in idx]
+    batches = []
+    for g in range(0, len(idx), bs * 16):
+        grp = sorted(idx[g:g + bs * 16], key=lambda i: -lengths[i])
+        batches += [grp[j:j + bs] for j in range(0, len(grp), bs)]
+    rng.shuffle(batches)
+    return batches
+
+
+def losses(model, batch, ls, brier_w, device, pad_id=0):
+    """batch: list (ids, choices, lms) → loss trung bình trên các chuỗi (mỗi chuỗi tính như bs=1 rồi lấy mean).
+    Pad phải + attention_mask; hàng nào không có span loại đó thì bỏ qua trong trung bình."""
     import torch
     import torch.nn.functional as Fn
-    ids, choices, lms = batch
-    x = torch.tensor([ids], device=device)
+    T = max(len(b[0]) for b in batch)
+    x = torch.full((len(batch), T), pad_id, dtype=torch.long)
+    m = torch.zeros((len(batch), T), dtype=torch.long)
+    for r, (ids, _, _) in enumerate(batch):
+        x[r, :len(ids)] = torch.tensor(ids)
+        m[r, :len(ids)] = 1
     base = model.get_base_model()
-    h = base.model(input_ids=x).last_hidden_state[0]            # [T, d]
-    out, stats = {}, {}
-    if choices:
-        pos = torch.tensor([c[0] for c in choices], device=device)
-        logits = base.lm_head(h[pos]).float()                    # [n, V]
-        lc, lb, acc = [], [], {}
-        for j, (_, allowed, g, kind) in enumerate(choices):
+    kw = {"attention_mask": m.to(device)} if len(batch) > 1 else {}
+    h = base.model(input_ids=x.to(device), **kw).last_hidden_state   # [B, T, d]
+    out, acc = {}, {}
+    rows = [(r, c) for r, (_, ch, _) in enumerate(batch) for c in ch]
+    if rows:
+        logits = base.lm_head(h[[r for r, _ in rows], [c[0] for _, c in rows]]).float()   # [n, V]
+        per_row = {}
+        for j, (r, (_, allowed, g, kind)) in enumerate(rows):
             z = logits[j, allowed]
-            lc.append(Fn.cross_entropy(z[None], torch.tensor([g], device=device), label_smoothing=ls))
+            ce = Fn.cross_entropy(z[None], torch.tensor([g], device=device), label_smoothing=ls)
             p = z.softmax(-1)
             onehot = torch.zeros_like(p)
             onehot[g] = 1
-            lb.append(((p - onehot) ** 2).sum())
+            per_row.setdefault(r, []).append(ce + brier_w * ((p - onehot) ** 2).sum())
             acc.setdefault(kind, []).append(float(z.argmax().item() == g))
-        out["choice"] = torch.stack(lc).mean() + brier_w * torch.stack(lb).mean()
-        stats = {k: (sum(v), len(v)) for k, v in acc.items()}
-    if lms:
-        pos = torch.tensor([p for p, _ in lms], device=device)
-        tgt = torch.tensor([t for _, t in lms], device=device)
-        out["lm"] = Fn.cross_entropy(base.lm_head(h[pos]).float(), tgt)
-    return out, stats
+        out["choice"] = torch.stack([torch.stack(v).mean() for v in per_row.values()]).mean()
+    rows = [(r, p, t) for r, (_, _, lm) in enumerate(batch) for p, t in lm]
+    if rows:
+        logits = base.lm_head(h[[r for r, _, _ in rows], [p for _, p, _ in rows]]).float()
+        tgt = torch.tensor([t for _, _, t in rows], device=device)
+        ce = Fn.cross_entropy(logits, tgt, reduction="none")
+        rid = torch.tensor([r for r, _, _ in rows], device=device)
+        out["lm"] = torch.stack([ce[rid == r].mean() for r in rid.unique()]).mean()
+    return out, {k: (sum(v), len(v)) for k, v in acc.items()}
 
 
 def evaluate(model, data, args, device):
     import torch
     model.eval()
     tot, n, acc = {"choice": 0.0, "lm": 0.0}, {"choice": 0, "lm": 0}, {}
+    idx = sorted(range(len(data)), key=lambda i: -len(data[i][0]))     # batch theo độ dài, ít pad
     with torch.no_grad():
-        for b in data:
-            l, st = losses(model, b, 0.0, args.brier, device)
+        for j in range(0, len(idx), args.bs):
+            l, st = losses(model, [data[i] for i in idx[j:j + args.bs]], 0.0, args.brier, device, args.pad_id)
             for k, v in l.items():
                 tot[k] += v.item()
                 n[k] += 1
@@ -116,7 +138,11 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--epochs", type=float, default=2)
     ap.add_argument("--lr", type=float, default=1e-4)
-    ap.add_argument("--accum", type=int, default=16)
+    ap.add_argument("--accum", type=int, default=16, help="số micro-batch mỗi bước tối ưu (effective batch = bs*accum)")
+    ap.add_argument("--bs", type=int, default=1, help="số chuỗi mỗi micro-batch (pad phải, gom theo độ dài)")
+    ap.add_argument("--no-grad-ckpt", action="store_true", help="tắt gradient checkpointing (nhanh hơn, tốn RAM GPU; "
+                    "H100 80GB với bs=1 đủ)")
+    ap.add_argument("--check-bs", action="store_true", help="in so sánh loss batch 2 chuỗi vs từng chuỗi trước khi train")
     ap.add_argument("--r", type=int, default=32)
     ap.add_argument("--alpha", type=int, default=64)
     ap.add_argument("--dropout", type=float, default=0.05)
@@ -175,15 +201,18 @@ def main():
     model = get_peft_model(model, LoraConfig(r=a.r, lora_alpha=a.alpha, lora_dropout=a.dropout,
                                              target_modules=targets, task_type="CAUSAL_LM"))
     model.print_trainable_parameters()
-    model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
-    model.enable_input_require_grads()
+    if not a.no_grad_ckpt:
+        model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+        model.enable_input_require_grads()
     model.config.use_cache = False
     model.train()
 
     params = [p for p in model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=a.lr, weight_decay=0.0)
-    total = math.ceil(len(train) * a.epochs / a.accum)                       # số bước job này chạy tới
-    horizon = math.ceil(len(train) * (a.sched_epochs or a.epochs) / a.accum)  # số bước của lịch LR
+    a.pad_id = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
+    eff = a.bs * a.accum
+    total = math.ceil(len(train) * a.epochs / eff)                       # số bước job này chạy tới
+    horizon = math.ceil(len(train) * (a.sched_epochs or a.epochs) / eff)  # số bước của lịch LR
     if horizon < total:
         raise SystemExit(f"--sched-epochs ({a.sched_epochs}) < --epochs ({a.epochs})")
     warm = max(1, int(horizon * a.warmup))
@@ -226,7 +255,7 @@ def main():
         st = torch.load(os.path.join(a.resume, "train_state.pt"), map_location="cpu", weights_only=False)
         if st["data"]["n_train"] != len(train) or st["data"]["train_bytes"] != data_id["train_bytes"]:
             raise SystemExit(f"dữ liệu train khác checkpoint: {st['data']} vs {data_id}")
-        for k in ("accum", "r", "alpha", "max_len", "max_train"):
+        for k in ("accum", "bs", "r", "alpha", "max_len", "max_train"):
             if st["args"].get(k) != getattr(a, k):
                 raise SystemExit(f"--{k} khác checkpoint: {st['args'].get(k)} vs {getattr(a, k)}")
         res = set_peft_model_state_dict(model, load_file(os.path.join(a.resume, "adapter_model.safetensors")))
@@ -249,7 +278,8 @@ def main():
     if a.wandb:
         import wandb
         id_path = os.path.join(a.out, "wandb_id")        # resume ghi tiếp vào đúng run W&B cũ
-        run_id = open(id_path).read().strip() if os.path.exists(id_path) else wandb.util.generate_id()
+        import secrets as _s                              # wandb mới không còn wandb.util.generate_id
+        run_id = open(id_path).read().strip() if os.path.exists(id_path) else _s.token_hex(4)
         open(id_path, "w").write(run_id)
         wb = wandb.init(project=a.wandb, name=a.wandb_name or os.path.basename(os.path.normpath(a.out)),
                         id=run_id, resume="allow", dir=a.out,
@@ -261,14 +291,29 @@ def main():
             wb.log({f"{prefix}/{k}": v for k, v in rec.items() if isinstance(v, (int, float)) and k != "step"},
                    step=rec["step"])
 
+    if a.check_bs and len(train) >= 2:          # kiểm tra pad+mask: loss batch 2 chuỗi ≈ trung bình 2 lần bs=1
+        with torch.no_grad():
+            s = sorted(train[:8], key=lambda t: len(t[0]))
+            pair = [s[0], s[-1]]                # ngắn nhất + dài nhất: pad nhiều nhất
+            lb, _ = losses(model, pair, a.ls, a.brier, device, a.pad_id)
+            l1 = [losses(model, [p], a.ls, a.brier, device, a.pad_id)[0] for p in pair]
+            for k in lb:
+                sep = [l[k].item() for l in l1 if k in l]
+                rec = {"check_bs": k, "batch": round(lb[k].item(), 5), "single": [round(v, 5) for v in sep],
+                       "lens": [len(p[0]) for p in pair]}
+                print("CHECK_BS", rec, flush=True)
+                log.write(json.dumps(rec) + "\n")
+                log.flush()
     while step < total:
-        if not order:
-            order = list(range(len(train)))
-            random.Random(a.seed + ep).shuffle(order)
+        if not order:                          # order: list các batch (list chỉ số) còn lại trong epoch
+            r = random.Random(a.seed + ep)
+            idx = list(range(len(train)))
+            r.shuffle(idx)
+            order = make_batches(idx, [len(t[0]) for t in train], a.bs, r)
             ep += 1
-        b = train[order.pop()]
-        ntok += len(b[0])
-        l, _ = losses(model, b, a.ls, a.brier, device)
+        b = [train[i] for i in order.pop()]
+        ntok += sum(len(t[0]) for t in b)
+        l, _ = losses(model, b, a.ls, a.brier, device, a.pad_id)
         loss = a.w_choice * l.get("choice", 0) + a.w_lm * l.get("lm", 0)
         (loss / a.accum).backward()
         for k, v in l.items():
@@ -292,7 +337,7 @@ def main():
                 log.write(json.dumps(rec) + "\n")
                 log.flush()
                 wb_log(rec, "train")
-            per_epoch = max(1, len(train) // a.accum)
+            per_epoch = max(1, len(train) // eff)
             is_eval = (a.eval_every and step % a.eval_every == 0) or (not a.eval_every and step % per_epoch == 0) \
                 or step == total
             if val and is_eval:

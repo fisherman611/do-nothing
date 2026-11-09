@@ -29,6 +29,9 @@ MODELS = {
     "qwen35_4b_text": ("/hf/qwen35_4b_text", None, []),
     # Clef-token P2 (agent/clef): LoRA 1 epoch gộp vào trọng số bằng agent/clef/modal_merge.py
     "qwen35_4b_clef_p2": ("/hf/qwen35_4b_clef_p2", None, []),
+    # Ablation format A (q2=all) / B (q2=discrete), smoke 1835 ví dụ, gộp bằng modal_merge.py (PLAN_prompt_format_v2.md)
+    "qwen35_4b_smokeA": ("/hf/qwen35_4b_smokeA", None, []),
+    "qwen35_4b_smokeB": ("/hf/qwen35_4b_smokeB", None, []),
 }
 
 app = modal.App("lifemate-llm-zeroshot")
@@ -94,3 +97,17 @@ def serve_qwen35_4b_text():
 @modal.web_server(8000, startup_timeout=1200)
 def serve_qwen35_4b_clef_p2():
     _serve("qwen35_4b_clef_p2")
+
+
+@_fn()
+@modal.concurrent(max_inputs=256)
+@modal.web_server(8000, startup_timeout=1200)
+def serve_qwen35_4b_smokeA():
+    _serve("qwen35_4b_smokeA")
+
+
+@_fn()
+@modal.concurrent(max_inputs=256)
+@modal.web_server(8000, startup_timeout=1200)
+def serve_qwen35_4b_smokeB():
+    _serve("qwen35_4b_smokeB")

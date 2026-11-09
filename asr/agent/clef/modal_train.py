@@ -31,11 +31,11 @@ image = (modal.Image.debian_slim(python_version="3.12")
                         ignore=["runs", "clef/data", "__pycache__", "*.jsonl"]))
 
 
-# GPU: env CLEF_GPU lúc deploy/chạy (A100-80GB, H100, ...). W&B: `modal secret create wandb WANDB_API_KEY=...` rồi
-# CLEF_WANDB=1 lúc deploy; không có thì không gắn secret. Tắt log một lần chạy: args có '--wandb', ''
+# GPU: env CLEF_GPU lúc deploy/chạy (A100-80GB, H100, ...). W&B: cần secret `wandb` (WANDB_API_KEY=...) — gắn luôn,
+# không đặt điều kiện theo env (container không thấy env lúc deploy → lệch số dependency, fail startup).
+# Tắt log một lần chạy: args có '--wandb', ''
 @app.function(image=image, gpu=os.environ.get("CLEF_GPU", "A100-80GB"), volumes={"/hf": hf, "/data": vol},
-              timeout=12 * 3600,
-              secrets=[modal.Secret.from_name("wandb")] if os.environ.get("CLEF_WANDB") else [])
+              timeout=12 * 3600, secrets=[modal.Secret.from_name("wandb")])
 def train(args: list, data: str = "data", run: str = "clef_lora"):
     """data: thư mục con của /data chứa train.jsonl + val_in.jsonl (+ *.meta.json), vd 'data', 'fmtA', 'fmtB'.
     run: tên thư mục output trong /data/runs."""
@@ -58,7 +58,13 @@ def train(args: list, data: str = "data", run: str = "clef_lora"):
                 print("vol.commit lỗi:", e, flush=True)
 
     threading.Thread(target=committer, daemon=True).start()
-    p = subprocess.run(cmd)
+    os.makedirs(f"/data/runs/{run}", exist_ok=True)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    with open(f"/data/runs/{run}/stdout.log", "a") as f:   # tee: stdout+stderr vào volume để xem lại khi job lỗi
+        for line in p.stdout:
+            print(line, end="", flush=True)
+            f.write(line)
+    rc = p.wait()
     stop.set()
     vol.commit()
-    return p.returncode
+    return rc
