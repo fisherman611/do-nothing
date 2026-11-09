@@ -5,6 +5,8 @@
     python -c "import modal; f=modal.Function.from_name('lifemate-clef-train','train'); \\
                print(f.spawn(args=['--epochs','2','--max-train','0']).object_id)"
     # smoke: args=['--max-train','64','--epochs','1']
+    # ablation format (PLAN_prompt_format_v2.md): upload `modal volume put clef-data agent/clef/data/fmtA /fmtA` rồi
+    #   f.spawn(args=[...], data='fmtA', run='fmtA_e1')  (tương tự fmtB)
     # train tiếp: thêm '--save-every','50' khi chạy; sau sự cố / để chạy thêm epoch:
     #   args=[..., '--resume','/data/runs/clef_lora/last', '--epochs','2']  (cùng --out, --accum, data)
 
@@ -24,16 +26,25 @@ image = (modal.Image.debian_slim(python_version="3.12")
          .env({"HF_HOME": "/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1", "PYTHONPATH": "/root/zaic"})
          # transformers tải kernel causal_conv1d dựng sẵn từ HF Hub qua gói `kernels` (không có thì lùi về PyTorch)
          .pip_install("kernels==0.16.0")      # transformers 5.17 đòi 0.16.0 <= kernels < 0.17.0
+         .pip_install("wandb")
          .add_local_dir(os.path.dirname(HERE), "/root/zaic/agent",
                         ignore=["runs", "clef/data", "__pycache__", "*.jsonl"]))
 
 
-@app.function(image=image, gpu="A100-80GB", volumes={"/hf": hf, "/data": vol}, timeout=12 * 3600)
-def train(args: list):
+# GPU: env CLEF_GPU lúc deploy/chạy (A100-80GB, H100, ...). W&B: `modal secret create wandb WANDB_API_KEY=...` rồi
+# CLEF_WANDB=1 lúc deploy; không có thì không gắn secret. Tắt log một lần chạy: args có '--wandb', ''
+@app.function(image=image, gpu=os.environ.get("CLEF_GPU", "A100-80GB"), volumes={"/hf": hf, "/data": vol},
+              timeout=12 * 3600,
+              secrets=[modal.Secret.from_name("wandb")] if os.environ.get("CLEF_WANDB") else [])
+def train(args: list, data: str = "data", run: str = "clef_lora"):
+    """data: thư mục con của /data chứa train.jsonl + val_in.jsonl (+ *.meta.json), vd 'data', 'fmtA', 'fmtB'.
+    run: tên thư mục output trong /data/runs."""
     import subprocess
     import sys
+    if "--wandb" not in args and os.environ.get("WANDB_API_KEY"):
+        args = [*args, "--wandb", "lifemate-clef", "--wandb-name", run]
     cmd = [sys.executable, "-u", "/root/zaic/agent/clef/train.py", "--model", "/hf/qwen35_4b_text",
-           "--train", "/data/data/train.jsonl", "--val", "/data/data/val_in.jsonl", "--out", "/data/runs/clef_lora",
+           "--train", f"/data/{data}/train.jsonl", "--val", f"/data/{data}/val_in.jsonl", "--out", f"/data/runs/{run}",
            *args]
     print(" ".join(cmd), flush=True)
     import threading

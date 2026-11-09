@@ -25,7 +25,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", required=True)
     ap.add_argument("--limit", type=int, default=300)
+    ap.add_argument("--style", default="v1", choices=list(F.STYLES))
+    ap.add_argument("--q2", default="all", choices=F.Q2_MODES)
+    ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES)
     a = ap.parse_args()
+    F.set_style(a.style, q2=a.q2, q1_desc=a.q1_desc)
+    print("format:", F.fmt_opts())
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(TOKENIZER[0], revision=TOKENIZER[1])
     labels = F.make_labels(tok)

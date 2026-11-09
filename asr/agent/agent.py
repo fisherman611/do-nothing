@@ -159,6 +159,8 @@ def _coerce(v, schema):
     typ = (schema or {}).get("type")
     if typ == "string":
         return v
+    if typ == "boolean" and v.strip().lower() in ("true", "false"):   # chat template Qwen render bool kiểu Python ("True")
+        return v.strip().lower() == "true"
     try:
         return json.loads(v)
     except Exception:

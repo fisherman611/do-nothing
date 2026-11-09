@@ -6,7 +6,8 @@ hỏi; lm: giá trị tham số tự do + "\\n</parameter>"). Kết quả tool c
 trong train.jsonl, không đọc *_environment/).
 
     python agent/clef/build_data.py --data data/train+public_test --split-name train --out agent/clef/data/train.jsonl \
-        [--history] [--shuffle-seed 0]
+        [--history] [--shuffle-seed 0] [--q2 all|discrete|none] [--q1-desc full|short|none]
+Ghi kèm <out>.meta.json (format + thống kê); train.py chép vào config.json, clef_agent.py --fmt-from đọc lại.
 """
 import argparse
 import json
@@ -22,19 +23,25 @@ TOKENIZER = ("Qwen/Qwen3.5-4B", "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a")
 
 
 def history_items(item):
-    """Mỗi lượt assistant có tool call trong history → một mẫu phụ: history cắt tới trước lượt user tương ứng."""
+    """Mỗi lượt assistant trong history → một mẫu phụ: history cắt tới trước lượt user tương ứng. Lượt không gọi tool
+    (cảm ơn, điều kiện chưa đủ...) cũng giữ, thành mẫu DỪNG ngay (PLAN_prompt_format_v2.md 1.4)."""
     out, hist = [], item["history"]
     for j, t in enumerate(hist):
-        if t["role"] != "assistant" or not t.get("tool_calls") or j == 0 or hist[j - 1]["role"] != "user":
+        if t["role"] != "assistant" or j == 0 or hist[j - 1]["role"] != "user":
             continue
         out.append(dict(item, id=f"{item['id']}#h{j}", history=hist[: j - 1],
                         audio_text=hist[j - 1].get("audio_text", ""),
-                        label={"tool_calls": t["tool_calls"], "tool_results": t.get("tool_results", [])}))
+                        label={"tool_calls": t.get("tool_calls") or [], "tool_results": t.get("tool_results") or []}))
     return out
 
 
 def examples(item, tok, catalog, labels, rng):
     """Các ví dụ theo bước của một mẫu + số bước bị bỏ (SkipStep)."""
+    if "catalog_overlay" in item and item["catalog_overlay"]:
+        cat = dict(catalog)
+        for t in item["catalog_overlay"]:
+            cat[t["name"]] = t
+        catalog = cat
     msgs = F.A.build_messages(item)
     tools = F.A.tool_specs(item, catalog)
     seen = [(c["name"], r) for t in item["history"] if t["role"] == "assistant"
@@ -70,10 +77,18 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--history", action="store_true", help="thêm mẫu phụ từ các lượt assistant trong history")
     ap.add_argument("--shuffle-seed", type=int, default=0, help="<0: không xáo phương án")
+    ap.add_argument("--phonetic", action="append", default=[],
+                    help="jsonl biến thể phiên âm (synth_phonetic/train_phonetic.jsonl); lấy theo split của id gốc. "
+                         "Với --history: lượt history bị phiên âm cũng thành mẫu phụ (bỏ mẫu phụ trùng y hệt bản gốc)")
+    ap.add_argument("--synth", action="append", default=[],
+                    help="jsonl dữ liệu tổng hợp (synth/train_alias.jsonl, synth/train_iface.jsonl)")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--style", default="v1", choices=list(F.STYLES))
+    ap.add_argument("--q2", default="all", choices=F.Q2_MODES, help="all: hỏi Q2 mọi tham số; discrete: chỉ ref/enum/bool, "
+                    "tham số tự do tuỳ chọn model tự sinh ở đuôi call; none: chỉ Q1")
+    ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES, help="độ dài mô tả tool trong Q1")
     a = ap.parse_args()
-    F.set_style(a.style)
+    F.set_style(a.style, q2=a.q2, q1_desc=a.q1_desc)
 
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(TOKENIZER[0], revision=TOKENIZER[1])
@@ -85,12 +100,34 @@ def main():
     rows = [json.loads(l) for l in open(f"{a.data}/train/train.jsonl", encoding="utf-8")]
     rows = [r for r in rows if r["id"] in keep][: a.limit]
     rng = random.Random(a.shuffle_seed) if a.shuffle_seed >= 0 else None
+    def hist_ok(h):
+        return not ({c["name"].split(".")[0] for c in h["label"]["tool_calls"]} & held)
+
     items = []
     for r in rows:
         items.append(r)
         if a.history:
-            items += [h for h in history_items(r)
-                      if not ({c["name"].split(".")[0] for c in h["label"]["tool_calls"]} & held)]
+            items += [h for h in history_items(r) if hist_ok(h)]
+    orig = {r["id"]: r for r in rows}
+    for kind, paths in (("phonetic", a.phonetic), ("synth", a.synth)):
+        n_main, n_hist = 0, 0
+        for path in paths:
+            for l in open(path, encoding="utf-8"):
+                p = json.loads(l)
+                base = orig.get(p["id"].split("#")[0])
+                if base is None:                    # id gốc không thuộc split này (hoặc bị --limit cắt)
+                    continue
+                items.append(p)
+                n_main += 1
+                if a.history:                       # lượt history của bản biến thể → mẫu phụ, bỏ nếu trùng y hệt bản gốc
+                    sig = {h["id"].rsplit("#", 1)[1]: (h["audio_text"], h["history"], h["label"])
+                           for h in history_items(base)}
+                    for h in history_items(p):
+                        if hist_ok(h) and sig.get(h["id"].rsplit("#", 1)[1]) != (h["audio_text"], h["history"], h["label"]):
+                            items.append(h)
+                            n_hist += 1
+        if paths:
+            print(f"{kind}: +{n_main} mẫu, +{n_hist} mẫu phụ từ history ({paths})")
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     n, skip, kinds = 0, 0, {}
     with open(a.out, "w", encoding="utf-8") as f:
@@ -102,7 +139,10 @@ def main():
                     kinds[sp["type"]] = kinds.get(sp["type"], 0) + 1
                 f.write(json.dumps(e, ensure_ascii=False) + "\n")
                 n += 1
-    print(f"{a.split_name}: {len(items)} mẫu → {n} ví dụ, bỏ {skip} bước | spans {kinds}")
+    meta = {**F.fmt_opts(), "split": a.split_name, "history": a.history, "phonetic": a.phonetic, "synth": a.synth,
+            "n_items": len(items), "n_examples": n, "skipped": skip, "spans": kinds}
+    json.dump(meta, open(a.out + ".meta.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print(f"{a.split_name}: {len(items)} mẫu → {n} ví dụ, bỏ {skip} bước | spans {kinds} | fmt {F.fmt_opts()}")
 
 
 if __name__ == "__main__":

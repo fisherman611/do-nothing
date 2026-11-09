@@ -134,6 +134,8 @@ def main():
     ap.add_argument("--save-every", type=int, default=0,
                     help="lưu checkpoint đầy đủ (adapter + trạng thái train) mỗi N bước tối ưu; 0: chỉ lúc eval / "
                          "cuối mỗi epoch / cuối job. Luôn ghi đè thêm <out>/last để resume sau sự cố")
+    ap.add_argument("--wandb", default="", help="tên project W&B (cần WANDB_API_KEY); rỗng: không log W&B")
+    ap.add_argument("--wandb-name", default="", help="tên run W&B (mặc định: tên thư mục --out)")
     ap.add_argument("--resume", help="thư mục checkpoint (vd <out>/last, <out>/step220) để train tiếp đúng chỗ dừng")
     ap.add_argument("--sched-epochs", type=float, default=0,
                     help="số epoch dùng để tính lịch LR (0: = --epochs). Vd chạy --epochs 1 --sched-epochs 2 rồi "
@@ -191,6 +193,13 @@ def main():
     os.makedirs(a.out, exist_ok=True)
     log = open(os.path.join(a.out, "log.jsonl"), "a")
     data_id = {"train": os.path.abspath(a.train), "train_bytes": os.path.getsize(a.train), "n_train": len(train)}
+    if os.path.exists(a.train + ".meta.json"):     # format của data (style / q2 / q1_desc) → config.json để suy luận đọc lại
+        m = json.load(open(a.train + ".meta.json"))
+        data_id["fmt"] = {k: m[k] for k in ("style", "q2", "q1_desc") if k in m}
+        if a.val and os.path.exists(a.val + ".meta.json"):
+            mv = json.load(open(a.val + ".meta.json"))
+            if any(mv.get(k) != m.get(k) for k in ("style", "q2", "q1_desc")):
+                raise SystemExit(f"format val khác train: {mv} vs {m}")
     json.dump(vars(a) | data_id | {"lora_targets": targets, "n_val": len(val), "steps": total, "sched_steps": horizon},
               open(os.path.join(a.out, "config.json"), "w"), indent=1)
 
@@ -236,6 +245,22 @@ def main():
         if step >= total:
             print("checkpoint đã ở/qua --epochs, không còn gì để chạy (tăng --epochs để train tiếp)")
 
+    wb = None
+    if a.wandb:
+        import wandb
+        id_path = os.path.join(a.out, "wandb_id")        # resume ghi tiếp vào đúng run W&B cũ
+        run_id = open(id_path).read().strip() if os.path.exists(id_path) else wandb.util.generate_id()
+        open(id_path, "w").write(run_id)
+        wb = wandb.init(project=a.wandb, name=a.wandb_name or os.path.basename(os.path.normpath(a.out)),
+                        id=run_id, resume="allow", dir=a.out,
+                        config={k: v for k, v in vars(a).items() if k != "resume"} | data_id |
+                        {"lora_targets": targets, "n_val": len(val), "steps": total, "sched_steps": horizon})
+
+    def wb_log(rec, prefix):
+        if wb:
+            wb.log({f"{prefix}/{k}": v for k, v in rec.items() if isinstance(v, (int, float)) and k != "step"},
+                   step=rec["step"])
+
     while step < total:
         if not order:
             order = list(range(len(train)))
@@ -266,6 +291,7 @@ def main():
                 print(rec, flush=True)
                 log.write(json.dumps(rec) + "\n")
                 log.flush()
+                wb_log(rec, "train")
             per_epoch = max(1, len(train) // a.accum)
             is_eval = (a.eval_every and step % a.eval_every == 0) or (not a.eval_every and step % per_epoch == 0) \
                 or step == total
@@ -274,12 +300,15 @@ def main():
                 print("EVAL", rec, flush=True)
                 log.write(json.dumps(rec) + "\n")
                 log.flush()
+                wb_log(rec, "eval")
             if is_eval or not order:            # sau eval / hết một epoch: checkpoint đầy đủ giữ lại
                 save_ckpt(f"step{step}")
             if a.save_every and step % a.save_every == 0 and step < total:
                 save_ckpt("last")               # ghi đè: điểm resume mới nhất (cuối job đã có final)
     save_ckpt("final")
     print("xong", round((time.time() - t0) / 60, 1), "phút")
+    if wb:
+        wb.finish()
 
 
 if __name__ == "__main__":

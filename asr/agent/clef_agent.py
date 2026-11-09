@@ -25,6 +25,7 @@ from agent.clef.core import run_step            # noqa: E402
 A = F.A
 TOKENIZER = ("Qwen/Qwen3.5-4B", "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a")
 MAX_FREE_TOKENS = 200
+MAX_TAIL_TOKENS = 400       # đuôi call: nhiều tham số tuỳ chọn (q2=discrete/none)
 
 
 class ContextFull(Exception):
@@ -90,6 +91,15 @@ class VLLMOracle:
         out = self._req(text, mt, stop=[F.FREE_STOP, "</parameter>", "</function>", "<|im_end|>"])
         return out
 
+    def gen_tail(self, text, params):
+        """Đuôi call (tham số tuỳ chọn, q2=discrete/none): model sinh tới </function>; parse các khối <parameter>."""
+        mt = A.fit_max_tokens(self.tok, text, MAX_TAIL_TOKENS, min_tokens=8)
+        if mt is None:
+            raise ContextFull("tail")
+        out = self._req(text, mt, stop=[F.TAIL_STOP, "</tool_call>", "<|im_end|>"])
+        out = out.strip("\n")
+        return (out + "\n" if out else ""), F.parse_tail(out, params)
+
 
 def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     t0 = time.time()
@@ -129,7 +139,7 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
         err = f"context_limit:{e}"
     except Exception as e:
         err = f"{type(e).__name__}: {e}"
-    return {"id": item["id"], "style": F.STYLE.get("name", "v1"), "tool_calls": env.get_tool_calls(), "state_hash": env.get_state_hash(),
+    return {"id": item["id"], "style": F.STYLE.get("name", "v1"), "fmt": F.fmt_opts(), "tool_calls": env.get_tool_calls(), "state_hash": env.get_state_hash(),
             "steps": steps, "n_invalid": n_invalid, "decisions": o.log, "n_requests": o.n_req,
             "prompt_tokens_sum": o.prompt_tokens, "anomaly": o.anomaly,
             "latency": round(time.time() - t0, 2), "error": err}
@@ -149,8 +159,17 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--workers", type=int, default=32)
     ap.add_argument("--style", default="v1", choices=list(F.STYLES), help="kiểu prompt (phải giống lúc dựng dữ liệu train)")
+    ap.add_argument("--q2", default="all", choices=F.Q2_MODES)
+    ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES)
+    ap.add_argument("--fmt-from", help="config.json của run train hoặc <data>.meta.json: lấy style/q2/q1_desc từ đó, "
+                    "ghi đè 3 cờ trên (tránh lệch format train / suy luận)")
     args = ap.parse_args()
-    F.set_style(args.style)
+    if args.fmt_from:
+        m = json.load(open(args.fmt_from, encoding="utf-8"))
+        m = m.get("fmt", m)
+        args.style, args.q2, args.q1_desc = m.get("style", "v1"), m.get("q2", "all"), m.get("q1_desc", "full")
+    F.set_style(args.style, q2=args.q2, q1_desc=args.q1_desc)
+    print("format:", F.fmt_opts(), flush=True)
 
     sys.path.insert(0, os.path.join(args.data, args.split))
     from zaic_tools import ToolEnv

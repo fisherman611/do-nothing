@@ -42,7 +42,8 @@ ASK = "sys.ask_missing_info"
 YES, NO = "có", "không"
 ANS = "Đáp án:"
 SHORT_Q1_AT = 13000          # prefix dài hơn (token) thì Q1 chỉ ghi tên tool, bỏ mô tả
-MAX_DESC = 70                # ký tự mô tả tối đa trong Q1 / Q2
+MAX_DESC = 120               # ký tự mô tả tham số tối đa trong Q2 (70 cắt giữa ví dụ định dạng, PLAN_prompt_format_v2 1.3)
+Q1_DESC = {"full": 70, "short": 40, "none": 0}   # ký tự mô tả tool trong Q1 theo STYLE["q1_desc"]
 MAX_CANDS = 32               # id ứng viên tối đa cho một tham số
 STOP_DESC = "Đã xong hoặc không cần gọi tool nào nữa"
 STOP_DESC_V2 = "Đã làm xong MỌI việc được yêu cầu, hoặc yêu cầu không cần / không thể dùng tool"
@@ -54,12 +55,25 @@ STOP_DESC_V2 = "Đã làm xong MỌI việc được yêu cầu, hoặc yêu c�
 STYLES = {"v1": {}, "p1": {"present": "v2"}, "p2": {"present": "v2", "recap": True},
           "p3": {"present": "v2", "recap": True, "names": True}}
 STYLE = {}
+# Tuỳ chọn format thêm (PLAN_prompt_format_v2.md), độc lập với style:
+#   q2:      all      = hỏi Q2 cho mọi tham số (tuỳ chọn: "có điền không?" rồi chọn / sinh)
+#            discrete = chỉ hỏi Q2 cho ref / enum / bool; tham số tự do tuỳ chọn do model sinh trong phần đuôi call
+#            none     = chỉ Q1; tham số bắt buộc sinh từng cái, tham số tuỳ chọn sinh trong phần đuôi
+#   q1_desc: full | short | none = độ dài mô tả tool trong Q1 (JSON tools ở đầu prompt đã có mô tả đầy đủ)
+Q2_MODES = ("all", "discrete", "none")
+Q1_DESC_MODES = ("full", "short", "none")
 
 
-def set_style(name):
+def set_style(name, q2="all", q1_desc="full"):
+    assert q2 in Q2_MODES and q1_desc in Q1_DESC_MODES, (q2, q1_desc)
     STYLE.clear()
     STYLE.update(STYLES[name])
-    STYLE["name"] = name
+    STYLE.update(name=name, q2=q2, q1_desc=q1_desc)
+
+
+def fmt_opts():
+    """Các khoá format cần giống nhau giữa build data, train và suy luận (ghi vào *.meta.json / config.json)."""
+    return {"style": STYLE.get("name", "v1"), "q2": STYLE.get("q2", "all"), "q1_desc": STYLE.get("q1_desc", "full")}
 ASK_DESC = "Hỏi lại người dùng thông tin bắt buộc còn thiếu rồi dừng"
 
 
@@ -120,13 +134,16 @@ def q1_block(tools, labels, perm=None, short=False, hint=None):
     if perm is not None:
         opts = [opts[i] for i in perm]
     lines = q1_header(hint)
+    n_desc = 0 if short else Q1_DESC[STYLE.get("q1_desc", "full")]
+    def opt_line(head, o):
+        return f"{head} {o}" if n_desc == 0 else f"{head} {o} – {_short(desc.get(o, ''), n_desc)}"
     if STYLE.get("names"):
         for o in opts:
-            lines.append(f"- {o}" if short else f"- {o} – {_short(desc.get(o, ''))}")
+            lines.append(opt_line("-", o))
         return "\n".join(lines) + "\nĐáp án (viết đúng tên một lựa chọn):", {o: o for o in opts}
     assert len(opts) <= len(labels), f"{len(opts)} phương án > {len(labels)} nhãn"
     for lab, o in zip(labels, opts):
-        lines.append(f"{lab}) {o}" if short else f"{lab}) {o} – {_short(desc.get(o, ''))}")
+        lines.append(opt_line(f"{lab})", o))
     return "\n".join(lines) + "\n" + ANS, dict(zip(labels, opts))
 
 
@@ -253,12 +270,28 @@ FREE_STOP = "\n</parameter>"
 
 
 def canonical_args(args, schema):
-    """Thứ tự tham số khi render: tham số rời rạc (ref/enum/bool) trước, rồi tham số tự do; trong mỗi nhóm theo schema."""
-    plan = {k: (i, kind) for i, (k, _, _, kind) in enumerate(q2_plan(schema))}
+    """Thứ tự tham số khi render: rời rạc (ref/enum/bool) → tự do bắt buộc → tự do tuỳ chọn; trong mỗi nhóm theo
+    schema. Khớp thứ tự sinh của run_step (phần đuôi = tham số tuỳ chọn do model tự sinh) ở mọi chế độ q2."""
+    plan = {k: (i, kind, req) for i, (k, _, req, kind) in enumerate(q2_plan(schema))}
+    none_mode = STYLE.get("q2") == "none"        # chỉ Q1: bắt buộc (sinh từng cái) → tuỳ chọn (đuôi), theo schema
     def key(k):
-        i, kind = plan.get(k, (10 ** 6, "free"))
-        return (kind == "free", i)
+        i, kind, req = plan.get(k, (10 ** 6, "free", False))
+        if none_mode:
+            return (not req, i)
+        return (kind == "free", kind == "free" and not req, i)
     return {k: args[k] for k in sorted(args, key=key)}
+
+
+TAIL_STOP = "</function>"    # phần đuôi call do model sinh kết thúc ở đây (nằm trong CALL_END)
+
+
+def parse_tail(text, params):
+    """Tham số trong phần đuôi model sinh: chỉ nhận khoá thuộc `params` {tên: schema}, ép kiểu theo schema."""
+    out = {}
+    for k, v in A.XML_PARAM.findall(text):
+        if k in params and k not in out:
+            out[k] = A._coerce(v, params[k])
+    return out
 
 
 # ---------- prompt chuẩn ----------

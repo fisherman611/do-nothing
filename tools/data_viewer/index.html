@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Train Data Viewer</title>
+<style>
+:root{
+  --bg:#f6f4ee; --panel:#fbfaf6; --ink:#1c1b19; --muted:#6d685e; --rule:#dcd6c8; --rule2:#ebe6da;
+  --accent:#17675a; --accent-bg:#e2f0ec; --alias:#3a55c4; --alias-bg:#e7ebfb; --warn:#a8431b; --warn-bg:#f8e6dc;
+  --mark:#ffe49a; --mark-old:#f3d3c7; --sel:#e9e3d4;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141412; --panel:#1b1b18; --ink:#e9e6dd; --muted:#9a9488; --rule:#34322c; --rule2:#26251f;
+  --accent:#5fc2ad; --accent-bg:#17302b; --alias:#8ea4ff; --alias-bg:#1d2340; --warn:#f08a5d; --warn-bg:#3a2218;
+  --mark:#5b4a12; --mark-old:#4b2a20; --sel:#2a2924;}}
+:root[data-theme="dark"]{
+  --bg:#141412; --panel:#1b1b18; --ink:#e9e6dd; --muted:#9a9488; --rule:#34322c; --rule2:#26251f;
+  --accent:#5fc2ad; --accent-bg:#17302b; --alias:#8ea4ff; --alias-bg:#1d2340; --warn:#f08a5d; --warn-bg:#3a2218;
+  --mark:#5b4a12; --mark-old:#4b2a20; --sel:#2a2924;}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);display:grid;grid-template-rows:auto 1fr;height:100vh}
+button,select,input{font:inherit;color:inherit}
+header{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);background:var(--panel)}
+header h1{font-size:14px;margin:0 6px 0 0;letter-spacing:.02em}
+header label{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:12px}
+select,input[type=search]{background:var(--bg);border:1px solid var(--rule);border-radius:4px;padding:4px 6px;color:var(--ink)}
+input[type=search]{width:min(320px,60vw)}
+#count{margin-left:auto;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.theme{border:1px solid var(--rule);background:transparent;border-radius:4px;padding:3px 8px;cursor:pointer}
+main{display:grid;grid-template-columns:340px 1fr;min-height:0}
+#list{overflow:auto;border-right:1px solid var(--rule);background:var(--panel)}
+.row{padding:7px 12px;border-bottom:1px solid var(--rule2);cursor:pointer}
+.row:hover{background:var(--rule2)} .row.sel{background:var(--sel)}
+.row .id{font:12px var(--mono);display:flex;gap:6px;align-items:center}
+.row .tx{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.more{padding:10px;text-align:center}
+.tag{font:11px var(--mono);padding:0 5px;border-radius:3px;border:1px solid var(--rule);color:var(--muted)}
+.tag.ph{border-color:transparent;background:var(--mark);color:var(--ink)}
+.tag.al,.tag.val_al{border-color:transparent;background:var(--alias-bg);color:var(--alias)}
+.tag.if{border-color:transparent;background:var(--accent-bg);color:var(--accent)}
+.tag.split{color:var(--muted)}
+#detail{overflow:auto;padding:18px 28px 60px}
+#detail .empty{color:var(--muted);margin-top:40px}
+.top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.top .sid{font:600 16px var(--mono)}
+.nav{margin-left:auto;display:flex;gap:6px}
+.nav button{border:1px solid var(--rule);background:transparent;border-radius:4px;padding:2px 9px;cursor:pointer}
+section{margin-top:22px}
+section > h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600;border-bottom:1px solid var(--rule);padding-bottom:4px}
+.utter{font-size:19px;line-height:1.55;max-width:70ch}
+mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 1px}
+mark.old{background:var(--mark-old)}
+audio{height:30px;vertical-align:middle}
+.calls{list-style:none;margin:0;padding:0;counter-reset:c}
+.calls > li{counter-increment:c;padding:6px 0 6px 28px;position:relative;border-bottom:1px dashed var(--rule2)}
+.calls > li::before{content:counter(c);position:absolute;left:0;top:6px;font:12px var(--mono);color:var(--muted)}
+.fn{font:600 13px var(--mono);color:var(--accent)}
+.fn.ov{color:var(--alias)} .fn.ask{color:var(--warn)}
+.arg{font:12.5px var(--mono);display:inline-block;margin:2px 8px 2px 0}
+.arg b{font-weight:500;color:var(--muted)}
+details{margin-top:3px} summary{cursor:pointer;color:var(--muted);font-size:12px}
+pre{font:12px/1.45 var(--mono);white-space:pre-wrap;word-break:break-word;margin:6px 0;padding:8px 10px;background:var(--panel);border:1px solid var(--rule2);border-radius:4px;max-height:420px;overflow:auto}
+.turn{display:grid;grid-template-columns:72px 1fr;gap:4px 12px;padding:8px 0;border-bottom:1px solid var(--rule2)}
+.turn .who{font:11px var(--mono);color:var(--muted);padding-top:2px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cmp h3{font-size:12px;color:var(--muted);margin:0 0 4px;font-weight:500}
+table{border-collapse:collapse;width:100%;font-size:13px}
+td,th{text-align:left;padding:4px 8px 4px 0;border-bottom:1px solid var(--rule2);vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12px}
+td.m{font:12.5px var(--mono)}
+.apps{display:flex;flex-wrap:wrap;gap:6px}
+.app{font:12px var(--mono);border:1px solid var(--rule);border-radius:4px;padding:2px 6px}
+.app.ov{border-color:var(--alias);color:var(--alias)} .app.decoy{border-color:var(--warn);color:var(--warn)}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:2px 12px;font-size:13px}
+.kv div:nth-child(odd){color:var(--muted)}
+.tabs{display:flex;gap:2px;margin-top:20px;border-bottom:1px solid var(--rule)}
+.tabs button{border:0;background:transparent;padding:6px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--accent)}
+.step{margin:14px 0;border-top:1px solid var(--rule)}
+.step .h{display:flex;gap:10px;align-items:baseline;padding:6px 0}
+.step pre{font-family:var(--sans);font-size:13px;max-height:none}
+.step details.opts{margin:2px 0 2px}
+.gold{background:var(--accent-bg);color:var(--accent)}
+.arg span{font-family:var(--sans)}
+.q{font-weight:600} .ans{background:var(--accent-bg);color:var(--accent);font-weight:600}
+.lmspan{background:var(--alias-bg);color:var(--alias)}
+.note{color:var(--muted);font-size:12px}
+@media (max-width:820px){
+  main{grid-template-columns:1fr;grid-template-rows:38vh 1fr}
+  #list{border-right:0;border-bottom:1px solid var(--rule)}
+  #detail{padding:14px 16px 60px} .cmp{grid-template-columns:1fr}
+  .turn{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Train data</h1>
+  <label>File <select id="file"></select></label>
+  <input id="q" type="search" placeholder="Tìm id, câu nói, tên tool…" title="Phím: / tìm, j/k chuyển mẫu">
+  <label>Loại <select id="kind">
+    <option value="">tất cả</option><option value="orig">gốc</option><option value="ph">phonetic</option>
+    <option value="al">alias</option><option value="if">iface</option><option value="val_al">val_alias</option></select></label>
+  <label>Split <select id="split"><option value="">tất cả</option><option>train</option><option>val_in</option><option>val_ood</option></select></label>
+  <label>Nhãn <select id="lab"><option value="">tất cả</option><option value="ask">có hỏi lại</option><option value="zero">0 call</option><option value="multi">≥ 3 call</option></select></label>
+  <span id="count"></span>
+  <button class="theme" id="theme" title="Đổi giao diện sáng/tối">Sáng / Tối</button>
+</header>
+<main>
+  <div id="list"></div>
+  <div id="detail"><div class="empty">Chọn một mẫu ở danh sách bên trái.</div></div>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const ASK = "sys.ask_missing_info";
+let FILES = {}, SPLIT = {}, HELD = new Set(), ORIG = new Map(), DATA = [], VIEW = [], cur = -1, shown = 300, tab = "sample";
+
+function kindOf(id){ const s = id.split("#")[1] || ""; if(!s) return "orig";
+  if(s.startsWith("ph")) return "ph"; if(s.startsWith("val_al")) return "val_al"; if(s.startsWith("al")) return "al";
+  if(s.startsWith("if")) return "if"; return "other"; }
+const base = id => id.split("#")[0];
+const userTexts = r => [r.audio_text, ...r.history.filter(t => t.role === "user").map(t => t.audio_text)].join(" ");
+const callNames = r => [...r.label.tool_calls, ...r.history.flatMap(t => t.tool_calls || [])].map(c => c.name);
+
+function markText(text, reps, cls){ // reps: list of strings to highlight
+  let h = esc(text);
+  for (const s of [...new Set(reps)].filter(Boolean).sort((a,b) => b.length - a.length))
+    h = h.replace(new RegExp(reEsc(esc(s)), "g"), m => `<mark class="${cls||""}">${m}</mark>`);
+  return h;
+}
+function reps(r, turn, field){ return ((r.aug||{}).replacements||[]).filter(x => x.turn === turn).map(x => x[field]); }
+
+async function init(){
+  try { const t = localStorage.getItem("dv-theme"); if (t) document.documentElement.dataset.theme = t; } catch(e){}
+  FILES = await (await fetch("/api/files")).json();
+  const sp = await (await fetch("/api/splits")).json();
+  for (const k of ["train","val_in","val_ood"]) for (const id of sp[k]||[]) SPLIT[id] = k;
+  HELD = new Set(sp.held_out_apps || []);
+  for (const r of await (await fetch("/api/samples?file=" + encodeURIComponent(FILES.orig))).json()) ORIG.set(r.id, r);
+  $("#file").innerHTML = FILES.samples.map(f => `<option>${esc(f)}</option>`).join("");
+  const U = new URLSearchParams(location.search);
+  let last; try { last = localStorage.getItem("dv-file"); } catch(e){}
+  const want = U.get("file") || last;
+  if (want && FILES.samples.includes(want)) $("#file").value = want;
+  if (U.get("tab")) tab = U.get("tab");
+  await loadFile();
+  const id = U.get("id"), i = id ? VIEW.findIndex(r => r.id === id) : -1;
+  if (i >= 0) select(i);
+}
+async function loadFile(){
+  const f = $("#file").value; try { localStorage.setItem("dv-file", f); } catch(e){}
+  $("#list").innerHTML = `<div class="more note">Đang tải…</div>`;
+  DATA = f === FILES.orig ? [...ORIG.values()] : await (await fetch("/api/samples?file=" + encodeURIComponent(f))).json();
+  applyFilter();
+}
+function applyFilter(){
+  const q = $("#q").value.trim().toLowerCase(), k = $("#kind").value, s = $("#split").value, lab = $("#lab").value;
+  VIEW = DATA.filter(r => {
+    if (k && kindOf(r.id) !== k) return false;
+    if (s && SPLIT[base(r.id)] !== s) return false;
+    const calls = r.label.tool_calls;
+    if (lab === "ask" && !calls.some(c => c.name === ASK)) return false;
+    if (lab === "zero" && calls.length) return false;
+    if (lab === "multi" && calls.length < 3) return false;
+    if (q && !(r.id.toLowerCase().includes(q) || userTexts(r).toLowerCase().includes(q) || callNames(r).some(n => n.toLowerCase().includes(q)))) return false;
+    return true;
+  });
+  shown = 300; cur = -1; renderList();
+  $("#count").textContent = `${VIEW.length} / ${DATA.length} mẫu`;
+  if (VIEW.length) select(0);
+  else $("#detail").innerHTML = `<div class="empty">Không có mẫu nào khớp bộ lọc.</div>`;
+}
+function renderList(){
+  const rows = VIEW.slice(0, shown).map((r, i) => {
+    const k = kindOf(r.id), suf = r.id.split("#").slice(1).join("#");
+    return `<div class="row${i === cur ? " sel" : ""}" data-i="${i}">
+      <div class="id">${esc(base(r.id))}${suf ? `<span class="tag ${k}">#${esc(suf)}</span>` : ""}
+        <span class="tag split">${SPLIT[base(r.id)] || "?"}</span><span class="tag">${r.label.tool_calls.length} call</span></div>
+      <div class="tx">${esc(r.audio_text)}</div></div>`;
+  }).join("");
+  $("#list").innerHTML = rows + (VIEW.length > shown ? `<div class="more"><button class="theme" id="more">Hiện thêm ${Math.min(300, VIEW.length - shown)}</button></div>` : "");
+}
+function select(i){
+  if (i < 0 || i >= VIEW.length) return;
+  if (i >= shown) { shown = i + 1; renderList(); }
+  const prev = $("#list .row.sel"); if (prev) prev.classList.remove("sel");
+  cur = i; const el = $(`#list .row[data-i="${i}"]`); if (el) { el.classList.add("sel"); el.scrollIntoView({block:"nearest"}); }
+  renderDetail(VIEW[i]);
+}
+
+function audio(path){ return path ? `<audio controls preload="none" src="/audio/${esc(path.replace(/^audio\//, "audio/"))}"></audio>` : ""; }
+function argsHtml(a){ return Object.entries(a||{}).map(([k,v]) => `<span class="arg"><b>${esc(k)}=</b><span>${esc(typeof v === "string" ? v : JSON.stringify(v))}</span></span>`).join(""); }
+function callsHtml(calls, results, ovNames){
+  return `<ol class="calls">${calls.map((c, i) => `<li>
+    <span class="fn ${c.name === ASK ? "ask" : ovNames.has(c.name) ? "ov" : ""}">${esc(c.name)}</span> ${argsHtml(c.arguments)}
+    ${results && results[i] !== undefined ? `<details><summary>kết quả</summary><pre>${esc(JSON.stringify(results[i], null, 1))}</pre></details>` : ""}
+  </li>`).join("") || `<li class="note">(không gọi tool nào: DỪNG ngay)</li>`}</ol>`;
+}
+
+function renderDetail(r){
+  const k = kindOf(r.id), o = ORIG.get(base(r.id)), ov = r.catalog_overlay || [];
+  const ovNames = new Set(ov.map(t => t.name)), decoys = new Set((r.aug||{}).decoys || []);
+  const ctx = r.context || {}, prof = ctx.user_profile || {};
+  let h = `<div class="top"><span class="sid">${esc(r.id)}</span>
+      <span class="tag ${k}">${k === "orig" ? "gốc" : k}</span><span class="tag split">${SPLIT[base(r.id)] || "?"}</span>
+      <span class="nav"><button id="prev">← k</button><button id="next">j →</button></span></div>
+    <div class="tabs"><button data-t="sample" class="${tab === "sample" ? "on" : ""}">Mẫu</button>
+      <button data-t="clef" class="${tab === "clef" ? "on" : ""}">Clef (đã build)</button></div><div id="tabbody"></div>`;
+  $("#detail").innerHTML = h;
+  $("#detail").scrollTop = 0;
+  const body = $("#tabbody");
+  if (tab === "clef") return renderClef(r, body);
+
+  h = `<section><h2>Câu cuối</h2><div class="utter">${markText(r.audio_text, reps(r, -1, "to"))}</div>
+      <div style="margin-top:6px">${audio(r.audio)}${k === "ph" ? ` <span class="note">audio là bản gốc; chữ được tô là phần phiên âm</span>` : ""}</div></section>`;
+  h += `<section><h2>Nhãn (${r.label.tool_calls.length} call)</h2>${callsHtml(r.label.tool_calls, r.label.tool_results, ovNames)}</section>`;
+
+  if (k !== "orig" && o) {
+    const diffText = o.audio_text !== r.audio_text;
+    const on = o.label.tool_calls.map(c => c.name), nn = r.label.tool_calls.map(c => c.name);
+    h += `<section><h2>So với mẫu gốc ${esc(o.id)}</h2>`;
+    h += diffText ? `<div class="cmp"><div><h3>Gốc</h3><div>${markText(o.audio_text, reps(r, -1, "from"), "old")}</div></div>
+                      <div><h3>Bản này</h3><div>${markText(r.audio_text, reps(r, -1, "to"))}</div></div></div>`
+                  : `<div class="note">Câu cuối giống hệt bản gốc.</div>`;
+    const histReps = ((r.aug||{}).replacements||[]).filter(x => x.turn !== -1);
+    if (histReps.length) h += `<p class="note">Phiên âm trong history: ${histReps.map(x => `lượt ${x.turn}: ${esc(x.from)} → <mark>${esc(x.to)}</mark>`).join(" · ")}</p>`;
+    if (on.join() !== nn.join() || JSON.stringify(o.label.tool_calls) !== JSON.stringify(r.label.tool_calls)) {
+      h += `<table style="margin-top:10px"><tr><th>#</th><th>Gốc</th><th>Bản này</th></tr>${o.label.tool_calls.map((c, i) => {
+        const n = r.label.tool_calls[i] || {};
+        return `<tr><td>${i+1}</td><td class="m">${esc(c.name)}<br>${argsHtml(c.arguments)}</td><td class="m">${esc(n.name)}<br>${argsHtml(n.arguments)}</td></tr>`;
+      }).join("")}</table>`;
+    } else h += `<div class="note" style="margin-top:6px">Nhãn giống hệt bản gốc.</div>`;
+    h += `</section>`;
+  }
+
+  if (r.history.length) {
+    h += `<section><h2>History (${r.history.filter(t => t.role === "user").length} lượt user)</h2>${r.history.map((t, i) => t.role === "user"
+      ? `<div class="turn"><div class="who">user ${i}</div><div>${markText(t.audio_text, reps(r, i, "to"))} ${audio(t.audio)}</div></div>`
+      : `<div class="turn"><div class="who">assistant</div><div>${esc(t.text || "")}${(t.tool_calls||[]).length ? callsHtml(t.tool_calls, t.tool_results, ovNames) : ""}</div></div>`).join("")}</section>`;
+  }
+
+  h += `<section><h2>Context</h2><div class="kv">
+      <div>current_time</div><div class="m">${esc(ctx.current_time)}</div>
+      <div>người dùng</div><div>${esc(prof.name)} · ${esc(prof.city)}</div>
+      <div>nhà / công ty</div><div>${esc(prof.home_address)} / ${esc(prof.work_address)}</div></div>
+      <div class="apps" style="margin-top:10px">${Object.entries(ctx.installed_apps || {}).map(([a, v]) => {
+        const isDecoy = v.tools.some(t => decoys.has(t)), isOv = v.tools.some(t => ovNames.has(t));
+        return `<span class="app ${isDecoy ? "decoy" : isOv ? "ov" : ""}" title="${esc(v.tools.join("\n"))}">${esc(a)} · ${v.tools.length}${isDecoy ? " · mồi" : ""}${HELD.has(a) ? " · giữ lại" : ""}</span>`;
+      }).join("")}</div>
+      <p class="note">Viền xanh: app alias / tool mới (catalog_overlay). Viền cam: tool mồi. Di chuột để xem danh sách tool.</p></section>`;
+
+  if (ov.length) {
+    h += `<section><h2>Catalog overlay (${ov.length} tool)</h2><table><tr><th>Tool</th><th>Mô tả</th><th>Tham số</th></tr>${ov.map(t => {
+      const canon = ((r.aug||{}).canon||{})[t.name];
+      const props = Object.entries(t.parameters?.properties || {}).map(([p, s]) =>
+        `<div><span class="m">${esc(p)}</span>${(t.parameters.required||[]).includes(p) ? "*" : ""} <span class="note">${esc(s.description || "")}${s.enum ? ` [${esc(s.enum.join(", "))}]` : ""}${s["x-ref"] ? ` ↪ ${esc(s["x-ref"])}` : ""}</span></div>`).join("");
+      return `<tr><td class="m">${esc(t.name)}${decoys.has(t.name) ? `<br><span class="tag" style="color:var(--warn)">mồi</span>` : canon ? `<br><span class="note">= ${esc(canon)}</span>` : ""}</td><td>${esc(t.description)}</td><td>${props}</td></tr>`;
+    }).join("")}</table></section>`;
+  }
+  if (r.aug) h += `<section><h2>aug</h2><pre>${esc(JSON.stringify(r.aug, null, 1))}</pre></section>`;
+  body.innerHTML = h;
+}
+
+async function renderClef(r, body){
+  body.innerHTML = `<section><h2>Ví dụ Clef theo bước</h2>
+    <label class="note">File <select id="cfile">${FILES.clef.map(f => { const m = FILES.clef_meta[f] || {}; const tag = m.q2 ? ` (q2=${m.q2}, q1=${m.q1_desc}${m.n_examples ? ", " + m.n_examples + " ví dụ" : ""})` : ""; return `<option value="${esc(f)}">${esc(f.replace("agent/clef/data/", ""))}${esc(tag)}</option>`; }).join("")}</select></label>
+    <p class="note">Chỉ phần sau prompt chuẩn. <span class="q">[Q…]</span> là câu hỏi, <span class="ans">Đáp án</span> là nhãn tính loss choice, <span class="lmspan">nền xanh</span> là token tính loss lm.</p>
+    <div id="steps" class="note">Đang tải…</div></section>`;
+  // giữ file đã chọn lần trước nếu có đúng split; không thì file cùng split trong cùng thư mục
+  const sp = (SPLIT[base(r.id)] || "train") + ".jsonl";
+  let last; try { last = localStorage.getItem("dv-cfile"); } catch(e){}
+  const dir = last ? last.slice(0, last.lastIndexOf("/") + 1) : "agent/clef/data/";
+  const pick = FILES.clef.find(f => f === dir + sp) || FILES.clef.find(f => f.endsWith("/" + sp)) || FILES.clef[0];
+  $("#cfile").value = pick;
+  const load = async () => {
+    const f = $("#cfile").value; try { localStorage.setItem("dv-cfile", f); } catch(e){}
+    $("#steps").textContent = "Đang tải (lần đầu mỗi file cần vài giây để lập chỉ mục)…";
+    const st = await (await fetch(`/api/clef?file=${encodeURIComponent(f)}&id=${encodeURIComponent(r.id)}`)).json();
+    if (!st.length) { $("#steps").textContent = `Không có ví dụ nào cho ${r.id} trong file này.`; return; }
+    $("#steps").innerHTML = st.map(s => {
+      let b = s.body, pre = s.prefix_chars;
+      const lm = s.spans.filter(x => x.type === "lm").map(x => [x.start - pre, x.end - pre]).sort((a, b) => b[0] - a[0]);
+      let html = "", end = b.length;
+      for (const [a, z] of lm) { html = `<span class="lmspan">${esc(b.slice(a, z))}</span>` + esc(b.slice(z, end)) + html; end = a; }
+      html = esc(b.slice(0, end)) + html;
+      // gom danh sách phương án vào <details>, chỉ để lộ phương án đúng (theo dòng "Đáp án" ngay sau)
+      const lines = html.split("\n"), outL = [];
+      for (let i = 0; i < lines.length; i++) {
+        if (!/^[A-Za-z]\) /.test(lines[i])) { outL.push(lines[i]); continue; }
+        const grp = []; while (i < lines.length && /^[A-Za-z]\) /.test(lines[i])) grp.push(lines[i++]);
+        const ans = (lines[i] || "").match(/^Đáp án: (\S+)/), g = ans && grp.find(l => l.startsWith(ans[1] + ") "));
+        const body = grp.map(l => l === g ? `<span class="gold">${l}</span>` : l).join("\n");
+        outL.push(grp.length > 4
+          ? `<details class="opts"><summary>${grp.length} phương án</summary>${body}</details>${g ? `<span class="gold">${g}</span>` : ""}`
+          : body);
+        i--;
+      }
+      html = outL.join("\n").replace(/^(\[Q\d\].*)$/gm, `<span class="q">$1</span>`).replace(/^(Đáp án:.*)$/gm, `<span class="ans">$1</span>`);
+      return `<div class="step"><div class="h"><b>bước ${s.step}</b><span class="fn">${esc(s.name || "DỪNG")}</span>${argsHtml(s.args)}
+        <span class="note" style="margin-left:auto">prompt ${s.prefix_chars.toLocaleString()} ký tự</span></div>
+        <details><summary>cuối prompt (1500 ký tự)</summary><pre>${esc(s.prefix_tail)}</pre></details><pre>${html}</pre></div>`;
+    }).join("");
+  };
+  $("#cfile").onchange = load; load();
+}
+
+$("#file").onchange = loadFile;
+for (const id of ["#kind", "#split", "#lab"]) $(id).onchange = applyFilter;
+let qt; $("#q").oninput = () => { clearTimeout(qt); qt = setTimeout(applyFilter, 200); };
+$("#list").onclick = e => { if (e.target.id === "more") { shown += 300; renderList(); return; }
+  const row = e.target.closest(".row"); if (row) select(+row.dataset.i); };
+$("#detail").onclick = e => {
+  if (e.target.id === "prev") select(cur - 1); else if (e.target.id === "next") select(cur + 1);
+  else if (e.target.dataset.t) { tab = e.target.dataset.t; renderDetail(VIEW[cur]); }
+};
+$("#theme").onclick = () => { const d = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const nowDark = d.dataset.theme ? d.dataset.theme === "dark" : dark; d.dataset.theme = nowDark ? "light" : "dark";
+  try { localStorage.setItem("dv-theme", d.dataset.theme); } catch(e){} };
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input,select")) { if (e.key === "Escape") e.target.blur(); return; }
+  if (e.key === "j") select(cur + 1); else if (e.key === "k") select(cur - 1);
+  else if (e.key === "/") { e.preventDefault(); $("#q").focus(); }
+});
+init().catch(e => { $("#detail").innerHTML = `<div class="empty">Lỗi tải dữ liệu: ${esc(e)}</div>`; });
+</script>
+</body>
+</html>

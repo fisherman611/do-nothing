@@ -221,3 +221,13 @@ __marimo__/
 train+public_test.zip
 data/
 .agents/
+
+# Generated data (upload lên HF fisherman611/zaic-data-5eb2dec0, không commit)
+synth_phonetic/*.jsonl
+synth_phonetic/bak_*/
+synth/**/*.jsonl
+*.jsonl.gz
+
+synth/bak_gemini_20261109/
+synth/
+synth_phonetic/

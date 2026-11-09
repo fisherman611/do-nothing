@@ -3,6 +3,8 @@
 `run_step` dựng chuỗi Q1 → Q2 → tool call và hỏi `oracle` ở mỗi chỗ cần quyết định:
 - `oracle.choose(text, labels, kind, info)` → một nhãn trong `labels` (kind: q1 / present / enum / ref / bool)
 - `oracle.gen(text, k, schema)` → chuỗi giá trị của tham số tự do k (không gồm "\\n</parameter>")
+- `oracle.gen_tail(text, {k: schema})` → (các khối <parameter> tuỳ chọn model tự điền, {k: giá trị}); chỉ khi
+  STYLE["q2"] là discrete / none (PLAN_prompt_format_v2.md 1.1)
 
 Train dùng `GoldOracle` (đáp án từ nhãn, ghi lại vị trí cần tính loss); suy luận dùng oracle gọi vLLM (clef_agent.py).
 Vì cả hai đi qua cùng một hàm nên chuỗi train và prompt suy luận giống hệt nhau.
@@ -32,14 +34,22 @@ def run_step(prefix, tools, catalog, results_seen, labels, oracle, tok, rng=None
     if name == F.STOP:
         return {"stop": True, "name": None, "args": {}, "text": text}
     schema = catalog.get(name, {"parameters": {"properties": {}}})
-    disc, free = {}, []
+    mode = F.STYLE.get("q2", "all")
+    disc, free, tail = {}, [], []      # chọn trong Q2 / sinh từng tham số / sinh gộp ở đuôi call (tuỳ chọn)
     for k, s, req, kind in F.q2_plan(schema):
+        ask = mode == "all" or (mode == "discrete" and kind != "free")
         if not req:
+            if not ask:
+                tail.append((k, s))
+                continue
             text += F.q_present(name, k, s, schema.get("parameters", {}).get("x-one-of"))
             a = oracle.choose(text, [F.YES, F.NO], "present", (name, k))
             text += " " + a + "\n"
             if a == F.NO:
                 continue
+        if mode == "none" and kind != "free":
+            free.append((k, s))        # chỉ Q1: id / enum / bool bắt buộc cũng sinh như text
+            continue
         if kind == "bool":
             text += F.q_bool(name, k, s)
             a = oracle.choose(text, [F.YES, F.NO], "bool", (name, k))
@@ -72,11 +82,16 @@ def run_step(prefix, tools, catalog, results_seen, labels, oracle, tok, rng=None
     for k, v in F.canonical_args(disc, schema).items():
         text += F.param_text(k, v)
     args = dict(disc)
-    for k, s in free:
+    order = list(F.canonical_args({k: None for k, _ in free}, schema))   # cùng thứ tự với chat template
+    for k, s in sorted(free, key=lambda x: order.index(x[0])):
         text += f"<parameter={k}>\n"
         v = oracle.gen(text, k, s)
         text += v + F.FREE_STOP + "\n"
         args[k] = F.A._coerce(v, s)
+    if tail:                           # model tự quyết điền tham số tuỳ chọn nào, rồi đóng bằng </function>
+        t, extra = oracle.gen_tail(text, dict(tail))
+        text += t
+        args.update(extra)
     text += F.CALL_END
     return {"stop": False, "name": name, "args": F.canonical_args(args, schema), "text": text}
 
@@ -120,3 +135,11 @@ class GoldOracle:
         v = F.render_value(self.gold["arguments"][k])
         self.spans.append({"type": "lm", "start": len(text), "end": len(text) + len(v) + len(F.FREE_STOP)})
         return v
+
+    def gen_tail(self, text, params):
+        """Đuôi call: các tham số tuỳ chọn có trong nhãn, thứ tự canonical; loss gồm cả '</function>' để học dừng."""
+        g = self.gold["arguments"]
+        keys = [k for k in F.canonical_args({k: None for k in params}, {"parameters": {"properties": params}}) if k in g]
+        t = "".join(F.param_text(k, g[k]) for k in keys)
+        self.spans.append({"type": "lm", "start": len(text), "end": len(text) + len(t) + len(F.TAIL_STOP)})
+        return t, {k: g[k] for k in keys}
