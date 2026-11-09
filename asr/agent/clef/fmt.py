@@ -131,18 +131,6 @@ def q1_block(tools, labels, perm=None, short=False, hint=None):
 
 
 # ---------- id ứng viên ----------
-def _id_dicts(o, out):
-    if isinstance(o, dict):
-        if isinstance(o.get("id"), str):
-            out.append(o)
-        for v in o.values():
-            _id_dicts(v, out)
-    elif isinstance(o, list):
-        for v in o:
-            _id_dicts(v, out)
-    return out
-
-
 def _info(d):
     vals = []
     for k, v in d.items():
@@ -154,22 +142,56 @@ def _info(d):
     return ", ".join(vals)
 
 
+def _singular(collection):
+    """contacts → contact, beneficiaries → beneficiary (đủ cho tên collection trong catalog)."""
+    if collection.endswith("ies"):
+        return collection[:-3] + "y"
+    return collection[:-1] if collection.endswith("s") else collection
+
+
+def _dicts_with_parent(o, parent, out):
+    """(dict, khoá cha) cho mọi dict trong kết quả tool; phần tử của list nhận khoá của list làm cha."""
+    if isinstance(o, dict):
+        out.append((o, parent))
+        for k, v in o.items():
+            _dicts_with_parent(v, k, out)
+    elif isinstance(o, list):
+        for v in o:
+            _dicts_with_parent(v, parent, out)
+    return out
+
+
 def ref_candidates(xref, results):
     """Id ứng viên cho tham số x-ref "app.collection" từ các cặp (tên tool, kết quả) đã thấy (history + lượt hiện tại).
-    Ưu tiên id trong kết quả của tool cùng app; không có thì lấy mọi id. Giữ thứ tự xuất hiện, bỏ trùng, tối đa MAX_CANDS
-    (giữ các id gần nhất)."""
-    app = xref.split(".")[0]
-    same, every = [], []
+
+    Ưu tiên id thuộc đúng collection:
+    - giá trị của khoá "<số ít>_id" ở bất kỳ kết quả nào (contact_id trong tin nhắn / cuộc gọi, device_id trong rule…);
+    - "id" của object do tool cùng app trả về, nằm dưới khoá "<collection>", "<số ít>" hoặc "item".
+    Không có thì lùi về id của tool cùng app, rồi mọi id (như bản cũ). Giữ thứ tự xuất hiện, bỏ trùng, tối đa
+    MAX_CANDS (giữ các id gần nhất). Độ phủ id vàng: train 2219/2220, history public_test 299/299 (bản cũ: 2203, 292).
+    """
+    app, coll = xref.split(".", 1)
+    sing = _singular(coll)
+    ref_key = f"{sing}_id"
+    exact, same, every = [], [], []
     for name, res in results:
-        for d in _id_dicts(res, []):
-            every.append(d)
-            if name.split(".")[0] == app:
-                same.append(d)
+        tool_app = name.split(".")[0]
+        for d, parent in _dicts_with_parent(res, None, []):
+            v = d.get(ref_key)
+            if isinstance(v, str):
+                exact.append((v, _info({k: x for k, x in d.items() if k != ref_key})))
+            if isinstance(d.get("id"), str):
+                c = (d["id"], _info(d))
+                every.append(c)
+                if tool_app == app:
+                    same.append(c)
+                    if parent in (coll, sing, "item"):
+                        exact.append(c)
     seen, out = set(), []
-    for d in (same or every):
-        if d["id"] not in seen:
-            seen.add(d["id"])
-            out.append((d["id"], _info(d)))
+    for i, info in (exact or same or every):
+        if i not in seen:
+            seen.add(i)
+            out.append((i, info))
     return out[-MAX_CANDS:]
 
 
