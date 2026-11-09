@@ -130,6 +130,14 @@ def main():
     ap.add_argument("--max-train", type=int, default=0, help="smoke test: chỉ lấy N ví dụ")
     ap.add_argument("--eval-every", type=int, default=0, help="số bước tối ưu giữa hai lần eval (0: mỗi epoch)")
     ap.add_argument("--log-every", type=int, default=10)
+    ap.add_argument("--hub-kernels", action="store_true", help="from_pretrained(use_kernels=True), cần gói `kernels`")
+    ap.add_argument("--save-every", type=int, default=0,
+                    help="lưu checkpoint đầy đủ (adapter + trạng thái train) mỗi N bước tối ưu; 0: chỉ lúc eval / "
+                         "cuối mỗi epoch / cuối job. Luôn ghi đè thêm <out>/last để resume sau sự cố")
+    ap.add_argument("--resume", help="thư mục checkpoint (vd <out>/last, <out>/step220) để train tiếp đúng chỗ dừng")
+    ap.add_argument("--sched-epochs", type=float, default=0,
+                    help="số epoch dùng để tính lịch LR (0: = --epochs). Vd chạy --epochs 1 --sched-epochs 2 rồi "
+                         "--resume ... --epochs 2: LR giống hệt một lần train 2 epoch liền")
     a = ap.parse_args()
 
     import torch
@@ -157,7 +165,9 @@ def main():
         print("flash-linear-attention: có")
     except ImportError:
         print("CẢNH BÁO: không có flash-linear-attention, Gated DeltaNet sẽ chạy đường torch (chậm)")
-    model = AutoModelForCausalLM.from_pretrained(a.model, dtype=torch.bfloat16).to(device)
+    # --hub-kernels: kernel dựng sẵn từ HF Hub qua gói `kernels` (causal_conv1d_fn ← kernels-community/mamba-ssm)
+    model = AutoModelForCausalLM.from_pretrained(a.model, dtype=torch.bfloat16,
+                                                 **({"use_kernels": True} if a.hub_kernels else {})).to(device)
     targets = lora_targets(model)
     print("LoRA target:", targets)
     model = get_peft_model(model, LoraConfig(r=a.r, lora_alpha=a.alpha, lora_dropout=a.dropout,
@@ -170,19 +180,62 @@ def main():
 
     params = [p for p in model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=a.lr, weight_decay=0.0)
-    total = math.ceil(len(train) * a.epochs / a.accum)
-    warm = max(1, int(total * a.warmup))
+    total = math.ceil(len(train) * a.epochs / a.accum)                       # số bước job này chạy tới
+    horizon = math.ceil(len(train) * (a.sched_epochs or a.epochs) / a.accum)  # số bước của lịch LR
+    if horizon < total:
+        raise SystemExit(f"--sched-epochs ({a.sched_epochs}) < --epochs ({a.epochs})")
+    warm = max(1, int(horizon * a.warmup))
     sched = torch.optim.lr_scheduler.LambdaLR(
-        opt, lambda s: (s + 1) / warm if s < warm else 0.5 * (1 + math.cos(math.pi * (s - warm) / max(1, total - warm))))
+        opt, lambda s: (s + 1) / warm if s < warm else
+        0.5 * (1 + math.cos(math.pi * min(1.0, (s - warm) / max(1, horizon - warm)))))
     os.makedirs(a.out, exist_ok=True)
     log = open(os.path.join(a.out, "log.jsonl"), "a")
-    json.dump(vars(a) | {"lora_targets": targets, "n_train": len(train), "n_val": len(val), "steps": total},
+    data_id = {"train": os.path.abspath(a.train), "train_bytes": os.path.getsize(a.train), "n_train": len(train)}
+    json.dump(vars(a) | data_id | {"lora_targets": targets, "n_val": len(val), "steps": total, "sched_steps": horizon},
               open(os.path.join(a.out, "config.json"), "w"), indent=1)
 
     step, micro, t0, run = 0, 0, time.time(), {"choice": [], "lm": []}
     ntok = 0
     order = []
     ep = 0
+
+    def save_ckpt(name):
+        """Adapter (dùng được ngay cho modal_merge.py) + train_state.pt (đủ để --resume tiếp đúng chỗ)."""
+        d = os.path.join(a.out, name)
+        model.save_pretrained(d)
+        torch.save({"step": step, "ep": ep, "order": list(order), "ntok": ntok, "elapsed": time.time() - t0,
+                    "opt": opt.state_dict(), "sched": sched.state_dict(), "data": data_id,
+                    "args": {k: v for k, v in vars(a).items() if k not in ("resume",)},
+                    "rng": {"py": random.getstate(), "torch": torch.get_rng_state(),
+                            "cuda": torch.cuda.get_rng_state_all()}},
+                   os.path.join(d, "train_state.pt"))
+        print("CKPT", d, flush=True)
+
+    if a.resume:
+        from peft import set_peft_model_state_dict
+        from safetensors.torch import load_file
+        st = torch.load(os.path.join(a.resume, "train_state.pt"), map_location="cpu", weights_only=False)
+        if st["data"]["n_train"] != len(train) or st["data"]["train_bytes"] != data_id["train_bytes"]:
+            raise SystemExit(f"dữ liệu train khác checkpoint: {st['data']} vs {data_id}")
+        for k in ("accum", "r", "alpha", "max_len", "max_train"):
+            if st["args"].get(k) != getattr(a, k):
+                raise SystemExit(f"--{k} khác checkpoint: {st['args'].get(k)} vs {getattr(a, k)}")
+        res = set_peft_model_state_dict(model, load_file(os.path.join(a.resume, "adapter_model.safetensors")))
+        if getattr(res, "unexpected_keys", None):
+            raise SystemExit(f"adapter không khớp: {res.unexpected_keys[:5]}")
+        opt.load_state_dict(st["opt"])
+        sched.load_state_dict(st["sched"])      # last_epoch = số bước đã chạy; lịch LR lấy theo horizon ở trên
+        step, ep, order, ntok = st["step"], st["ep"], list(st["order"]), st["ntok"]
+        micro = step * a.accum                  # checkpoint luôn ở ranh giới bước tối ưu (grad đã zero)
+        t0 = time.time() - st["elapsed"]
+        random.setstate(st["rng"]["py"])
+        torch.set_rng_state(st["rng"]["torch"])
+        torch.cuda.set_rng_state_all(st["rng"]["cuda"])
+        print(f"RESUME {a.resume}: bước {step}/{total} (lịch LR {horizon}), epoch {ep}, còn {len(order)} ví dụ "
+              f"trong epoch, lr {sched.get_last_lr()[0]:.3g}", flush=True)
+        if step >= total:
+            print("checkpoint đã ở/qua --epochs, không còn gì để chạy (tăng --epochs để train tiếp)")
+
     while step < total:
         if not order:
             order = list(range(len(train)))
@@ -214,14 +267,18 @@ def main():
                 log.write(json.dumps(rec) + "\n")
                 log.flush()
             per_epoch = max(1, len(train) // a.accum)
-            if val and ((a.eval_every and step % a.eval_every == 0) or (not a.eval_every and step % per_epoch == 0)
-                        or step == total):
+            is_eval = (a.eval_every and step % a.eval_every == 0) or (not a.eval_every and step % per_epoch == 0) \
+                or step == total
+            if val and is_eval:
                 rec = {"step": step, "epoch": round(step / per_epoch, 2), **evaluate(model, val, a, device)}
                 print("EVAL", rec, flush=True)
                 log.write(json.dumps(rec) + "\n")
                 log.flush()
-                model.save_pretrained(os.path.join(a.out, f"step{step}"))
-    model.save_pretrained(os.path.join(a.out, "final"))
+            if is_eval or not order:            # sau eval / hết một epoch: checkpoint đầy đủ giữ lại
+                save_ckpt(f"step{step}")
+            if a.save_every and step % a.save_every == 0 and step < total:
+                save_ckpt("last")               # ghi đè: điểm resume mới nhất (cuối job đã có final)
+    save_ckpt("final")
     print("xong", round((time.time() - t0) / 60, 1), "phút")
 
 
