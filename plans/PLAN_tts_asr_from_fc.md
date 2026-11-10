@@ -83,6 +83,9 @@ người quen phải có đồng ý.
   và WER trên tập câu phonetic thật trong train (các câu train có từ nước ngoài) để thấy tác dụng trực tiếp của §2.
 - Chọn checkpoint theo val thật. Sau đó chạy `clef_agent.py --asr` với transcript của model mới trên val_in/val_ood để đo
   tác động lên điểm tool-call (đây mới là điểm thi).
+- **Tuỳ chọn (ý từ HarmoLoRA, EMNLP 2026)**: nếu train theo giai đoạn (thật → thêm TTS → thêm B2), đừng gộp nguyên LoRA
+  của giai đoạn tổng hợp; gộp `η·ΔW` với η ∈ {0.25, 0.5, 0.75, 1} chọn theo WER + lỗi tên trên **val thật** (nội suy kiểu
+  WiSE-FT, 4 lần eval, không train thêm). Chỉ là lưới an toàn; cách chính vẫn là trộn 1:1 + epoch cuối chỉ dữ liệu thật.
 
 ## 6. Dùng lại cho FC (PLAN_data_augment_v3 §4.3)
 
