@@ -35,7 +35,7 @@ def history_items(item):
     return out
 
 
-def examples(item, tok, catalog, labels, rng):
+def examples(item, tok, catalog, labels, rng, tier1=None):
     """Các ví dụ theo bước của một mẫu + số bước bị bỏ (SkipStep)."""
     if "catalog_overlay" in item and item["catalog_overlay"]:
         cat = dict(catalog)
@@ -53,7 +53,7 @@ def examples(item, tok, catalog, labels, rng):
         if i == len(calls) and calls and calls[-1]["name"] == F.ASK:
             break                                   # vòng lặp tự dừng sau sys.ask_missing_info
         gold = calls[i] if i < len(calls) else None
-        prefix = F.render_prefix(tok, msgs, tools)
+        prefix = F.render_prefix(tok, msgs, tools, tier1)
         o = GoldOracle(gold)
         try:
             r = run_step(prefix, tools, catalog, seen, labels, o, tok, rng, hint={**hint, "done": list(hint["done"])})
@@ -89,6 +89,9 @@ def main():
     ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES, help="độ dài mô tả tool trong Q1")
     ap.add_argument("--sys", default="json", choices=F.SYS_MODES, help="tools trong system prompt: json (chat template) | compact")
     ap.add_argument("--rules", default="full", choices=F.RULES_MODES, help="quy tắc LifeMate: full | short")
+    ap.add_argument("--app-filter", help="thư mục gói bộ lọc (app_filter/pack.py): catalog HAI TẦNG, tầng 1 = bộ lọc ∪ gold ∪ decoy (chỉ với --sys compact)")
+    ap.add_argument("--decoy-apps", type=int, default=2, help="số app nhiễu ngẫu nhiên thêm vào tầng 1 khi dựng train")
+    ap.add_argument("--filter-device", default="cpu")
     a = ap.parse_args()
     F.set_style(a.style, q2=a.q2, q1_desc=a.q1_desc, sys=a.sys, rules=a.rules)
 
@@ -97,8 +100,10 @@ def main():
     labels = F.make_labels(tok)
     catalog = F.A.load_catalog(f"{a.data}/train/train_tools_catalog.json")
     splits = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "splits.json")))
-    keep = set(splits[a.split_name])
-    held = set(splits["held_out_apps"])
+    keep = {i for s in a.split_name.split(",") for i in splits[s]}      # "train,val_ood": gộp nhiều split
+    held = set(splits["held_out_apps"]) if "val_ood" not in a.split_name.split(",") else set()
+    if not held:
+        print("held_out_apps: KHÔNG loại (train có val_ood → 5 app held-out vào train; chỉ còn val_in để kiểm)")
     rows = [json.loads(l) for l in open(f"{a.data}/train/train.jsonl", encoding="utf-8")]
     rows = [r for r in rows if r["id"] in keep][: a.limit]
     rng = random.Random(a.shuffle_seed) if a.shuffle_seed >= 0 else None
@@ -130,11 +135,27 @@ def main():
                             n_hist += 1
         if paths:
             print(f"{kind}: +{n_main} mẫu, +{n_hist} mẫu phụ từ history ({paths})")
+    pack = None
+    if a.app_filter:
+        assert a.sys == "compact", "catalog hai tầng chỉ có ở --sys compact"
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "app_filter"))
+        from pack import AppFilterPack, app_of, tier1_for
+        pack = AppFilterPack.load(a.app_filter, device=a.filter_device)
+        print(f"bộ lọc: {pack.cfg} — catalog hai tầng, decoy {a.decoy_apps}")
+        frng = random.Random(a.shuffle_seed + 1)
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     n, skip, kinds = 0, 0, {}
+    t1_sizes, n_inst_sum = [], 0
     with open(a.out, "w", encoding="utf-8") as f:
         for it in items:
-            ex, s = examples(it, tok, catalog, labels, rng)
+            t1 = None
+            if pack is not None:
+                gold = {app_of(c["name"]) for c in it["label"]["tool_calls"]} | {
+                    app_of(c["name"]) for h in it["history"] if h["role"] == "assistant" for c in (h.get("tool_calls") or [])}
+                t1 = tier1_for(pack, it, gold_apps=gold, decoys=a.decoy_apps, rng=frng)
+                t1_sizes.append(len(t1))
+                n_inst_sum += len([x for x in it["context"]["installed_apps"] if x != "sys"])
+            ex, s = examples(it, tok, catalog, labels, rng, t1)
             skip += s
             for e in ex:
                 for sp in e["spans"]:
@@ -142,6 +163,8 @@ def main():
                 f.write(json.dumps(e, ensure_ascii=False) + "\n")
                 n += 1
     meta = {**F.fmt_opts(), "split": a.split_name, "history": a.history, "phonetic": a.phonetic, "synth": a.synth,
+            "app_filter": a.app_filter, "decoy_apps": a.decoy_apps if a.app_filter else None,
+            "tier1_avg": round(sum(t1_sizes) / len(t1_sizes), 2) if t1_sizes else None,
             "n_items": len(items), "n_examples": n, "skipped": skip, "spans": kinds}
     json.dump(meta, open(a.out + ".meta.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"{a.split_name}: {len(items)} mẫu → {n} ví dụ, bỏ {skip} bước | spans {kinds} | fmt {F.fmt_opts()}")

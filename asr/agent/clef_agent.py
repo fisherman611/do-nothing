@@ -156,6 +156,20 @@ class VLLMOracle:
         return (out + "\n" if out else ""), F.parse_tail(out, params)
 
 
+_PACK = {}
+
+
+def get_pack(args):
+    """Nạp bộ lọc một lần (catalog của split hiện tại, embedder CPU); mã hoá câu qua khoá để an toàn với nhiều luồng."""
+    if "p" not in _PACK:
+        import threading
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "clef", "app_filter"))
+        from pack import AppFilterPack
+        cat = json.load(open(f"{args.data}/{args.split}/{args.split}_tools_catalog.json", encoding="utf-8"))
+        _PACK["p"], _PACK["lock"] = AppFilterPack.load(args.app_filter, catalog=cat), threading.Lock()
+    return _PACK["p"], _PACK["lock"]
+
+
 def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     t0 = time.time()
     env = ToolEnv(args.split, item["id"], root=args.data)       # ToolEnv duy nhất của mẫu
@@ -168,10 +182,17 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     n_invalid, sigs, err, steps = 0, {}, None, 0
     request = (asr.get(item["id"]) if asr is not None else item.get("audio_text", "")) or ""
     done = []
+    tier1 = None
     try:
+        if args.app_filter:
+            pack, lock = get_pack(args)               # thêm app_filter vào sys.path
+            from pack import app_of, tier1_for        # noqa: E402
+            with lock:
+                tier1 = tier1_for(pack, item, asr)
         for step in range(A.MAX_STEPS):
             steps += 1
-            r = run_step(F.render_prefix(tok, msgs, tools), tools, catalog, seen, labels, o, tok,
+            t1 = None if tier1 is None else tier1 | {app_of(d) for d in done}
+            r = run_step(F.render_prefix(tok, msgs, tools, t1), tools, catalog, seen, labels, o, tok,
                          hint={"request": request, "done": done})
             if r["stop"]:
                 break
@@ -222,6 +243,8 @@ def main():
     ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES)
     ap.add_argument("--sys", default="json", choices=F.SYS_MODES)
     ap.add_argument("--rules", default="full", choices=F.RULES_MODES)
+    ap.add_argument("--app-filter", help="thư mục gói bộ lọc app (app_filter/pack.py): prompt catalog hai tầng; chỉ với --sys compact. "
+                    "Catalog lấy từ <data>/<split>/<split>_tools_catalog.json")
     ap.add_argument("--fmt-from", help="config.json của run train hoặc <data>.meta.json: lấy style/q2/q1_desc từ đó, "
                     "ghi đè 3 cờ trên (tránh lệch format train / suy luận)")
     args = ap.parse_args()

@@ -109,25 +109,33 @@ def _param_line(k, s, required):
     return f"{k}{'' if required else '?'}: {t}" + (f" — {d}" if d else "")
 
 
-def compact_tools(tools):
+def compact_tools(tools, tier1=None):
     """Tools (dạng chat-template) → text gọn, nhóm theo app. Giữ đủ thông tin schema: mô tả tool, từng tham số với kiểu /
-    enum / x-ref / bắt buộc (`?` = tuỳ chọn) / mô tả, ràng buộc x-one-of."""
+    enum / x-ref / bắt buộc (`?` = tuỳ chọn) / mô tả, ràng buộc x-one-of.
+    tier1 (tập id app, mặc định None = mọi app đầy đủ): catalog HAI TẦNG — app trong tier1 ghi đầy đủ schema, app còn lại
+    (tầng 2) chỉ một dòng `[app] tool1, tool2, ...` (tên tool, không schema). `sys` luôn đầy đủ."""
     apps = {}
     for t in tools:
         f = t["function"]
         app, _, _ = f["name"].rpartition(".")
         apps.setdefault(app, []).append(f)
-    out = []
+    out, tier2 = [], []
     for app, fs in apps.items():
+        if tier1 is not None and app not in tier1 and app != "sys":
+            tier2.append(f"[{app}] " + ", ".join(f["name"].split(".", 1)[1] if "." in f["name"] else f["name"] for f in fs))
+            continue
         out.append(f"[{app}]")
         for f in fs:
             P = f.get("parameters") or {}
             props, req = P.get("properties") or {}, set(P.get("required") or [])
-            out.append(f"- {f['name'].split('.', 1)[1] if '.' in f['name'] else f['name']}: "
-                       f"{re.sub(r'\s+', ' ', f.get('description', '') or '').strip()}")
+            desc = re.sub(r"\s+", " ", f.get("description", "") or "").strip()
+            out.append(f"- {f['name'].split('.', 1)[1] if '.' in f['name'] else f['name']}: {desc}")
             out += [f"    · {_param_line(k, s, k in req)}" for k, s in props.items()]
             if P.get("x-one-of"):
                 out.append("    · một trong: " + " / ".join(", ".join(g) for g in P["x-one-of"]))
+    if tier2:
+        out.append("# Các app khác (chỉ tên tool; cần tool này thì vẫn gọi được)")
+        out += tier2
     return "\n".join(out)
 
 
@@ -356,9 +364,9 @@ def parse_tail(text, params):
 
 
 # ---------- prompt chuẩn ----------
-def render_prefix(tok, msgs, tools):
+def render_prefix(tok, msgs, tools, tier1=None):
     if STYLE.get("sys") == "compact":          # tools gọn trong system prompt; không đưa `tools` cho template
-        m = [{"role": "system", "content": msgs[0]["content"] + "\n\n# Tools (tên đầy đủ: app.tool)\n" + compact_tools(tools)},
+        m = [{"role": "system", "content": msgs[0]["content"] + "\n\n# Tools (tên đầy đủ: app.tool)\n" + compact_tools(tools, tier1)},
              *msgs[1:]]
         return tok.apply_chat_template(m, add_generation_prompt=True, tokenize=False, enable_thinking=False)
     return tok.apply_chat_template(msgs, tools=tools, add_generation_prompt=True, tokenize=False,
