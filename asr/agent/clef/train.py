@@ -72,9 +72,28 @@ def make_batches(idx, lengths, bs, rng):
     return batches
 
 
-def losses(model, batch, ls, brier_w, device, pad_id=0):
+def rlcd_term(z, g, sigma, samples=4, w_sph=0.75):
+    """Phần RLCD theo Laya (laya/train.py `rlcd_loss`): nhiễu Gauss zero-mean (chiếu về tổng 0) cộng vào logit nhãn
+    đã detach, mỗi mẫu được chấm bằng điểm proper (log + w_sph·spherical) so với nhãn vàng, advantage chuẩn hoá theo
+    nhóm (GRPO-style) nhân log-density Gauss của mẫu. z: [K] logit nhãn, g: chỉ số vàng."""
+    import torch
+    K = z.numel()
+    eps = torch.randn((samples, K), device=z.device) * sigma
+    eps = eps - eps.mean(-1, keepdim=True)
+    zs = z.detach()[None] + eps                                   # [S, K]
+    q = zs.softmax(-1)
+    with torch.no_grad():
+        r = torch.log(q[:, g].clamp_min(1e-12)).clamp_min(-9.21) + w_sph * q[:, g] / q.norm(dim=-1).clamp_min(1e-9)
+        adv = r - r.mean()
+        adv = adv / (adv.std() + 1e-6)
+    logp = -((zs - z[None]) ** 2).sum(-1) / (2 * sigma ** 2)
+    return -(adv * logp).mean()
+
+
+def losses(model, batch, ls, brier_w, device, pad_id=0, rlcd=None):
     """batch: list (ids, choices, lms) → loss trung bình trên các chuỗi (mỗi chuỗi tính như bs=1 rồi lấy mean).
-    Pad phải + attention_mask; hàng nào không có span loại đó thì bỏ qua trong trung bình."""
+    Pad phải + attention_mask; hàng nào không có span loại đó thì bỏ qua trong trung bình.
+    rlcd: (sigma, samples, w_sph) → cộng thêm phần RLCD (PLAN_v2_pipeline §1.1) vào mỗi câu hỏi chọn."""
     import torch
     import torch.nn.functional as Fn
     T = max(len(b[0]) for b in batch)
@@ -97,7 +116,10 @@ def losses(model, batch, ls, brier_w, device, pad_id=0):
             p = z.softmax(-1)
             onehot = torch.zeros_like(p)
             onehot[g] = 1
-            per_row.setdefault(r, []).append(ce + brier_w * ((p - onehot) ** 2).sum())
+            term = ce + brier_w * ((p - onehot) ** 2).sum()
+            if rlcd and rlcd[0] > 0:
+                term = term + rlcd_term(z, g, *rlcd)
+            per_row.setdefault(r, []).append(term)
             acc.setdefault(kind, []).append(float(z.argmax().item() == g))
         out["choice"] = torch.stack([torch.stack(v).mean() for v in per_row.values()]).mean()
     rows = [(r, p, t) for r, (_, _, lm) in enumerate(batch) for p, t in lm]
@@ -140,6 +162,11 @@ def main():
     ap.add_argument("--lr", type=float, default=1e-4)
     ap.add_argument("--accum", type=int, default=16, help="số micro-batch mỗi bước tối ưu (effective batch = bs*accum)")
     ap.add_argument("--bs", type=int, default=1, help="số chuỗi mỗi micro-batch (pad phải, gom theo độ dài)")
+    ap.add_argument("--rlcd-sigma", type=float, default=0.0, help="RLCD theo Laya: σ nhiễu logit lúc đầu (0 = tắt); "
+                    "giảm tuyến tính tới --rlcd-sigma-end theo lịch LR (PLAN_v2_pipeline §1.1)")
+    ap.add_argument("--rlcd-sigma-end", type=float, default=0.1)
+    ap.add_argument("--rl-samples", type=int, default=4)
+    ap.add_argument("--w-sph", type=float, default=0.75, help="trọng số spherical score trong reward RLCD")
     ap.add_argument("--no-grad-ckpt", action="store_true", help="tắt gradient checkpointing (nhanh hơn, tốn RAM GPU; "
                     "H100 80GB với bs=1 đủ)")
     ap.add_argument("--check-bs", action="store_true", help="in so sánh loss batch 2 chuỗi vs từng chuỗi trước khi train")
@@ -224,10 +251,10 @@ def main():
     data_id = {"train": os.path.abspath(a.train), "train_bytes": os.path.getsize(a.train), "n_train": len(train)}
     if os.path.exists(a.train + ".meta.json"):     # format của data (style / q2 / q1_desc) → config.json để suy luận đọc lại
         m = json.load(open(a.train + ".meta.json"))
-        data_id["fmt"] = {k: m[k] for k in ("style", "q2", "q1_desc") if k in m}
+        data_id["fmt"] = {k: m[k] for k in ("style", "q2", "q1_desc", "sys", "rules") if k in m}
         if a.val and os.path.exists(a.val + ".meta.json"):
             mv = json.load(open(a.val + ".meta.json"))
-            if any(mv.get(k) != m.get(k) for k in ("style", "q2", "q1_desc")):
+            if any(mv.get(k) != m.get(k) for k in ("style", "q2", "q1_desc", "sys", "rules")):
                 raise SystemExit(f"format val khác train: {mv} vs {m}")
     json.dump(vars(a) | data_id | {"lora_targets": targets, "n_val": len(val), "steps": total, "sched_steps": horizon},
               open(os.path.join(a.out, "config.json"), "w"), indent=1)
@@ -313,7 +340,11 @@ def main():
             ep += 1
         b = [train[i] for i in order.pop()]
         ntok += sum(len(t[0]) for t in b)
-        l, _ = losses(model, b, a.ls, a.brier, device, a.pad_id)
+        rlcd = None
+        if a.rlcd_sigma > 0:            # σ giảm tuyến tính theo tiến độ lịch LR (Laya: theo epoch, 0.4 → 0.1)
+            frac = min(1.0, step / max(1, horizon - 1))
+            rlcd = (a.rlcd_sigma + (a.rlcd_sigma_end - a.rlcd_sigma) * frac, a.rl_samples, a.w_sph)
+        l, _ = losses(model, b, a.ls, a.brier, device, a.pad_id, rlcd)
         loss = a.w_choice * l.get("choice", 0) + a.w_lm * l.get("lm", 0)
         (loss / a.accum).backward()
         for k, v in l.items():

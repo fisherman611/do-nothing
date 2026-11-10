@@ -6,7 +6,7 @@ hỏi; lm: giá trị tham số tự do + "\\n</parameter>"). Kết quả tool c
 trong train.jsonl, không đọc *_environment/).
 
     python agent/clef/build_data.py --data data/train+public_test --split-name train --out agent/clef/data/train.jsonl \
-        [--history] [--shuffle-seed 0] [--q2 all|discrete|none] [--q1-desc full|short|none]
+        [--history] [--shuffle-seed 0] [--q2 all|discrete|none] [--q1-desc full|short|none] [--sys json|compact] [--rules full|short]
 Ghi kèm <out>.meta.json (format + thống kê); train.py chép vào config.json, clef_agent.py --fmt-from đọc lại.
 """
 import argparse
@@ -42,7 +42,7 @@ def examples(item, tok, catalog, labels, rng):
         for t in item["catalog_overlay"]:
             cat[t["name"]] = t
         catalog = cat
-    msgs = F.A.build_messages(item)
+    msgs = F.build_messages(item)
     tools = F.A.tool_specs(item, catalog)
     seen = [(c["name"], r) for t in item["history"] if t["role"] == "assistant"
             for c, r in zip(t.get("tool_calls") or [], t.get("tool_results") or [])]
@@ -87,8 +87,10 @@ def main():
     ap.add_argument("--q2", default="all", choices=F.Q2_MODES, help="all: hỏi Q2 mọi tham số; discrete: chỉ ref/enum/bool, "
                     "tham số tự do tuỳ chọn model tự sinh ở đuôi call; none: chỉ Q1")
     ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES, help="độ dài mô tả tool trong Q1")
+    ap.add_argument("--sys", default="json", choices=F.SYS_MODES, help="tools trong system prompt: json (chat template) | compact")
+    ap.add_argument("--rules", default="full", choices=F.RULES_MODES, help="quy tắc LifeMate: full | short")
     a = ap.parse_args()
-    F.set_style(a.style, q2=a.q2, q1_desc=a.q1_desc)
+    F.set_style(a.style, q2=a.q2, q1_desc=a.q1_desc, sys=a.sys, rules=a.rules)
 
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(TOKENIZER[0], revision=TOKENIZER[1])

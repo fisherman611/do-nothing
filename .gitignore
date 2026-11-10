@@ -231,3 +231,7 @@ synth/**/*.jsonl
 synth/bak_gemini_20261109/
 synth/
 synth_phonetic/
+
+# app_filter: kết quả eval từng model (18MB) và cache embedding
+asr/agent/clef/app_filter/zs/
+asr/agent/clef/app_filter/emb_cache*/

@@ -62,18 +62,79 @@ STYLE = {}
 #   q1_desc: full | short | none = độ dài mô tả tool trong Q1 (JSON tools ở đầu prompt đã có mô tả đầy đủ)
 Q2_MODES = ("all", "discrete", "none")
 Q1_DESC_MODES = ("full", "short", "none")
+#   sys:     json    = tools dạng JSON schema qua chat template Qwen (kèm hướng dẫn gọi hàm của template, ~4.3k token/43 tool)
+#            compact = tools dạng text gọn trong system prompt, nhóm theo app, giữ đủ mô tả / kiểu / enum / x-ref /
+#                      bắt buộc (~2.1k token/43 tool); không truyền `tools` cho template (bỏ ~250 token hướng dẫn)
+#   rules:   full | short = quy tắc LifeMate trong system prompt (776 → ~370 token)
+SYS_MODES = ("json", "compact")
+RULES_MODES = ("full", "short")
 
 
-def set_style(name, q2="all", q1_desc="full"):
+def set_style(name, q2="all", q1_desc="full", sys="json", rules="full"):
     assert q2 in Q2_MODES and q1_desc in Q1_DESC_MODES, (q2, q1_desc)
+    assert sys in SYS_MODES and rules in RULES_MODES, (sys, rules)
     STYLE.clear()
     STYLE.update(STYLES[name])
-    STYLE.update(name=name, q2=q2, q1_desc=q1_desc)
+    STYLE.update(name=name, q2=q2, q1_desc=q1_desc, sys=sys, rules=rules)
+
+
+FMT_KEYS = ("style", "q2", "q1_desc", "sys", "rules")
+FMT_DEFAULT = {"style": "v1", "q2": "all", "q1_desc": "full", "sys": "json", "rules": "full"}
 
 
 def fmt_opts():
     """Các khoá format cần giống nhau giữa build data, train và suy luận (ghi vào *.meta.json / config.json)."""
-    return {"style": STYLE.get("name", "v1"), "q2": STYLE.get("q2", "all"), "q1_desc": STYLE.get("q1_desc", "full")}
+    return {"style": STYLE.get("name", "v1"), **{k: STYLE.get(k, FMT_DEFAULT[k]) for k in FMT_KEYS[1:]}}
+
+
+def set_style_from(opts):
+    """Đặt format từ dict fmt_opts() (config.json của run / *.meta.json); khoá thiếu lấy mặc định cũ."""
+    o = {**FMT_DEFAULT, **{k: v for k, v in opts.items() if k in FMT_KEYS}}
+    set_style(o["style"], q2=o["q2"], q1_desc=o["q1_desc"], sys=o["sys"], rules=o["rules"])
+
+
+# ---------- system prompt / tools ----------
+_TY = {"string": "str", "integer": "int", "number": "num", "boolean": "bool", "array": "list", "object": "obj"}
+
+
+def _param_line(k, s, required):
+    t = _TY.get(s.get("type"), s.get("type") or "str")
+    if s.get("type") == "array":
+        t = f"list[{_TY.get((s.get('items') or {}).get('type'), 'str')}]"
+    if "enum" in s:
+        t = "|".join(map(str, s["enum"]))
+    if "x-ref" in s:
+        t = f"id←{s['x-ref']}"
+    d = re.sub(r"\s+", " ", s.get("description", "") or "").strip()
+    return f"{k}{'' if required else '?'}: {t}" + (f" — {d}" if d else "")
+
+
+def compact_tools(tools):
+    """Tools (dạng chat-template) → text gọn, nhóm theo app. Giữ đủ thông tin schema: mô tả tool, từng tham số với kiểu /
+    enum / x-ref / bắt buộc (`?` = tuỳ chọn) / mô tả, ràng buộc x-one-of."""
+    apps = {}
+    for t in tools:
+        f = t["function"]
+        app, _, _ = f["name"].rpartition(".")
+        apps.setdefault(app, []).append(f)
+    out = []
+    for app, fs in apps.items():
+        out.append(f"[{app}]")
+        for f in fs:
+            P = f.get("parameters") or {}
+            props, req = P.get("properties") or {}, set(P.get("required") or [])
+            out.append(f"- {f['name'].split('.', 1)[1] if '.' in f['name'] else f['name']}: "
+                       f"{re.sub(r'\s+', ' ', f.get('description', '') or '').strip()}")
+            out += [f"    · {_param_line(k, s, k in req)}" for k, s in props.items()]
+            if P.get("x-one-of"):
+                out.append("    · một trong: " + " / ".join(", ".join(g) for g in P["x-one-of"]))
+    return "\n".join(out)
+
+
+def build_messages(item, asr=None):
+    """A.build_messages + quy tắc theo STYLE['rules']."""
+    msgs = A.build_messages(item, asr, system=A.SYSTEM_SHORT if STYLE.get("rules") == "short" else A.SYSTEM)
+    return msgs
 ASK_DESC = "Hỏi lại người dùng thông tin bắt buộc còn thiếu rồi dừng"
 
 
@@ -296,6 +357,10 @@ def parse_tail(text, params):
 
 # ---------- prompt chuẩn ----------
 def render_prefix(tok, msgs, tools):
+    if STYLE.get("sys") == "compact":          # tools gọn trong system prompt; không đưa `tools` cho template
+        m = [{"role": "system", "content": msgs[0]["content"] + "\n\n# Tools (tên đầy đủ: app.tool)\n" + compact_tools(tools)},
+             *msgs[1:]]
+        return tok.apply_chat_template(m, add_generation_prompt=True, tokenize=False, enable_thinking=False)
     return tok.apply_chat_template(msgs, tools=tools, add_generation_prompt=True, tokenize=False,
                                    enable_thinking=False)
 

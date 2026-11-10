@@ -9,6 +9,7 @@ so `*_environment/` never leaves the machine and is only ever read by `zaic_tool
 
 Pinned: vLLM 0.31.0 (2026-10-05) and an exact HF revision per model.
 """
+import os
 import subprocess
 
 import modal
@@ -32,9 +33,14 @@ MODELS = {
     # Ablation format A (q2=all) / B (q2=discrete), smoke 1835 ví dụ, gộp bằng modal_merge.py (PLAN_prompt_format_v2.md)
     "qwen35_4b_smokeA": ("/hf/qwen35_4b_smokeA", None, []),
     "qwen35_4b_smokeB": ("/hf/qwen35_4b_smokeB", None, []),
+    "qwen35_4b_fmtA_mid_e1": ("/hf/qwen35_4b_fmtA_mid_e1", None, []),
+    # Cùng model, trả logprob của nhãn (PLAN_generalize_tools §3.0): tới 64 nhãn (Q1 có tới 52 phương án), logprob
+    # tính sau logits processor (mask allowed_token_ids) → softmax chỉ trên nhãn
+    "mid_lp": ("/hf/qwen35_4b_fmtA_mid_e1", None, ["--max-logprobs", "64", "--logprobs-mode", "processed_logprobs"]),
 }
 
-app = modal.App("lifemate-llm-zeroshot")
+# LLM_APP=<tên> lúc deploy để tạo app riêng (không đụng endpoint của app đang chạy eval)
+app = modal.App(os.environ.get("LLM_APP", "lifemate-llm-zeroshot"))
 hf_cache = modal.Volume.from_name("hf-cache", create_if_missing=True)
 image = (modal.Image.debian_slim(python_version="3.12")
          .pip_install(f"vllm=={VLLM_VERSION}", "huggingface_hub[hf_transfer]")
@@ -111,3 +117,17 @@ def serve_qwen35_4b_smokeA():
 @modal.web_server(8000, startup_timeout=1200)
 def serve_qwen35_4b_smokeB():
     _serve("qwen35_4b_smokeB")
+
+
+@_fn()
+@modal.concurrent(max_inputs=256)
+@modal.web_server(8000, startup_timeout=1200)
+def serve_qwen35_4b_fmtA_mid_e1():
+    _serve("qwen35_4b_fmtA_mid_e1")
+
+
+@_fn()
+@modal.concurrent(max_inputs=256)
+@modal.web_server(8000, startup_timeout=1200)
+def serve_mid_lp():
+    _serve("mid_lp")

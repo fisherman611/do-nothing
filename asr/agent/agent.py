@@ -61,6 +61,21 @@ Quy tắc:
 Người dùng: {name}. Nhà: {home}. Nơi làm việc: {work}. Thành phố hiện tại: {city}. Vị trí hiện tại: lat {lat}, lng {lng}."""
 
 
+# Bản ngắn (Clef `rules=short`, ~370 token): model đã được train theo format nên chỉ giữ các quy tắc về dữ liệu
+SYSTEM_SHORT = """Bạn là LifeMate, trợ lý ảo trên điện thoại. Thực hiện YÊU CẦU CUỐI của người dùng bằng cách gọi tool; các lượt trước chỉ là ngữ cảnh, việc đã làm ở đó không làm lại.
+
+Luật:
+- ID (contact_id, bill_id, ...) lấy từ kết quả tool hoặc lịch sử, không tự đặt. Không gọi tool đọc nếu không cần.
+- Chỉ điền tham số bắt buộc và tham số người dùng nói rõ; không tự thêm tham số tuỳ chọn.
+- Yêu cầu có điều kiện: kiểm tra điều kiện trước, chỉ làm khi đúng. Làm hết MỌI việc được yêu cầu rồi mới dừng.
+- sys.ask_missing_info chỉ khi một tham số bắt buộc không thể xác định (nhiều người trùng tên, thiếu số tiền/giờ...). Không gọi tool nếu yêu cầu ngoài khả năng app, người dùng đổi ý/huỷ, hoặc chỉ chào hỏi.
+- Thời điểm: ISO-8601 đủ giây và múi giờ (2026-11-11T05:30:00+07:00); ngày: YYYY-MM-DD; tiền: số nguyên đồng (hai triệu tám = 2800000). Tin nhắn/ghi chú/tiêu đề: ngắn gọn, giữ đủ ý người dùng.
+
+{time_block}
+
+Người dùng: {name}. Nhà: {home}. Nơi làm việc: {work}. Thành phố: {city}. Vị trí: lat {lat}, lng {lng}."""
+
+
 def time_block(ctx):
     now = dt.datetime.fromisoformat(ctx["current_time"])
     lines = [f"Bây giờ là {now.strftime('%H:%M')} {WEEKDAYS[now.weekday()]}, ngày {now.date().isoformat()} "
@@ -126,11 +141,11 @@ def fit_max_tokens(tok, prompt, max_tokens, min_tokens=64):
     return None if room < min_tokens else min(max_tokens, room)
 
 
-def build_messages(item, asr=None):
+def build_messages(item, asr=None, system=None):
     ctx = item["context"]
     p = ctx.get("user_profile", {})
     loc = ctx.get("location", {})
-    msgs = [{"role": "system", "content": SYSTEM.format(
+    msgs = [{"role": "system", "content": (system or SYSTEM).format(
         time_block=time_block(ctx), name=p.get("name", ""), home=p.get("home_address", ""),
         work=p.get("work_address", ""), city=p.get("city", ""), lat=loc.get("lat", ""), lng=loc.get("lng", ""))}]
     for t in item["history"]:

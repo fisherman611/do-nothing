@@ -13,6 +13,7 @@ Luật: một ToolEnv mỗi mẫu; chỉ validate/call/get_tool_calls/get_state_
 import argparse
 import concurrent.futures as cf
 import json
+import math
 import os
 import sys
 import time
@@ -32,7 +33,8 @@ class ContextFull(Exception):
     pass
 
 
-def request(url, key, model, prompt, max_tokens, retries=4, **extra):
+def request_json(url, key, model, prompt, max_tokens, retries=4, **extra):
+    """POST /v1/completions → JSON đầy đủ (choices[0].text, .logprobs, usage)."""
     body = {"model": model, "prompt": prompt, "max_tokens": max_tokens, "temperature": 0, "seed": 0, **extra}
     data = json.dumps(body).encode()
     for k in range(retries):
@@ -40,12 +42,37 @@ def request(url, key, model, prompt, max_tokens, retries=4, **extra):
             req = urllib.request.Request(url.rstrip("/") + "/v1/completions", data=data,
                                          headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
             with urllib.request.urlopen(req, timeout=600) as r:
-                d = json.loads(r.read())
-            return d["choices"][0]["text"], d.get("usage", {})
+                return json.loads(r.read())
         except Exception:
             if k == retries - 1:
                 raise
             time.sleep(5 * (k + 1))
+
+
+def request(url, key, model, prompt, max_tokens, retries=4, **extra):
+    d = request_json(url, key, model, prompt, max_tokens, retries, **extra)
+    return d["choices"][0]["text"], d.get("usage", {})
+
+
+def label_probs(d, token_ids):
+    """Xác suất trên các nhãn (theo thứ tự token_ids) từ logprobs của token đầu; None nếu server không trả logprobs.
+    Server cần `--logprobs-mode processed_logprobs` để logprob tính sau mask allowed_token_ids (softmax trên nhãn)."""
+    lp = (d["choices"][0].get("logprobs") or {}).get("top_logprobs") or []
+    if not lp or not lp[0]:
+        return None
+    got = {}
+    for k, v in lp[0].items():
+        if k.startswith("token_id:"):
+            got[int(k.split(":", 1)[1])] = v
+    p = [math.exp(got[i]) if i in got else 0.0 for i in token_ids]
+    z = sum(p)
+    return [x / z for x in p] if z > 0 else None
+
+
+def confidence(p):
+    """typesafe.ai: (max p − 1/n) / (1 − 1/n); 0 = ngang ngẫu nhiên, 1 = chắc chắn."""
+    n = len(p)
+    return (max(p) - 1 / n) / (1 - 1 / n) if n > 1 else 1.0
 
 
 class VLLMOracle:
@@ -55,23 +82,51 @@ class VLLMOracle:
         for w in (F.YES, F.NO):
             self.tid[w] = tok(" " + w, add_special_tokens=False).input_ids[0]
         self.log, self.n_req, self.prompt_tokens, self.anomaly = [], 0, 0, 0
+        self.plog = []                 # song song với log: {kind, choice, p: {giá trị: xác suất}, conf, override}
+        self.want_lp = bool(getattr(args, "log_probs", False) or getattr(args, "ask_tau", None) is not None)
+
+    def _req_json(self, text, max_tokens, **extra):
+        d = request_json(self.a.url, self.a.key, self.a.model_name, text, max_tokens, **extra)
+        self.n_req += 1
+        self.prompt_tokens += (d.get("usage") or {}).get("prompt_tokens") or 0
+        return d
 
     def _req(self, text, max_tokens, **extra):
-        out, usage = request(self.a.url, self.a.key, self.a.model_name, text, max_tokens, **extra)
-        self.n_req += 1
-        self.prompt_tokens += usage.get("prompt_tokens") or 0
-        return out
+        return self._req_json(text, max_tokens, **extra)["choices"][0]["text"]
 
     def choose(self, text, labels, kind, info):
         if F.n_tokens(self.tok, text) + 1 > A.CONTEXT_LIMIT:
             raise ContextFull(kind)
-        out = self._req(text, 1, allowed_token_ids=[self.tid[l] for l in labels])
-        lab = out.strip()
+        ids = [self.tid[l] for l in labels]
+        extra = {"logprobs": len(ids), "return_tokens_as_token_ids": True} if self.want_lp else {}
+        d = self._req_json(text, 1, allowed_token_ids=ids, **extra)
+        lab = d["choices"][0]["text"].strip()
+        if lab.startswith("token_id:"):    # return_tokens_as_token_ids cũng đổi text thành "token_id:<id>"
+            tid = int(lab.split(":", 1)[1])
+            lab = next((l for l, i in zip(labels, ids) if i == tid), lab)
         if lab not in labels:          # không nên xảy ra khi allowed_token_ids hoạt động
             self.anomaly += 1
             lab = labels[0]
+        p = label_probs(d, ids) if self.want_lp else None
+        override = None
+        # §3.1 ngưỡng hỏi lại: ở Q1, nếu P(sys.ask_missing_info) > τ₁ và tool argmax là tool GHI → hỏi lại
+        if p is not None and kind == "q1" and self.a.ask_tau is not None:
+            ask = [l for l in labels if info.get(l) == F.ASK]
+            if ask and info.get(lab) != F.ASK and p[labels.index(ask[0])] > self.a.ask_tau \
+                    and self.kind_of(info.get(lab)) == "write":
+                override, lab = info.get(lab), ask[0]
         self.log.append((kind, lab if kind != "q1" else info[lab]))
+        if p is not None:
+            name = (lambda l: info.get(l, l)) if kind in ("q1", "ref", "enum") and isinstance(info, dict) else \
+                (lambda l: (info[2].get(l, l) if isinstance(info, tuple) and len(info) > 2 and isinstance(info[2], dict)
+                            else l))
+            self.plog.append({"kind": kind, "choice": name(lab), "conf": round(confidence(p), 4),
+                              "p": {str(name(l)): round(x, 4) for l, x in sorted(zip(labels, p), key=lambda t: -t[1])[:8]},
+                              **({"override": override} if override else {})})
         return lab
+
+    def kind_of(self, tool):
+        return (self.catalog.get(tool) or {}).get("kind", "write") if tool and tool != F.STOP else "meta"
 
     def choose_name(self, text, names):
         if F.n_tokens(self.tok, text) + 40 > A.CONTEXT_LIMIT:
@@ -104,11 +159,12 @@ class VLLMOracle:
 def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     t0 = time.time()
     env = ToolEnv(args.split, item["id"], root=args.data)       # ToolEnv duy nhất của mẫu
-    msgs = A.build_messages(item, asr)
+    msgs = F.build_messages(item, asr)
     tools = A.tool_specs(item, catalog)
     seen = [(c["name"], r) for t in item["history"] if t["role"] == "assistant"
             for c, r in zip(t.get("tool_calls") or [], t.get("tool_results") or [])]
     o = VLLMOracle(args, tok, labels)
+    o.catalog = catalog
     n_invalid, sigs, err, steps = 0, {}, None, 0
     request = (asr.get(item["id"]) if asr is not None else item.get("audio_text", "")) or ""
     done = []
@@ -140,7 +196,7 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     except Exception as e:
         err = f"{type(e).__name__}: {e}"
     return {"id": item["id"], "style": F.STYLE.get("name", "v1"), "fmt": F.fmt_opts(), "tool_calls": env.get_tool_calls(), "state_hash": env.get_state_hash(),
-            "steps": steps, "n_invalid": n_invalid, "decisions": o.log, "n_requests": o.n_req,
+            "steps": steps, "n_invalid": n_invalid, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
             "prompt_tokens_sum": o.prompt_tokens, "anomaly": o.anomaly,
             "latency": round(time.time() - t0, 2), "error": err}
 
@@ -154,6 +210,9 @@ def main():
     ap.add_argument("--model-name", default="llm", help="tên model / LoRA adapter trên server vLLM")
     ap.add_argument("--out", required=True)
     ap.add_argument("--asr", help="JSON {uid: transcript}; mặc định audio_text (chỉ train)")
+    ap.add_argument("--log-probs", action="store_true", help="lấy xác suất nhãn mỗi lựa chọn (server cần --max-logprobs 64 --logprobs-mode processed_logprobs), ghi vào trường probs")
+    ap.add_argument("--ask-tau", type=float, help="Q1: hỏi lại nếu P(sys.ask_missing_info) > τ và tool argmax là tool ghi (PLAN_generalize_tools §3.1; τ = 0.2). Tự bật --log-probs")
+    ap.add_argument("--asr-timings", help="JSON {id: giây ASR} cộng vào elapsed_seconds của <out>.timings.jsonl")
     ap.add_argument("--ids", help="file id, mỗi dòng một id")
     ap.add_argument("--ids-split", help="khóa trong agent/clef/splits.json (val_in / val_ood / train)")
     ap.add_argument("--limit", type=int)
@@ -161,14 +220,16 @@ def main():
     ap.add_argument("--style", default="v1", choices=list(F.STYLES), help="kiểu prompt (phải giống lúc dựng dữ liệu train)")
     ap.add_argument("--q2", default="all", choices=F.Q2_MODES)
     ap.add_argument("--q1-desc", default="full", choices=F.Q1_DESC_MODES)
+    ap.add_argument("--sys", default="json", choices=F.SYS_MODES)
+    ap.add_argument("--rules", default="full", choices=F.RULES_MODES)
     ap.add_argument("--fmt-from", help="config.json của run train hoặc <data>.meta.json: lấy style/q2/q1_desc từ đó, "
                     "ghi đè 3 cờ trên (tránh lệch format train / suy luận)")
     args = ap.parse_args()
     if args.fmt_from:
         m = json.load(open(args.fmt_from, encoding="utf-8"))
-        m = m.get("fmt", m)
-        args.style, args.q2, args.q1_desc = m.get("style", "v1"), m.get("q2", "all"), m.get("q1_desc", "full")
-    F.set_style(args.style, q2=args.q2, q1_desc=args.q1_desc)
+        F.set_style_from(m.get("fmt", m))
+    else:
+        F.set_style(args.style, q2=args.q2, q1_desc=args.q1_desc, sys=args.sys, rules=args.rules)
     print("format:", F.fmt_opts(), flush=True)
 
     sys.path.insert(0, os.path.join(args.data, args.split))
@@ -195,12 +256,22 @@ def main():
     todo = [x for x in items if x["id"] not in done]
     print(f"clef: {len(todo)} mẫu cần chạy ({len(done)} đã có)", flush=True)
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    asr_time = json.load(open(args.asr_timings, encoding="utf-8")) if args.asr_timings else {}
     t0 = time.time()
-    with open(args.out, "a", encoding="utf-8") as f, cf.ThreadPoolExecutor(args.workers) as ex:
+    tpath = os.path.splitext(args.out)[0] + ".timings.jsonl"       # cho `metrics score --timings` (luật 30 s)
+    with open(args.out, "a", encoding="utf-8") as f, open(tpath, "a", encoding="utf-8") as ft, \
+            cf.ThreadPoolExecutor(args.workers) as ex:
         futs = [ex.submit(run_one, x, args, tok, labels, catalog, ToolEnv, asr) for x in todo]
         for k, fu in enumerate(cf.as_completed(futs), 1):
-            f.write(json.dumps(fu.result(), ensure_ascii=False) + "\n")
+            r = fu.result()
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
             f.flush()
+            # elapsed = agent (+ ASR nếu có). workers > 1 làm thời gian bị đội lên do chen GPU: chỉ để chẩn đoán;
+            # số áp luật 30 s phải đo với --workers 1 trên máy chạy nộp bài.
+            ft.write(json.dumps({"id": r["id"], "elapsed_seconds": round(r["latency"] + asr_time.get(r["id"], 0.0), 3),
+                                 "status": "error" if r["error"] else "ok", "error": r["error"],
+                                 "workers": args.workers, "asr_included": bool(asr_time)}) + "\n")
+            ft.flush()
             if k % 50 == 0 or k == len(futs):
                 print(f"  {k}/{len(futs)}  {time.time() - t0:.0f}s", flush=True)
 
