@@ -66,8 +66,12 @@ theo **app** (không theo tool), giữ **nhiều app** chứ không phải top-1
 
 ### 2.2 Bộ lọc: BM25 ∥ embedding/reranker tiếng Việt, hợp (union) → ưu tiên recall
 
-Tập ứng viên nhỏ (3–18 app của mẫu), nên chi phí không đáng kể; mục tiêu **recall ≥ 99% trên app gold** với số app
-giữ trung bình ≤ 4.
+Tập ứng viên nhỏ (3–18 app của mẫu), nên chi phí không đáng kể. **Kết quả đo 2026-11-10 (`REPORT_app_filter_v2.md`):**
+không model nào (zero-shot hay fine-tune) đạt 99% recall khi giữ dưới ~6.9/9.2 app; tốt nhất 97.2 / 98.1 (val_in / val_ood)
+với BM25 top-4 ∪ vietnamese-bi-encoder fine-tune top-5. Mẫu sót là câu có app ngầm hiểu và câu 4–5 app. Vì vậy **không dùng
+lọc cứng**; bộ lọc chỉ **xếp hạng** app để dựng **catalog hai tầng** (§2.3): tầng 1 = app giữ (top-k ∪ luật, ~6–7 app) có
+schema đầy đủ; tầng 2 = app còn lại chỉ ghi tên tool một dòng. Mọi tool vẫn gọi được → recall về khả năng gọi = 100%,
+mất mát duy nhất của sót là tool đó thiếu mô tả tham số.
 
 1. **Tài liệu mỗi app** (`agent/clef/app_filter/app_docs.py`, dựng từ catalog, kể cả catalog overlay / app synth):
    tên app + tên tool + mô tả tool + mô tả tham số + **từ khoá đồng nghĩa tiếng Việt** (sinh một lần, có duyệt:
@@ -79,19 +83,22 @@ giữ trung bình ≤ 4.
    history (history dài thì chỉ 2 lượt cuối). Chạy offline trong Docker, CPU/GPU đều được (~20–50 ms).
 4. **Hợp**: giữ app nếu thuộc top-k₁ BM25 **hoặc** top-k₂ embedding **hoặc** điểm ≥ ngưỡng tương đối; **luôn giữ**
    app đã gọi trong history và app mà tool được giữ tham chiếu qua `x-ref` (đóng bao phụ thuộc: `ewallet.transfer`
-   cần `contacts`; `sms.send` cần `contacts`). Chọn k₁, k₂, ngưỡng trên train để recall ≥ 99%, báo recall trên val_in,
+   cần `contacts`; `sms.send` cần `contacts`). Chọn k₁, k₂, ngưỡng trên train để recall tầng 1 ≥ 98%, báo recall trên val_in,
    val_ood, val_alias (tên app đổi → chỉ còn mô tả + từ khoá để bám).
 5. Trường hợp 0 call (chào hỏi, đổi ý): bộ lọc vẫn trả top-k; model quyết DỪNG như hiện nay.
-6. **Dự phòng khi recall không đủ**: Q0 bằng chính model — Noul "app này có cần không?" cho mỗi app, song song một
-   lượt trên prefix ngắn (câu nói + 1 dòng/app), giữ P > 0.1. Chỉ dùng nếu truy hồi < 99%; so sánh recall/latency.
+6. **Dự phòng**: Q0 bằng chính model — Noul "app này có cần không?" cho mỗi app, song song một lượt trên prefix ngắn
+   (câu nói + 1 dòng/app), giữ P > 0.1. Chỉ xét nếu catalog hai tầng vẫn làm mất điểm ở mẫu bị sót tầng 1.
 
-### 2.3 Prompt sau lọc (đã cài `--sys compact --rules short`, PLAN_generalize_tools §2.0)
-- System: quy tắc ngắn (~370 token) + tools compact của các app được giữ (~50 token/tool → 3–4 app ≈ 600 token).
+### 2.3 Prompt sau lọc: catalog hai tầng (đã cài `--sys compact --rules short`, PLAN_generalize_tools §2.0)
+- System: quy tắc ngắn (~370 token) + **tầng 1**: tools compact đầy đủ của app được giữ (~50 token/tool; 6–7 app ≈ 20 tool
+  ≈ 1000 token) + **tầng 2**: các app còn lại mỗi tool một dòng `app.tool – mô tả ngắn` không có tham số (~12 token/tool;
+  ~12 tool ≈ 150 token). Tool tầng 2 vẫn là phương án ở Q1; nếu được chọn, **thẻ tool** (§2.1 PLAN_generalize_tools) chèn
+  schema đầy đủ trước Q2, nên thiếu mô tả ở system prompt không chặn được việc điền tham số.
 - **Decoy bắt buộc**: lúc build train, ngoài app gold thêm 1–2 app (ưu tiên app gần nghĩa, hoặc app bộ lọc giữ dư)
   để model không học "app có mặt = phải gọi". Lúc infer, app dư của bộ lọc đóng vai decoy tự nhiên.
 - Q1: chỉ tool của app được giữ (+ ask + DỪNG) ≈ 8–14 phương án; `q1_desc=short` mặc định, thử `none`.
 - **Thẻ tool** sau Q1 (schema đầy đủ của tool đã chọn, trích từ bản compact) — PLAN_generalize_tools §2.1.
-- Ước tổng: ví dụ `train_0126` 6971 → **~1700–2100 token/bước** (¼–⅓ hiện tại).
+- Ước tổng: ví dụ `train_0126` 6971 → **~2300–2700 token/bước** (≈ ⅓ hiện tại; bản compact không lọc là 3956).
 
 ### 2.4 Bộ lọc nằm trong vòng train
 Build train bằng **đầu ra thật của bộ lọc** (không phải oracle) để phân phối lúc train = lúc infer: giữ = filter(câu)
@@ -136,7 +143,7 @@ Lọc app (§2.2) → prefix gọn → Q1 với `--ask-tau 0.2` (đã có) → Q
 |---|---|
 | val_in / val_ood / val_alias / val_novel / val_testlike | điểm BTC (replay + 30 s), **recall bộ lọc**, số app giữ TB, token/bước, lượt/mẫu, latency |
 | Ablation | (i) lọc oracle vs bộ lọc thật vs không lọc; (ii) `q1_desc` short vs none; (iii) Q2 độc lập vs tuần tự (B0); (iv) loss CE+Brier vs +RLCD (§1.1); (v) temperature toàn cục vs theo bucket |
-| Tiêu chí v2 | val_in ≥ 76; val_ood ≥ 66; in−ood < 10; recall lọc ≥ 99%; p90 latency < 20 s (điều kiện Modal qua mạng) |
+| Tiêu chí v2 | val_in ≥ 76; val_ood ≥ 66; in−ood < 10; recall tầng 1 ≥ 98% với ≤ 7 app (tầng 2 giữ 100% khả năng gọi); token/bước ≤ 50% hiện tại; p90 latency < 20 s (điều kiện Modal qua mạng) |
 
 ## 7. Việc, thứ tự, chi phí
 
@@ -145,7 +152,7 @@ Lọc app (§2.2) → prefix gọn → Q1 với `--ask-tau 0.2` (đã có) → Q
 | H | Hạ tầng account Modal mới (PLAN_generalize_tools §6.1: secret, strip, volume, deploy) | chủ repo tạo `llm-api-key` | ~$1 |
 | A0 | Probe lọc oracle trên `fmtA_mid_e1` (§2.5) | H | ~$1 |
 | B0 | Probe Q2 song song trên `fmtA_mid_e1` (§3) | H | ~$2 |
-| A1 | `app_filter/`: app_docs + từ khoá (bản đầu tự viết cho 46 app train), BM25, embedding/reranker, union, đóng bao x-ref; đo recall/k trên train & val; chọn cấu hình | – | CPU |
+| A1 | **Đã xong 2026-11-10**: `app_filter/filter.py` (BM25 ∥ embedding, union, luật), từ khoá 45 app, zero-shot 9 model, fine-tune vietnamese-bi-encoder → chọn model này (`REPORT_app_filter_v2.md`, `PLAN_app_filter_finetune.md`) | – | – |
 | A2 | `build_data.py --apps filter|oracle --decoy-apps 2`; `clef_agent.py` dùng bộ lọc; thẻ tool trong `fmt.py` | A1 | – |
 | B1 | Format v2 Q2 độc lập trong `build_data.py`/`core.py`/`clef_agent.py` (song song) + `test_fmt.py` | – | – |
 | C1 | Bộ chuẩn hoá số/giờ + augment; gửi Gemini: B2, alias pool, decoys, hỏi lại khó, điều kiện, **từ khoá app** | – | – |
@@ -156,7 +163,7 @@ Lọc app (§2.2) → prefix gọn → Q1 với `--ask-tau 0.2` (đã có) → Q
 
 Thứ tự thực tế: **C1 (gửi Gemini) và A1 ngay** (không cần GPU, Gemini chờ lâu nhất) → H → A0 + B0 (một buổi, ~$3) →
 A2 + B1 → D1 → D2 → D3 → E. Nếu A0 cho thấy danh sách ngắn **không** tăng accuracy, trụ A vẫn giữ (token, latency)
-nhưng recall yêu cầu nới xuống 98% để bộ lọc đơn giản hơn.
+nhưng chỉ còn vai trò xếp hạng cho catalog hai tầng (token/latency), không cần đầu tư thêm vào recall.
 
 Rủi ro chính: (1) recall bộ lọc với app lạ/đổi tên — giảm bằng từ khoá đồng nghĩa và đóng bao x-ref, dự phòng Q0;
 (2) Q2 độc lập kém Q2 tuần tự ở tham số phụ thuộc nhau (ví dụ `start`/`end`) — đo ở B0 và ablation (iii), nếu kém thì
