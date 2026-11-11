@@ -418,7 +418,9 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
                                                         blank=0, reduction="mean", zero_infinity=True)
                 l_ctc = ctc_of(out.encoder_last_hidden_state)
                 if inter_ctc_layer > 0:      # Intermediate CTC: cùng head, trên lớp giữa (qua layer_norm cuối của encoder)
-                    mid = m.get_encoder().layer_norm(out.encoder_hidden_states[inter_ctc_layer])
+                    ln = m.get_encoder().layer_norm      # base_fp16 (T4): trọng số fp16, hidden state có thể fp32 → tính ở fp32
+                    mid = torch.nn.functional.layer_norm(out.encoder_hidden_states[inter_ctc_layer].float(), ln.normalized_shape,
+                                                         ln.weight.float(), ln.bias.float(), ln.eps)
                     l_ctc = 0.5 * (l_ctc + ctc_of(mid))
                 loss = (1 - ctc_weight) * loss + ctc_weight * l_ctc
             if kws_weight > 0 and kws is not None and any(kws):

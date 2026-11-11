@@ -38,17 +38,26 @@ MODELS = {
     # tính sau logits processor (mask allowed_token_ids) → softmax chỉ trên nhãn
     "mid_lp": ("/hf/qwen35_4b_fmtA_mid_e1", None, ["--max-logprobs", "64", "--logprobs-mode", "processed_logprobs"]),
     # F2 (PLAN_48h): Clef trên fmtA_48e_20k (hai tầng + nhiễu ASR v2), gộp bằng merge_local.py trên myserver
-    "qwen35_4b_fmtA_48e": ("/hf/qwen35_4b_fmtA_48e", None, ["--max-logprobs", "64", "--logprobs-mode", "processed_logprobs"]),
+    # repo HF public (model gộp trên myserver → HF), vLLM tự kéo vào hf-cache ở lần khởi động đầu; ghim commit
+    "qwen35_4b_fmtA_48e": ("fisherman611/q-f48e", "0cd1ed0dd6aaaf3c31cc3dba1b2468ab29a6b071",
+                           ["--max-logprobs", "64", "--logprobs-mode", "processed_logprobs"]),
 }
 
 # LLM_APP=<tên> lúc deploy để tạo app riêng (không đụng endpoint của app đang chạy eval)
 app = modal.App(os.environ.get("LLM_APP", "lifemate-llm-zeroshot"))
 hf_cache = modal.Volume.from_name("hf-cache", create_if_missing=True)
-image = (modal.Image.debian_slim(python_version="3.12")
-         .pip_install(f"vllm=={VLLM_VERSION}", "huggingface_hub[hf_transfer]")
-         .env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "HF_HOME": "/hf",
-              # image slim không có nvcc: FlashInfer sampler cần JIT-compile nên bị lỗi; dùng sampler PyTorch
-              "VLLM_USE_FLASHINFER_SAMPLER": "0"}))
+if os.environ.get("LLM_IMAGE") == "registry":
+    # image Docker chính thức cùng phiên bản: không phải pip resolve (pip install vllm giờ kéo thêm cuda-toolkit… vài GB,
+    # worker build trên workspace mới bị giết giữa chừng). entrypoint [] để Modal tự chạy hàm; add_python chỉ cho runtime
+    # Modal (Modal không nhận ra python của image) — `vllm serve` vẫn chạy bằng python của image qua subprocess.
+    image = (modal.Image.from_registry(f"vllm/vllm-openai:v{VLLM_VERSION}", add_python="3.12").entrypoint([])
+             .env({"HF_HOME": "/hf", "VLLM_USE_FLASHINFER_SAMPLER": "0"}))
+else:
+    image = (modal.Image.debian_slim(python_version="3.12")
+             .pip_install(f"vllm=={VLLM_VERSION}", "huggingface_hub[hf_transfer]")
+             .env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "HF_HOME": "/hf",
+                  # image slim không có nvcc: FlashInfer sampler cần JIT-compile nên bị lỗi; dùng sampler PyTorch
+                  "VLLM_USE_FLASHINFER_SAMPLER": "0"}))
 
 
 def _serve(key: str):

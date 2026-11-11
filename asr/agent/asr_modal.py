@@ -13,7 +13,7 @@ import os
 import modal
 
 app = modal.App("lifemate-asr")
-audio = modal.Volume.from_name("zaic-audio", create_if_missing=True)
+audio = modal.Volume.from_name(os.environ.get("ASR_AUDIO_VOL", "zaic-audio"), create_if_missing=True)  # workspace duytungihb: zaic-data
 hf = modal.Volume.from_name("hf-cache", create_if_missing=True)
 image = (modal.Image.debian_slim(python_version="3.12")
          .apt_install("libsndfile1")

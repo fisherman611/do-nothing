@@ -190,6 +190,8 @@ def main():
     ap.add_argument("--wandb", default="", help="tên project W&B (cần WANDB_API_KEY); rỗng: không log W&B")
     ap.add_argument("--wandb-name", default="", help="tên run W&B (mặc định: tên thư mục --out)")
     ap.add_argument("--resume", help="thư mục checkpoint (vd <out>/last, <out>/step220) để train tiếp đúng chỗ dừng")
+    ap.add_argument("--init-adapter", help="thư mục adapter (vd <run>/final) để KHỞI ĐẦU trọng số LoRA rồi train trên dữ liệu "
+                    "MỚI với optimizer + lịch LR mới (khác --resume: --resume đòi đúng dữ liệu cũ để chạy tiếp chỗ dừng)")
     ap.add_argument("--sched-epochs", type=float, default=0,
                     help="số epoch dùng để tính lịch LR (0: = --epochs). Vd chạy --epochs 1 --sched-epochs 2 rồi "
                          "--resume ... --epochs 2: LR giống hệt một lần train 2 epoch liền")
@@ -276,6 +278,13 @@ def main():
                    os.path.join(d, "train_state.pt"))
         print("CKPT", d, flush=True)
 
+    if a.init_adapter and not a.resume:
+        from peft import set_peft_model_state_dict as _set_sd
+        from safetensors.torch import load_file as _lf
+        _res = _set_sd(model, _lf(os.path.join(a.init_adapter, "adapter_model.safetensors")))
+        if getattr(_res, "unexpected_keys", None):
+            raise SystemExit(f"--init-adapter không khớp cấu hình LoRA (r/alpha/target): {_res.unexpected_keys[:5]}")
+        print(f"INIT adapter từ {a.init_adapter} (optimizer + lịch LR mới)", flush=True)
     if a.resume:
         from peft import set_peft_model_state_dict
         from safetensors.torch import load_file

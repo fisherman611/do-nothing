@@ -26,8 +26,9 @@ print("torch", torch.__version__, "cuda", torch.version.cuda, torch.cuda.get_dev
 man = sorted(glob.glob("/kaggle/input/**/manifest_v2.json", recursive=True))
 assert man, "không thấy manifest_v2.json trong /kaggle/input"
 root = os.path.dirname(man[0])
-for f in ("manifest_v2.json", "lexicon_v2.json"):
-    shutil.copy(f"{root}/{f}", f"{DATA}/{f}")
+for f in ("manifest_v2.json", "lexicon_v2.json", "tts_manifest.json", "prev_noise_table.json"):
+    if os.path.exists(f"{root}/{f}"):
+        shutil.copy(f"{root}/{f}", f"{DATA}/{f}")
 def find_audio(base):
     return [d for d in glob.glob(f"{base}/**/train/audio", recursive=True) if os.path.isdir(d)]
 
@@ -42,6 +43,18 @@ os.symlink(os.path.dirname(aud[0]), f"{DATA}/train")
 n_wav = len(glob.glob(f"{DATA}/train/audio/*/*.wav"))
 print("data:", root, "| wav:", n_wav)
 assert n_wav > 5000, n_wav
+
+if os.path.exists(f"{DATA}/tts_manifest.json"):   # audio TTS (v2.1): <root>/tts/wav hoặc tts.zip
+    tw = [d for d in glob.glob("/kaggle/input/**/tts/wav", recursive=True) if os.path.isdir(d)]
+    if not tw:
+        zs = sorted(glob.glob("/kaggle/input/**/tts*.zip", recursive=True))
+        assert zs, "không thấy tts/wav hoặc tts.zip"
+        zipfile.ZipFile(zs[0]).extractall("/kaggle/temp/unz_tts")
+        tw = [d for d in glob.glob("/kaggle/temp/unz_tts/**/wav", recursive=True) if os.path.isdir(d)]
+    os.symlink(os.path.dirname(tw[0]), f"{DATA}/tts")
+    n_tts = len(glob.glob(f"{DATA}/tts/wav/*.wav"))
+    print("tts wav:", n_tts)
+    assert n_tts > 6000, n_tts
 
 # ---- resume: checkpoint từ output kernel trước ----
 for prev in sorted(glob.glob("/kaggle/input/**/out", recursive=True)):

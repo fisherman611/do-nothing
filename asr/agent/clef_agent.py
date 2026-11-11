@@ -172,6 +172,22 @@ def get_pack(args):
     return _PACK["p"], _PACK["lock"]
 
 
+def relax_empty(call, res, catalog):
+    """N1 (PLAN_v3_improve): tool đọc trả danh sách rỗng → call mới bỏ các tham số chữ TUỲ CHỌN (thường là truy vấn bị
+    ASR nghe sai, vd event_tickets.search{query}). Không áp dụng cho contacts, tham số id/enum. None nếu không nới được."""
+    spec = catalog.get(call["name"]) or {}
+    L = [v for v in res.values() if isinstance(v, list)] if isinstance(res, dict) and res.get("ok") else []
+    if spec.get("kind") != "read" or spec.get("app") == "contacts" or not L or any(L):
+        return None
+    P = spec.get("parameters", {}).get("properties", {})
+    req = set(spec.get("parameters", {}).get("required", []))
+    drop = [k for k, v in call["arguments"].items() if k not in req and isinstance(v, str)
+            and P.get(k, {}).get("type") == "string" and "enum" not in P.get(k, {}) and not k.endswith("id")]
+    if not drop:
+        return None
+    return {"name": call["name"], "arguments": {k: v for k, v in call["arguments"].items() if k not in drop}}
+
+
 def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     t0 = time.time()
     env = ToolEnv(args.split, item["id"], root=args.data)       # ToolEnv duy nhất của mẫu
@@ -182,6 +198,7 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     o = VLLMOracle(args, tok, labels)
     o.catalog = catalog
     n_invalid, sigs, err, steps = 0, {}, None, 0
+    retried, n_retry = set(), 0
     request = (asr.get(item["id"]) if asr is not None else item.get("audio_text", "")) or ""
     done = []
     tier1 = None
@@ -210,6 +227,14 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
             done.append(call["name"])
             F.append_step(msgs, call, res)
             seen.append((call["name"], res))
+            if args.retry_empty and call["name"] not in retried:          # N1: tìm rỗng → tìm lại không kèm chữ tuỳ chọn
+                call2 = relax_empty(call, res, catalog)
+                if call2 is not None and env.validate(call2["name"], call2["arguments"])["ok"]:
+                    retried.add(call["name"])
+                    res2 = env.call(call2["name"], call2["arguments"])
+                    F.append_step(msgs, call2, res2)
+                    seen.append((call2["name"], res2))
+                    n_retry += 1
             sig = A._dump(call)
             sigs[sig] = sigs.get(sig, 0) + 1
             if call["name"] == F.ASK or sigs[sig] >= 3:
@@ -219,7 +244,7 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     except Exception as e:
         err = f"{type(e).__name__}: {e}"
     return {"id": item["id"], "style": F.STYLE.get("name", "v1"), "fmt": F.fmt_opts(), "tool_calls": env.get_tool_calls(), "state_hash": env.get_state_hash(),
-            "steps": steps, "n_invalid": n_invalid, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
+            "steps": steps, "n_invalid": n_invalid, "n_retry": n_retry, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
             "prompt_tokens_sum": o.prompt_tokens, "anomaly": o.anomaly,
             "latency": round(time.time() - t0, 2), "error": err}
 
@@ -234,6 +259,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--asr", help="JSON {uid: transcript}; mặc định audio_text (chỉ train)")
     ap.add_argument("--log-probs", action="store_true", help="lấy xác suất nhãn mỗi lựa chọn (server cần --max-logprobs 64 --logprobs-mode processed_logprobs), ghi vào trường probs")
+    ap.add_argument("--retry-empty", action="store_true", help="N1: tool đọc trả rỗng → tìm lại một lần, bỏ tham số chữ tuỳ chọn")
     ap.add_argument("--ask-tau", type=float, help="Q1: hỏi lại nếu P(sys.ask_missing_info) > τ và tool argmax là tool ghi (PLAN_generalize_tools §3.1; τ = 0.2). Tự bật --log-probs")
     ap.add_argument("--asr-timings", help="JSON {id: giây ASR} cộng vào elapsed_seconds của <out>.timings.jsonl")
     ap.add_argument("--ids", help="file id, mỗi dòng một id")

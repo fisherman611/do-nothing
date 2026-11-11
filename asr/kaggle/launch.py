@@ -25,7 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ZAIC = os.path.dirname(HERE)
 WORK = os.environ.get("KAGGLE_WORK", os.path.join(ZAIC, ".kaggle_work"))   # thư mục tạm (không commit)
 KAGGLE = os.environ.get("KAGGLE_BIN", shutil.which("kaggle") or "kaggle")
-DATASET = "zaic-asr-v2-data"
+DATASET = os.environ.get("KAGGLE_DATASET", "zaic-asr-v2-data")   # L1/L2 (v2.1 + TTS): zaic-asr-v21-data
 ACCEL = "NvidiaTeslaT4"
 
 COMMON = ["--label-smoothing", "0.1", "--ctc-weight", "0.3", "--use-prompt", "--prompt-v2",
@@ -35,6 +35,15 @@ VARIANTS = {   # account = dòng trong file token
     "V2": dict(account=1, args=COMMON + ["--label-ent-prob", "0.5"]),
     "V3": dict(account=2, args=COMMON + ["--label-ent-prob", "0.5", "--all-distract-prob", "0.3"]),
 }
+# A4 large (11/11): công thức v2.1 của ASR v2 medium (TTS + tăng cường + prompt V2.1 + CTC/inter-CTC/KWS) trên PhoWhisper-large.
+# L1 = từ PhoWhisper-large gốc; L2 = từ v1 large đã fine-tune (fisherman611/pw-tmp-e46f). Dataset: KAGGLE_DATASET=zaic-asr-v21-data
+V21 = ["--label-smoothing", "0.1", "--ctc-weight", "0.3", "--inter-ctc-layer", "16", "--kws-weight", "0.1",
+       "--use-prompt", "--prompt-v2", "--label-ent-prob", "0.5", "--prompt-drop", "0.4", "--prev-noise", "0.7",
+       "--tts-manifest", "tts_manifest.json", "--audio-aug", "0.5", "--no-eval-lexicon", "--base-fp16",
+       "--eval-items", "150", "--eval-bs", "4", "--patience", "2", "--save-limit", "1", "--workers", "4"]
+VARIANTS["L1"] = dict(account=0, args=V21 + ["--epochs", "4", "--tag-suffix", "v21L"])
+VARIANTS["L2"] = dict(account=1, args=V21 + ["--model-id", "fisherman611/pw-tmp-e46f", "--model-revision", "",
+                                             "--epochs", "2", "--tag-suffix", "v21L_e46f"])
 TIME_BUDGET_H = 8.0   # giờ train trong phiên 12 h, chừa ~3.5 h cho eval cuối (3 điều kiện, beam 5) và lưu
 BS, ACCUM = 4, 8      # batch hiệu dụng 32 như v1; OOM thì driver tự giảm bs 2 × accum 16
 
@@ -67,8 +76,15 @@ def cmd_data(a):
     if not os.path.isdir(f"{ds}/train/audio"):
         os.makedirs(f"{ds}/train", exist_ok=True)
         shutil.copytree(os.path.join(ZAIC, a.data_root, "train", "audio"), f"{ds}/train/audio")
-    for f in ("manifest_v2.json", "lexicon_v2.json"):
-        shutil.copy(f"{src}/{f}", f"{ds}/{f}")
+    if a.v21:   # bộ v2.1 đã dùng train ASR v2 medium (data/tts_v2): manifest/lexicon mới + TTS + bảng nhiễu lượt trước
+        t = os.path.join(ZAIC, "data", "tts_v2")
+        for f in ("manifest_v2.json", "lexicon_v2.json", "tts_manifest.json", "prev_noise_table.json"):
+            shutil.copy(f"{t}/{f}", f"{ds}/{f}")
+        if not os.path.isdir(f"{ds}/tts/wav"):
+            shutil.copytree(f"{t}/wav", f"{ds}/tts/wav")
+    else:
+        for f in ("manifest_v2.json", "lexicon_v2.json"):
+            shutil.copy(f"{src}/{f}", f"{ds}/{f}")
     accounts = sorted({v["account"] for v in VARIANTS.values()}) if a.account is None else [a.account]
     for acc in accounts:
         user = username(acc)
@@ -132,6 +148,7 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("data")
     p.add_argument("--data-root", default="data/train+public_test")
+    p.add_argument("--v21", action="store_true", help="bộ v2.1 + TTS (cho L1/L2)")
     p.add_argument("--account", type=int)
     p = sub.add_parser("push")
     p.add_argument("variant", choices=VARIANTS)
