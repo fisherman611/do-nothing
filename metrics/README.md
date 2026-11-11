@@ -146,3 +146,35 @@ python -m metrics asr --references data/train+public_test/train/train.jsonl --pr
 Prediction thiếu hoặc có status lỗi/timeout được chấm như chuỗi rỗng, giữ nguyên mẫu số. Transcript thực tế vẫn lưu trong report để chẩn đoán. ID lặp/dư, thiếu transcript tham chiếu, timing âm/NaN/vô cực gây lỗi. `--require-all` bắt thiếu ID; khi chấm subset hãy truyền đúng file references của subset. Các mẫu chưa có timing không bị gán số đo giả; report nêu rõ số timing đã đo.
 
 Đây là metric nhận dạng tiếng nói, không phải điểm tool-call/state chính thức của cuộc thi. Chi tiết chuẩn edit-distance và empty reference dựa trên [jiwer](https://jitsi.github.io/jiwer/usage/).
+
+## Chỉ số chẩn đoán (không phải điểm chính thức)
+
+Hai lệnh dưới chỉ để phân tích lỗi; không ảnh hưởng `score`.
+
+### Chọn tool và độ đúng tham số
+
+```bash
+python -m metrics calls --gold agent/runs/clef/gold_train.jsonl --submission <run.jsonl> \
+    --catalog data/train+public_test/train/train_tools_catalog.json --output <calls.json>
+```
+
+- **Tool selection**: so tập tên tool (có đếm số lần) giữa bài nộp và gold → precision / recall / F1.
+- **Argument accuracy**: ghép các call cùng tên tool, rồi xếp từng tham số vào `match` / `wrong` / `missing` / `extra`, chia theo kiểu
+  tham số: `id`, `enum`, `bool`, `number`, `datetime`, `fuzzy` (`x-match: fuzzy`, token-F1 > 0,6), `text`, `other`.
+- Mỗi mẫu thuộc một lớp: `exact`, `tool_selection` (thiếu/thừa tool), `arguments` (đúng tool, sai tham số), `both`.
+- ID có trong gold mà không có trong bài nộp thì bỏ qua (dùng được gold của cả train cho một split con).
+
+### ASR chi tiết
+
+```bash
+python -m metrics asr-detail --references data/tts_v2/manifest_v2.json --split val \
+    --predictions agent/runs/asr/heldout.e46f.asr.json --audio-root data/train+public_test/train --output <asr_detail.json>
+```
+
+- **Entity error rate**: thực thể có trong câu chuẩn mà không có trong transcript. Thực thể có nhãn lấy từ `label_ents` / `hist_ents`
+  của manifest (loại `person`, `place`, `other_name`); thực thể bề mặt lấy từ chính câu chuẩn: `number` (token toàn chữ số),
+  `code` (chữ lẫn số hoặc viết hoa: SJC, VTV3, RV305), `foreign_word` (từ ASCII không phải âm tiết tiếng Việt).
+- **Code-switching WER**: WER của các câu có `foreign_word` hoặc `code`, so với câu thuần Việt.
+- WER/CER theo loại lượt (`final` / `history`).
+- **Real-time factor** = tổng giây xử lý / tổng giây audio, khi file dự đoán có `secs` và có `--audio-root`.
+- Chưa có: các chỉ số streaming (first partial, finalization, stability, endpointing) và concurrent streams — bài thi chấm file wav theo lô.

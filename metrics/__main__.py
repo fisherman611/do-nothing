@@ -86,6 +86,18 @@ def main(argv: list[str] | None = None) -> int:
     asr.add_argument("--output", type=Path, required=True)
     asr.add_argument("--worst-output", type=Path, help="Save 25 samples with highest normalized WER")
     asr.add_argument("--require-all", action="store_true")
+    calls = commands.add_parser("calls", help="Diagnostic: tool selection vs argument accuracy (not the official score)")
+    calls.add_argument("--gold", type=Path, required=True, help="Hashed gold JSONL; IDs missing from the submission are ignored")
+    calls.add_argument("--submission", type=Path, required=True)
+    calls.add_argument("--catalog", type=Path, required=True)
+    calls.add_argument("--output", type=Path, required=True)
+    detail = commands.add_parser("asr-detail", help="Diagnostic: entity error rate, code-switching WER, RTF")
+    detail.add_argument("--references", type=Path, required=True,
+                        help="JSON list (or {items: [...]}) with uid, text/ref, kind, label_ents/hist_ents/entities, audio")
+    detail.add_argument("--split", help="Keep only reference rows with this split value")
+    detail.add_argument("--predictions", type=Path, required=True, help="JSON {uid: text} or {hyps: {...}, secs: {...}}")
+    detail.add_argument("--audio-root", type=Path, help="Directory of the reference audio paths; enables real-time factor")
+    detail.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == "score":
@@ -123,6 +135,24 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "average-runs":
             _different_output(args.output, *args.reports)
             result = aggregate_five_runs([load_json(path) for path in args.reports])
+            write_json(args.output, result)
+            print(json.dumps(result["summary"], ensure_ascii=True, indent=2, allow_nan=False))
+        elif args.command == "calls":
+            from .call_detail import call_breakdown
+            _different_output(args.output, args.gold, args.submission, args.catalog)
+            result = call_breakdown(read_jsonl(args.submission), read_jsonl(args.gold),
+                                    ToolCatalog.from_dict(load_json(args.catalog)))
+            write_json(args.output, result)
+            print(json.dumps(result["summary"], ensure_ascii=True, indent=2, allow_nan=False))
+        elif args.command == "asr-detail":
+            from .asr_detail import evaluate_asr_detail, load_references, wav_durations
+            _different_output(args.output, args.references, args.predictions)
+            rows = load_references(load_json(args.references), args.split)
+            predicted = load_json(args.predictions)
+            hyps = predicted.get("hyps", predicted)
+            seconds = predicted.get("secs") if isinstance(predicted.get("secs"), dict) else None
+            durations = wav_durations(rows, args.audio_root) if args.audio_root and seconds else None
+            result = evaluate_asr_detail(hyps, rows, seconds=seconds, durations=durations)
             write_json(args.output, result)
             print(json.dumps(result["summary"], ensure_ascii=True, indent=2, allow_nan=False))
         elif args.command == "asr":
