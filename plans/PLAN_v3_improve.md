@@ -274,7 +274,7 @@ giải quyết luôn việc thiếu thước đo.
 
 ## Lộ trình đề xuất
 
-> **Cập nhật 11/11 16:40:** lộ trình và ưu tiên hiện hành nằm ở `plans/PLAN_48h_v3.md` (4 luồng song song: FC v3, ASR, luật lúc infer, Docker). Bảng dưới là bản cũ.
+> **Cập nhật 11/11 16:40:** lộ trình và ưu tiên hiện hành nằm ở `plans/PLAN_72h_v3.md` (4 luồng song song: FC v3, ASR, luật lúc infer, Docker). Bảng dưới là bản cũ.
 
 | Giai đoạn | Việc | Thời gian | Tiền |
 |---|---|---|---|
@@ -301,4 +301,4 @@ Giai đoạn 1–3 nằm trong ngân sách hiện có. Giai đoạn 4–5 cần 
 - **N3 cho thấy model lớn quan trọng hơn data mới**: v1 large (data cũ) 62.04 > v2 medium (TTS + aug + prompt V2.1) 59.
 - **L2** (Kaggle, đang chạy): v1 large `e46f` + 2 epoch data v2.1 (TTS, aug, prompt V2.1, CTC/inter-CTC/KWS). L1 (large gốc + v2.1, 4 epoch) đã dừng; chạy trên Modal A100-80GB/H100 ước $7–8.
 - Sửa `asr_train.py`: inter-CTC tính layer_norm ở fp32 (lỗi Float/Half khi `--base-fp16` trên T4).
-- **Metric chẩn đoán mới** (`python -m metrics calls`, `python -m metrics asr-detail`) và kết quả phân tích: xem `plans/PLAN_48h_v3.md` §1b.
+- **Metric chẩn đoán mới** (`python -m metrics calls`, `python -m metrics asr-detail`) và kết quả phân tích: xem `plans/PLAN_72h_v3.md` §1b.
