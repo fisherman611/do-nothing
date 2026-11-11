@@ -16,7 +16,13 @@ import unicodedata
 # (content, subject, snippet, message), id, giờ, số.
 ENT_FIELDS = ("name", "title", "members", "channels", "channel", "artist", "location", "provider", "from_name",
               "from", "destination", "origin", "airline", "station", "bank", "assignee", "carrier", "author")
-BUDGET = {"conv": 110, "profile": 40, "ents": 70}   # 1 (SOP) + 220 + 4 token ép + 200 token sinh = 425 < 448
+BUDGET = {"conv": 120, "profile": 40, "ents": 60}   # 1 (SOP) + 220 + 4 token ép + 200 token sinh = 425 < 448
+# v2.1 (PLAN_48h A4.0): bỏ "tên" không phải tên riêng — tiêu đề lịch/nhắc việc/ghi chú, tên thiết bị nhà thông minh
+# ("họp team", "đèn phòng ngủ") chiếm hết ngân sách mà không giúp nhận dạng.
+GENERIC_TITLE_APPS = {"calendar", "reminders", "tasks", "notes", "alarm", "home_automation", "household_chores", "medication"}
+DEVICE_NAME_APPS = {"smart_home", "home_security", "door_lock", "robot_vacuum", "appliances", "home_energy"}
+ARG_NAME_KEYS = {"query", "name", "recipient", "contact", "artist", "destination", "origin", "location", "place", "station",
+                 "to", "from_place", "to_place", "channel", "provider", "bank", "airline", "restaurant", "symbol"}
 SOP = "<|startofprev|>"
 _SENT_END = re.compile(r"[.?!…]\s*$")
 
@@ -46,7 +52,24 @@ def ents_of(results, app):
                 walk(v)
 
     walk(results)
+    out = [e for e in out if not (e[1] == "title" and app in GENERIC_TITLE_APPS) and not (e[1] == "name" and app in DEVICE_NAME_APPS)]
     return [e for e in out if e[2].strip() and not re.match(r"^[\d\W]", e[2])]
+
+
+def call_ents(calls):
+    """Giá trị chuỗi trong tham số tool_calls: tên người/địa điểm/bài hát người dùng vừa nhắc. Bỏ id, enum, ngày giờ,
+    câu dài (nội dung tin nhắn). Trả [[app, 'arg', value], ...]."""
+    out = []
+    for c in calls or []:
+        app = c["name"].split(".")[0]
+        for k, v in (c.get("arguments") or {}).items():
+            if not isinstance(v, str) or not v.strip() or len(v) > 40 or len(v.split()) > 5:
+                continue
+            if re.fullmatch(r"[a-z0-9_\-:+.@/]+", v) or re.match(r"^\d", v):      # id, enum, ngày giờ, số
+                continue
+            if k in ARG_NAME_KEYS or re.search(r"[A-ZĐÀ-Ỹ]", v):
+                out.append([app, "arg", v.strip()])
+    return out
 
 
 def _turn_ents(turn):
@@ -54,11 +77,14 @@ def _turn_ents(turn):
     out = []
     for c, r in zip(calls, res):
         out += ents_of(r, c["name"].split(".")[0])
-    return out
+    return out + call_ents(calls)
 
 
-def profile_text(ctx):
+def profile_text(ctx, short=True):
+    """short (v2.1): chỉ tên + thành phố (địa chỉ đầy đủ ít khi được nói ra, tốn ~30 token)."""
     p = ctx.get("user_profile") or {}
+    if short:
+        return ", ".join(x for x in (p.get("name", ""), p.get("city", "")) if x)
     parts = [p.get(k, "") for k in ("name", "home_address", "work_address")]
     city = p.get("city", "")
     if city and not any(city in x for x in parts):
@@ -94,7 +120,7 @@ def items_from_row(row, split=None, with_label=False):
     if with_label:
         lab = row["label"]
         it["label_ents"] = [e for c, r in zip(lab["tool_calls"], lab["tool_results"])
-                            for e in ents_of(r, c["name"].split(".")[0])]
+                            for e in ents_of(r, c["name"].split(".")[0])] + call_ents(lab["tool_calls"])
     out.append(it)
     return out
 
@@ -125,12 +151,15 @@ def _dedup_keep_last(vals):
     return out[::-1]
 
 
-def conv_text(it, hyps=None):
-    """Như prev_text_of của v1: hyps (uid -> transcript ASR) thay nhãn thật lượt user (điều kiện thi)."""
+def conv_text(it, hyps=None, noise=None):
+    """Như prev_text_of của v1: hyps (uid -> transcript ASR) thay nhãn thật lượt user (điều kiện thi).
+    noise (chỉ lúc train): hàm text -> text làm nhiễu lượt user như lỗi ASR, để train khớp với điều kiện thi."""
     parts = []
     for role, text, uid in it.get("prev", []):
         if role == "user" and hyps is not None:
             text = hyps.get(uid, "")
+        elif role == "user" and noise is not None and text:
+            text = noise(text)
         if text:
             parts.append(text.strip())
     return " ".join(parts)
@@ -157,7 +186,7 @@ def build_prompt(tok, it, hyps=None, extra_ents=(), train=False, rng=None, cfg=N
     hồ sơ, hist_ents và extra_ents (lexicon). Train: drop ngẫu nhiên từng phần, thêm label_ents với xác suất
     cfg['label_ent_prob'], tên gây nhiễu từ cfg['pool'] (field -> values, chỉ split train)."""
     cfg = cfg or {}
-    conv = conv_text(it, hyps)
+    conv = conv_text(it, hyps, noise=cfg.get("prev_noise") if train else None)
     prof = it.get("profile", "")
     ents = [e[2] for e in it.get("hist_ents", [])] + list(extra_ents)
     if train:

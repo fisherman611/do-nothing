@@ -21,8 +21,75 @@ def norm(s):
 
 
 def load_wavs(items):
+    """item['root'] (mặc định 'train'): thư mục con của DATA chứa audio — 'tts' cho audio tổng hợp (PLAN_48h A3)."""
     import soundfile as sf
-    return [sf.read(f"{DATA}/train/{i['audio']}")[0].astype("float32") for i in items]
+    out = []
+    for i in items:
+        w = sf.read(f"{DATA}/{i.get('root', 'train')}/{i['audio']}")[0].astype("float32")
+        out.append(w.mean(1) if w.ndim > 1 else w)
+    return out
+
+
+def augment_wav(wav, rng):
+    """Tăng cường audio thật (PLAN_48h A4.0(4)): đổi tốc độ 0.9/1.1, nhiễu nền SNR 10–25 dB (trắng/hồng), vang nhẹ.
+    Ít nhất một phép; nhãn giữ nguyên. numpy/scipy, chạy trong worker của DataLoader."""
+    import numpy as np
+    ops = [o for o, p in (("speed", 0.5), ("noise", 0.6), ("reverb", 0.3)) if rng.random() < p] or [rng.choice(["speed", "noise"])]
+    if "speed" in ops:
+        f = rng.choice([0.9, 1.1])
+        n = int(len(wav) / f)
+        wav = np.interp(np.linspace(0, len(wav) - 1, n), np.arange(len(wav)), wav).astype("float32")
+    if "reverb" in ops:
+        from scipy.signal import fftconvolve
+        rt60 = rng.uniform(0.15, 0.5)
+        t = np.arange(int(rt60 * 16000)) / 16000
+        rir = np.random.RandomState(rng.randrange(1 << 30)).randn(len(t)) * np.exp(-6.9 * t / rt60) * 0.3
+        rir[0] = 1.0
+        peak = np.abs(wav).max() + 1e-8
+        wav = fftconvolve(wav, rir)[: len(wav)]
+        wav = (wav * peak / (np.abs(wav).max() + 1e-8)).astype("float32")
+    if "noise" in ops:
+        rs = np.random.RandomState(rng.randrange(1 << 30))
+        noise = rs.randn(len(wav))
+        if rng.random() < 0.5:                                 # nhiễu hồng (lọc 1/f)
+            from scipy.signal import lfilter
+            noise = lfilter([0.049922035, -0.095993537, 0.050612699, -0.004408786], [1, -2.494956002, 2.017265875, -0.522189400], noise)
+        snr = rng.uniform(10, 25)
+        ps, pn = float(np.mean(wav ** 2)) + 1e-10, float(np.mean(noise ** 2)) + 1e-10
+        wav = (wav + noise * np.sqrt(ps / (pn * 10 ** (snr / 10)))).astype("float32")
+    return np.clip(wav, -1.0, 1.0)
+
+
+def make_prev_noise(table, names, prob):
+    """Hàm làm nhiễu lượt user trước trong prompt lúc train (A4.0(1)): giữ hoa/thường và dấu câu như đầu ra ASR thật;
+    thay từ theo bảng nhầm lẫn (table: từ thường → [[từ thay, trọng số], ...]), thỉnh thoảng đổi tên riêng thành tên khác
+    (để model không chép mù tên trong ngữ cảnh), rơi từ. Áp cho một lượt với xác suất `prob`."""
+    import random
+    import re
+
+    def fn(text):
+        if random.random() >= prob:
+            return text
+        out = []
+        toks = re.findall(r"\w+|[^\w\s]+|\s+", text)
+        for k, t in enumerate(toks):
+            if not re.match(r"\w", t):
+                out.append(t)
+                continue
+            lw, r = t.lower(), random.random()
+            if lw in table and r < 0.5:
+                alts = table[lw]
+                a = random.choices([x[0] for x in alts], weights=[x[1] for x in alts])[0]
+                out.append(a.capitalize() if t[0].isupper() and a else a)
+            elif t[0].isupper() and k > 0 and names and r < 0.12:      # tên riêng giữa câu → tên khác
+                out.append(random.choice(names).split()[-1])
+            elif r < 0.02:
+                continue                                               # rơi từ
+            else:
+                out.append(t)
+        return re.sub(r"\s+", " ", "".join(out)).strip()
+
+    return fn
 
 
 SOP = "<|startofprev|>"
@@ -137,10 +204,18 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
           prompt_v2: bool = False, label_ent_prob: float = 0.0, all_distract_prob: float = 0.0,
           n_distract_max: int = 10, section_drop: float = 0.3, bs: int = 0, accum: int = 0,
           max_items: int = 0, eval_items: int = 0, base_fp16: bool = False, time_budget_h: float = 0.0,
-          eval_bs: int = 16, final_eval: bool = True, commit=None):
+          eval_bs: int = 16, final_eval: bool = True,
+          model_id: str = MODEL_ID, model_revision: str = MODEL_REVISION, tts_manifest: str = "",
+          inter_ctc_layer: int = 0, kws_weight: float = 0.0, audio_aug: float = 0.0, prev_noise: float = 0.0,
+          patience: int = 2, save_limit: int = 1, eval_lexicon: bool = True, workers: int = 4, tag_suffix: str = "",
+          commit=None):
     """commit: hàm gọi sau mỗi lần lưu (Modal: volume.commit). time_budget_h > 0: dừng train, lưu checkpoint khi
     hết giờ (Kaggle 12 h/phiên), trả về {"status": "incomplete"} để phiên sau resume. eval_items: chỉ eval giữa các
-    epoch trên N utt đầu của val (eval cuối vẫn trên toàn bộ val). base_fp16: nạp model gốc fp16, LoRA fp32 (GPU 16 GB)."""
+    epoch trên N utt đầu của val (eval cuối vẫn trên toàn bộ val). base_fp16: nạp model gốc fp16, LoRA fp32 (GPU 16 GB).
+    v2.1 (PLAN_48h A4): model_id/model_revision (vd vinai/PhoWhisper-medium); tts_manifest: file json trong DATA, các item
+    split=="train" được thêm vào train (audio ở DATA/tts); inter_ctc_layer > 0: thêm CTC ở lớp encoder đó (chung ctc_head);
+    kws_weight > 0: head phụ dự đoán tên nào trong prompt được nói (BCE); audio_aug: xác suất tăng cường audio thật;
+    prev_noise: xác suất làm nhiễu mỗi lượt user trước trong prompt (cần DATA/prev_noise_table.json)."""
     import time
     t_start = time.time()
     commit_out = commit or (lambda: None)
@@ -157,6 +232,7 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
     manifest = json.load(open(f"{DATA}/manifest_v2.json" if prompt_v2 else f"{DATA}/manifest.json"))
     tr = [x for x in manifest if full_data or x["split"] == "train"]
     va = [x for x in manifest if x["split"] == "val"]
+    tts = [x for x in json.load(open(f"{DATA}/{tts_manifest}")) if x["split"] == "train"] if tts_manifest else []
     va_epoch = va
     if eval_items:
         sids = sorted({x["sid"] for x in va})[: max(1, eval_items // 3)]
@@ -164,9 +240,14 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
     if max_items:   # smoke test: vài hội thoại đầu, giữ nguyên thứ tự lượt
         keep = {x["sid"] for x in manifest[:max_items]}
         tr, va = [x for x in tr if x["sid"] in keep] or tr[:max_items], [x for x in va][:max_items]
-    proc = WhisperProcessor.from_pretrained(MODEL_ID, revision=MODEL_REVISION)
+        tts = tts[: max_items // 2]
+    n_real = len(tr)
+    tr = tr + tts
+    print(f"train: {n_real} thật + {len(tts)} TTS = {len(tr)} | val {len(va)} | model {model_id}")
+    rev = model_revision or None
+    proc = WhisperProcessor.from_pretrained(model_id, revision=rev)
     proc.tokenizer.set_prefix_tokens(language="vi", task="transcribe")
-    model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID, revision=MODEL_REVISION,
+    model = WhisperForConditionalGeneration.from_pretrained(model_id, revision=rev,
                                                             torch_dtype=torch.float16 if base_fp16 else torch.float32)
     model.config.forced_decoder_ids = None
     model.generation_config.forced_decoder_ids = None
@@ -192,7 +273,25 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         used = sorted({t for x in tr for t in proc.tokenizer(x["text"]).input_ids if t < eos})
         tok_map = {t: k + 1 for k, t in enumerate(used)}
         model.ctc_head = torch.nn.Linear(model.config.d_model, len(used) + 1)
-        print("ctc vocab:", len(used) + 1, "alpha:", ctc_weight)
+        print("ctc vocab:", len(used) + 1, "alpha:", ctc_weight, "| inter-CTC lớp:", inter_ctc_layer or "tắt")
+    if kws_weight > 0:
+        d_model = model.config.d_model
+
+        class KWSHead(torch.nn.Module):
+            """Tên trong prompt có được nói không: truy vấn = trung bình embedding token của tên; chú ý lên các khung encoder."""
+
+            def __init__(self):
+                super().__init__()
+                self.a, self.q = torch.nn.Linear(d_model, 256), torch.nn.Linear(d_model, 256)
+                self.b = torch.nn.Parameter(torch.zeros(1))
+
+            def forward(self, frames, queries):               # (T, d), (n, d) → (n,)
+                A, Q = self.a(frames), self.q(queries)
+                att = torch.softmax(Q @ A.T / 16.0, dim=-1)
+                return ((att @ A) * Q).sum(-1) / 16.0 + self.b
+
+        model.kws_head = KWSHead()
+        print("kws head: weight", kws_weight)
     pad = proc.tokenizer.pad_token_id
     lex, pcfg = {}, {}
     if prompt_v2:
@@ -201,8 +300,15 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         for fields in lex.values():
             for f, vals in fields.items():
                 pool.setdefault(f, []).extend(vals)
+        for x in tts:                                          # tên trong câu TTS cũng làm tên gây nhiễu
+            pool.setdefault("name", []).extend(e[2] for e in x.get("label_ents") or [])
+        pool = {f: sorted(set(v)) for f, v in pool.items()}
         pcfg = dict(label_ent_prob=label_ent_prob, all_distract_prob=all_distract_prob,
                     n_distract_max=n_distract_max, section_drop=section_drop, pool=pool)
+        if prev_noise > 0:
+            table = json.load(open(f"{DATA}/prev_noise_table.json"))
+            pcfg["prev_noise"] = make_prev_noise(table, pool.get("name", []), prev_noise)
+            print(f"prev noise: p={prev_noise}, bảng {len(table)} từ")
         print("prompt v2:", {k: v for k, v in pcfg.items() if k != "pool"}, "| lexicon", len(lex), "app")
     if use_prompt:
         n_prev = sum(bool(x.get("prev")) for x in tr)
@@ -219,16 +325,24 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
             x = self.items[i]
             ids, w = token_weights(x["text"], proc.tokenizer, rare, entity_weight)
             wav = load_wavs([x])[0]
-            p = []
+            if self.training and audio_aug > 0 and x.get("root", "train") == "train" and random.random() < audio_aug:
+                wav = augment_wav(wav, random)
+            p, kw_c = [], []
             # Train: bỏ prompt ngẫu nhiên để model không phụ thuộc hoàn toàn vào ngữ cảnh (lượt đầu không có).
             # Eval: luôn có prompt (= nhãn thật của lượt trước, "oracle").
             if use_prompt and (not self.training or random.random() >= prompt_drop):
                 if prompt_v2:   # eval: tất định, chỉ nguồn có lúc test (hội thoại dùng nhãn lượt trước)
-                    p = bp.build_prompt(proc.tokenizer, x, train=self.training, rng=random, cfg=pcfg)[0]
+                    p, ents = bp.build_prompt(proc.tokenizer, x, train=self.training, rng=random, cfg=pcfg)
+                    if kws_weight > 0 and self.training:
+                        txt = f" {bp.norm(x['text'])} "
+                        for e in ents[-12:]:
+                            ids_e = proc.tokenizer(" " + e, add_special_tokens=False).input_ids[:12]
+                            if ids_e:
+                                kw_c.append([ids_e, int(f" {bp.norm(e)} " in txt)])
                 else:
                     p = prompt_ids_for(proc.tokenizer, prev_text_of(x), prompt_max_tokens)
             return {"f": proc.feature_extractor(wav, sampling_rate=16000).input_features[0],
-                    "l": ids, "w": w, "n": len(wav), "p": p}
+                    "l": ids, "w": w, "n": len(wav), "p": p, "k": kw_c}
 
     def collate(batch):
         feats = torch.tensor(np.stack([x["f"] for x in batch]))
@@ -264,6 +378,9 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
             batch_out["ctc_tlens"] = torch.tensor([len(row) for row in tg])
             # encoder Whisper: 1 frame / 320 mẫu (50 frame/s), tối đa 1500
             batch_out["ctc_ilens"] = torch.tensor([min(1500, -(-x["n"] // 320)) for x in batch])
+        if kws_weight > 0:
+            batch_out["kws"] = [x["k"] for x in batch]
+            batch_out["kws_ilens"] = [min(1500, -(-x["n"] // 320)) for x in batch]
         return batch_out
 
     def metrics(p):
@@ -283,7 +400,9 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
             weights = inputs.pop("loss_weights", None)
             inputs.pop("prompt_ids", None)
             ctc = [inputs.pop(k, None) for k in ("ctc_targets", "ctc_tlens", "ctc_ilens")]
-            out = model(**inputs)
+            kws, kws_il = inputs.pop("kws", None), inputs.pop("kws_ilens", None)
+            m = self.accelerator.unwrap_model(model)
+            out = model(**inputs, output_hidden_states=True) if inter_ctc_layer > 0 else model(**inputs)
             logits = out.logits.float()
             ce = torch.nn.functional.cross_entropy(
                 logits.reshape(-1, logits.size(-1)), labels.reshape(-1), ignore_index=-100,
@@ -293,14 +412,31 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
             loss = (ce * w).sum() / w.sum()
             if ctc_weight > 0 and ctc[0] is not None:
                 # L = (1 - alpha) * L_attention + alpha * L_ctc (Watanabe et al., 2017)
-                lp = torch.log_softmax(self.accelerator.unwrap_model(model).ctc_head(out.encoder_last_hidden_state).float(), dim=-1)
-                l_ctc = torch.nn.functional.ctc_loss(lp.transpose(0, 1), ctc[0], ctc[2], ctc[1],
-                                                     blank=0, reduction="mean", zero_infinity=True)
+                def ctc_of(h):
+                    lp = torch.log_softmax(m.ctc_head(h).float(), dim=-1)
+                    return torch.nn.functional.ctc_loss(lp.transpose(0, 1), ctc[0], ctc[2], ctc[1],
+                                                        blank=0, reduction="mean", zero_infinity=True)
+                l_ctc = ctc_of(out.encoder_last_hidden_state)
+                if inter_ctc_layer > 0:      # Intermediate CTC: cùng head, trên lớp giữa (qua layer_norm cuối của encoder)
+                    mid = m.get_encoder().layer_norm(out.encoder_hidden_states[inter_ctc_layer])
+                    l_ctc = 0.5 * (l_ctc + ctc_of(mid))
                 loss = (1 - ctc_weight) * loss + ctc_weight * l_ctc
+            if kws_weight > 0 and kws is not None and any(kws):
+                H = out.encoder_last_hidden_state.float()
+                emb = m.get_input_embeddings()
+                lg, tg = [], []
+                for b_i, cands in enumerate(kws):
+                    if not cands:
+                        continue
+                    Q = torch.stack([emb(torch.tensor(c[0], device=H.device)).float().mean(0) for c in cands])
+                    lg.append(m.kws_head(H[b_i, : int(kws_il[b_i])], Q))
+                    tg += [float(c[1]) for c in cands]
+                l_kws = torch.nn.functional.binary_cross_entropy_with_logits(torch.cat(lg), torch.tensor(tg, device=H.device))
+                loss = loss + kws_weight * l_kws
             return (loss, out) if return_outputs else loss
 
         def prediction_step(self, model, inputs, prediction_loss_only, ignore_keys=None, **k):
-            drop = ("loss_weights", "ctc_targets", "ctc_tlens", "ctc_ilens")
+            drop = ("loss_weights", "ctc_targets", "ctc_tlens", "ctc_ilens", "kws", "kws_ilens")
             prompts = inputs.pop("prompt_ids", None)
             inputs = {key: v for key, v in inputs.items() if key not in drop}
             if not use_prompt:
@@ -329,6 +465,8 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
                 d = f"{args.output_dir}/checkpoint-{state.global_step}"
                 if os.path.isdir(d):
                     torch.save(model.ctc_head.state_dict(), f"{d}/ctc_head.pt")
+                    if kws_weight > 0:
+                        torch.save(model.kws_head.state_dict(), f"{d}/kws_head.pt")
             commit_out()
 
     class TimeBudget(TrainerCallback):
@@ -340,12 +478,15 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
                 control.should_save = True
                 control.should_training_stop = True
 
-    weighted = entity_weight != 1.0 or ctc_weight > 0 or use_prompt   # dùng trainer tự viết
+    weighted = entity_weight != 1.0 or ctc_weight > 0 or use_prompt or kws_weight > 0   # dùng trainer tự viết
     tag = (f"lora_ls{label_smoothing}{'_w' + str(entity_weight) if entity_weight != 1.0 else ''}"
            f"{'_ctc' + str(ctc_weight) if ctc_weight > 0 else ''}{'_prompt' if use_prompt else ''}"
            f"{'_pv2' if prompt_v2 else ''}{'_le' + str(label_ent_prob) if label_ent_prob else ''}"
            f"{'_ad' + str(all_distract_prob) if all_distract_prob else ''}"
-           f"{'_full' if full_data else ''}{f'_smoke{max_items}e{epochs}' if max_items else ''}")
+           f"{'_full' if full_data else ''}{f'_smoke{max_items}e{epochs}' if max_items else ''}"
+           f"{'_' + model_id.split('-')[-1] if model_id != MODEL_ID else ''}{'_ictc' + str(inter_ctc_layer) if inter_ctc_layer else ''}"
+           f"{'_kws' + str(kws_weight) if kws_weight else ''}{'_tts' if tts else ''}{'_aug' if audio_aug else ''}"
+           f"{'_' + tag_suffix if tag_suffix else ''}")
     # Có prompt thì chuỗi decoder dài ~3x → batch 16 bị OOM trên A100-80GB; giữ 32 mẫu/bước bằng accumulation.
     if not bs:
         bs, accum = (8, 4) if use_prompt else (16, 2)
@@ -355,15 +496,15 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         learning_rate=lr, warmup_ratio=0.1, lr_scheduler_type="cosine", num_train_epochs=epochs,
         bf16=on_bf16, fp16=not on_bf16, gradient_checkpointing=bs < 8,
         gradient_checkpointing_kwargs={"use_reentrant": False}, label_smoothing_factor=0.0 if weighted else label_smoothing,
-        eval_strategy="epoch", save_strategy="epoch", save_total_limit=1, save_only_model=False,   # giữ optimizer/scheduler để resume được
+        eval_strategy="epoch", save_strategy="epoch", save_total_limit=save_limit, save_only_model=False,   # giữ optimizer/scheduler để resume được
         
         load_best_model_at_end=True, metric_for_best_model="wer", greater_is_better=False,
         predict_with_generate=True, generation_max_length=200, per_device_eval_batch_size=16,
         logging_steps=20, report_to=[], remove_unused_columns=False, label_names=["labels"],
-        dataloader_num_workers=4, seed=seed)
+        dataloader_num_workers=workers, seed=seed)
     trainer = (WeightedTrainer if weighted else Seq2SeqTrainer)(model=model, args=args, train_dataset=DS(tr, True), eval_dataset=DS(va_epoch, False),
                              data_collator=collate, compute_metrics=metrics,
-                             callbacks=[EarlyStoppingCallback(early_stopping_patience=2), CommitCkpt(), TimeBudget()])
+                             callbacks=[EarlyStoppingCallback(early_stopping_patience=patience), CommitCkpt(), TimeBudget()])
     from transformers.trainer_utils import get_last_checkpoint
     last = None
     if resume and os.path.isdir(args.output_dir):
@@ -374,6 +515,8 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
             else:
                 print("checkpoint không có ctc_head.pt (bản cũ) → train lại từ đầu")
                 last = None
+        if last and kws_weight > 0 and os.path.exists(f"{last}/kws_head.pt"):
+            model.kws_head.load_state_dict(torch.load(f"{last}/kws_head.pt"))
     print("resume from:", last)
     trainer.train(resume_from_checkpoint=last)
     if TimeBudget.stopped:
@@ -416,16 +559,24 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         json.dump({"(a) wer": score(refs, hyp), "pairs": [(x["uid"], x["text"], h) for x, h in zip(va, hyp)]},
                   open(f"{OUT}/{tag}_partial_a.json", "w"), ensure_ascii=False)
         commit_out()
-        hyp_b = transcribe_conv(model, proc, va, builder=build_b)
         hyp_none = transcribe(model, proc, va, bs=eval_bs)
-        res = score(refs, hyp)
-        res["names"] = bp.name_stats(refs, hyp, [ents_a[x["uid"]] for x in va])
-        extra = {"res_lexicon": dict(score(refs, hyp_b), names=bp.name_stats(refs, hyp_b, [ents_b[x["uid"]] for x in va])),
-                 "res_no_prompt": dict(score(refs, hyp_none), names=bp.name_stats(refs, hyp_none, [ents_a[x["uid"]] for x in va])),
-                 "pairs_lexicon": [(x["uid"], x["text"], h, ents_b[x["uid"]]) for x, h in zip(va, hyp_b)],
-                 "pairs_no_prompt": [(x["uid"], x["text"], h) for x, h in zip(va, hyp_none)],
-                 "prompt_ents": {x["uid"]: ents_a[x["uid"]] for x in va}}
-        print("(a):", res, "\n(b) lexicon:", extra["res_lexicon"], "\nno prompt:", extra["res_no_prompt"])
+        if not eval_lexicon:                      # v2.1: không dùng lexicon train → bỏ lượt giải mã (b)
+            res = score(refs, hyp)
+            res["names"] = bp.name_stats(refs, hyp, [ents_a[x["uid"]] for x in va])
+            extra = {"res_no_prompt": dict(score(refs, hyp_none), names=bp.name_stats(refs, hyp_none, [ents_a[x["uid"]] for x in va])),
+                     "pairs_no_prompt": [(x["uid"], x["text"], h) for x, h in zip(va, hyp_none)],
+                     "prompt_ents": {x["uid"]: ents_a[x["uid"]] for x in va}}
+            print("(a):", res, "\nno prompt:", extra["res_no_prompt"])
+        hyp_b = transcribe_conv(model, proc, va, builder=build_b) if eval_lexicon else None
+        if eval_lexicon:
+            res = score(refs, hyp)
+            res["names"] = bp.name_stats(refs, hyp, [ents_a[x["uid"]] for x in va])
+            extra = {"res_lexicon": dict(score(refs, hyp_b), names=bp.name_stats(refs, hyp_b, [ents_b[x["uid"]] for x in va])),
+                     "res_no_prompt": dict(score(refs, hyp_none), names=bp.name_stats(refs, hyp_none, [ents_a[x["uid"]] for x in va])),
+                     "pairs_lexicon": [(x["uid"], x["text"], h, ents_b[x["uid"]]) for x, h in zip(va, hyp_b)],
+                     "pairs_no_prompt": [(x["uid"], x["text"], h) for x, h in zip(va, hyp_none)],
+                     "prompt_ents": {x["uid"]: ents_a[x["uid"]] for x in va}}
+            print("(a):", res, "\n(b) lexicon:", extra["res_lexicon"], "\nno prompt:", extra["res_no_prompt"])
     elif use_prompt:
         hyp_oracle = transcribe(model, proc, va, prompts=[prev_text_of(x) for x in va], max_tokens=prompt_max_tokens)
         hyp_none = transcribe(model, proc, va, bs=eval_bs)
@@ -448,7 +599,9 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
                                       "n_distract_max": n_distract_max, "section_drop": section_drop, "budget": bp.BUDGET,
                                       "bs": bs, "accum": accum, "bf16": on_bf16, "base_fp16": base_fp16,
                                       "eval_items": eval_items, "eval_bs": eval_bs, "gpu": torch.cuda.get_device_name(),
-                                      "revision": MODEL_REVISION},
+                                      "revision": model_revision, "model_id": model_id,
+                                      "tts_manifest": tts_manifest, "n_real": n_real, "n_tts": len(tts), "inter_ctc_layer": inter_ctc_layer,
+                                      "kws_weight": kws_weight, "audio_aug": audio_aug, "prev_noise": prev_noise, "patience": patience},
                "log": log_history,
                "pairs": [(x["uid"], x["text"], h) for x, h in zip(va, hyp)], **extra},
               open(f"{out}/eval.json", "w"), ensure_ascii=False, indent=1)

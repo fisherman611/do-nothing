@@ -37,6 +37,8 @@ MODELS = {
     # Cùng model, trả logprob của nhãn (PLAN_generalize_tools §3.0): tới 64 nhãn (Q1 có tới 52 phương án), logprob
     # tính sau logits processor (mask allowed_token_ids) → softmax chỉ trên nhãn
     "mid_lp": ("/hf/qwen35_4b_fmtA_mid_e1", None, ["--max-logprobs", "64", "--logprobs-mode", "processed_logprobs"]),
+    # F2 (PLAN_48h): Clef trên fmtA_48e_20k (hai tầng + nhiễu ASR v2), gộp bằng merge_local.py trên myserver
+    "qwen35_4b_fmtA_48e": ("/hf/qwen35_4b_fmtA_48e", None, ["--max-logprobs", "64", "--logprobs-mode", "processed_logprobs"]),
 }
 
 # LLM_APP=<tên> lúc deploy để tạo app riêng (không đụng endpoint của app đang chạy eval)
@@ -131,3 +133,10 @@ def serve_qwen35_4b_fmtA_mid_e1():
 @modal.web_server(8000, startup_timeout=1200)
 def serve_mid_lp():
     _serve("mid_lp")
+
+
+@_fn()
+@modal.concurrent(max_inputs=256)
+@modal.web_server(8000, startup_timeout=1200)
+def serve_qwen35_4b_fmtA_48e():
+    _serve("qwen35_4b_fmtA_48e")

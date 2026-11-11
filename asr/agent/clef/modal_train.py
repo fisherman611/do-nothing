@@ -34,8 +34,9 @@ image = (modal.Image.debian_slim(python_version="3.12")
 # GPU: env CLEF_GPU lúc deploy/chạy (A100-80GB, H100, ...). W&B: cần secret `wandb` (WANDB_API_KEY=...) — gắn luôn,
 # không đặt điều kiện theo env (container không thấy env lúc deploy → lệch số dependency, fail startup).
 # Tắt log một lần chạy: args có '--wandb', ''
+# W&B: key lấy từ env WANDB_API_KEY lúc deploy (luôn đúng 1 secret → không lệch số dependency; rỗng = không log W&B)
 @app.function(image=image, gpu=os.environ.get("CLEF_GPU", "A100-80GB"), volumes={"/hf": hf, "/data": vol},
-              timeout=12 * 3600, secrets=[modal.Secret.from_name("wandb")])
+              timeout=12 * 3600, secrets=[modal.Secret.from_dict({"WANDB_API_KEY": os.environ.get("WANDB_API_KEY", "")})])
 def train(args: list, data: str = "data", run: str = "clef_lora"):
     """data: thư mục con của /data chứa train.jsonl + val_in.jsonl (+ *.meta.json), vd 'data', 'fmtA', 'fmtB'.
     run: tên thư mục output trong /data/runs."""
