@@ -81,6 +81,92 @@ Không dùng: 4 chỉ số streaming và concurrent streams (bài thi chấm fil
 | Không tất định | hai lần chạy cùng cấu hình lệch 6/634 mẫu; bộ chấm có chế độ trung bình 5 lần | **D1** cố định seed + greedy; **D3** chạy lại 2 lần, so khớp |
 | Quyết định hỏi lại khi có lỗi ASR | M2: thiếu 8 lần `sys.ask_missing_info` | thêm chỉ số theo dõi ở cổng **A3 / A5** |
 
+## 1d. Kết quả A0b — 41 mẫu val_in SẠCH mà `fmtA_48e` vẫn sai (11/11 tối)
+
+Đọc tay từng mẫu (nguồn: `metrics calls` trên `fmtA_48e_notau.val_in`). Mỗi mẫu xếp vào một nhóm chính:
+
+| Nhóm | Số mẫu | Mô tả | Hướng sửa (bước) |
+|---|---|---|---|
+| Quyết định hỏi lại / làm | 9 | hỏi thừa (1246, 1386), không hỏi khi thiếu thông tin (0961, 1427, 1469, 1605, 1733, 1333), hỏi sai tham số (0684) | A1: thêm cặp mẫu "đủ thông tin → làm" / "thiếu → hỏi" cùng một câu, đổi một chi tiết |
+| Bước đọc/ghi thừa hoặc thiếu do phải suy từ ngữ cảnh ("lịch đó", "lúc nãy", "cái đó") | 11 | 0708 (tạo lại thay vì sửa), 0998, 1156, 1193, 1046, 1154, 0966, 1316, 1593, 1612, 1714 | A1: nhiều mẫu hỏi tiếp dùng đại từ; mẫu câu điều kiện có kết quả tool |
+| Nội dung diễn đạt khác nhãn (tin nhắn, ghi chú, tiêu đề) | 8 | 0468, 0647, 0730, 0833, 0814, 1133, 1236, 1404 — thường đúng ý nhưng ngắn hơn/dài hơn nhãn, token-F1 ≤ 0.6 | A1: quy ước nhất quán — nội dung chép đủ dữ kiện từ lời nói và kết quả tool; **không chỉnh được hết** |
+| Tham số tuỳ chọn bỏ sót hoặc điền khác | 7 | `near`, `channel`, `date`, `days`, `location`: 0304, 0616, 1388, 1128, 1578, 1673, 1528 | A1: mẫu có/không tham số tuỳ chọn theo chi tiết trong câu |
+| Số, id, đối tượng sai | 6 | tính phút từ khoảng giờ (1675: 35 thay vì 40; 1186), `rule_id` (1341), `locked` (1746), `query` (1407), thiếu `contacts.search` (1531) | A1: mẫu có tính khoảng thời gian; cân nhắc luật kiểm tra số học ở infer (nhỏ) |
+
+- Hai nhóm đầu (20/41 mẫu) là **quyết định ở mức bước** (hỏi/làm, bước nào) — cùng loại với nhóm lỗi M2 làm tăng thêm. Nhóm nội dung (8/41) phần lớn là sai khác cách diễn đạt, một phần là trần của FC.
+- Tự sửa giữa câu ("à không…") có mặt ở 4 mẫu (0961, 1154, 1128, 1236); tỉ lệ này trong data đã ~10% (§1e) nên giữ nguyên.
+
+## 1e. Đo thành phần data hôm qua (`fmtA_48e_20k`) — hiệu chỉnh mục tiêu của A1 (11/11 19:00)
+
+Đo trên 1417 hội thoại train (không có val_in), 7901 mẫu trong 20k và 128 mẫu val_in:
+
+| Loại câu | Train | 20k (theo mẫu) | val_in | Kết luận |
+|---|---|---|---|---|
+| Điều kiện, định nghĩa hẹp (nếu / không thì) | 8.5% | 8.5% | 9.4% | – |
+| Điều kiện, định nghĩa rộng (nếu / thì / trừ / nhưng / khi nào) — định nghĩa của phân tích M2 (33/128) | 34.9% | 34.9% | 28.1% | **đã đủ**; mục tiêu "≥ 25%" trong bản trước là đã đạt |
+| Tự sửa giữa câu ("à không…", "khoan", "nhầm") | 10.7% | 9.1% | – | **đã đủ** |
+| Nhiều call: 3+ / 2 / 1 | 41% / 28% / 24% | 40% / 29% / 25% | – | đã đủ |
+| Có hỏi lại (`sys.ask_missing_info`) / không gọi tool | 14.0% / 7.2% | 17.6% / 5.8% | – | đã có đủ |
+| Loại mẫu: gốc / đổi tên tool (alias) / phiên âm / đổi giao diện (iface) | – | 1417 / 1941 / 1840 / **385 (4.9%)** | – | iface còn ít; chỉ có 14 bản đổi (`synth/iface_map.json`) và 382 mẫu |
+
+- **Điều chỉnh:** câu điều kiện **không thiếu** trong data; M2 tụt 25 điểm ở nhóm này vì lỗi nghe rơi vào từ nối điều kiện hoặc vế câu, không phải vì ít mẫu. Vì thế A1 **không tăng** tỉ lệ điều kiện, mà nhắm nhiễu vào từ nối điều kiện và vào vế thứ 2–3.
+- Phần **thật sự mới** của A1: (1) nhiễu từ B0; (2) app lạ — `synth/newapps` (28 app, có catalog, bộ dựng `build.py`, `cross.py`) **chưa từng được dùng** trong data FC (meta `fmtA_48e` chỉ có `train_alias` và `train_iface`); (3) cặp mẫu hỏi/làm tương phản; (4) mẫu "tìm rỗng → tìm lại"; (5) mẫu tham số tuỳ chọn; (6) mẫu tính khoảng thời gian.
+- **`synth/newapps` chỉ có mức chọn tool, không có tham số và kết quả tool** (11/11 19:30): mỗi dòng `{text, gold_tools, installed, kind, split}` — không có `arguments`, không có môi trường tool để chạy. Vì vậy chỉ dựng được **ví dụ bước Q1** (chọn tool / DỪNG) từ `train` (314 câu, 16 app, kèm 19 câu chéo app và 20 câu không cần tool); không dạy được tham số hay chuỗi nhiều bước cho app mới. Phần tham số/chuỗi vẫn phải nhờ đổi vỏ app thật (iface, có kết quả tool thật).
+- **Thước đo app lạ M3b (thay cho kế hoạch A0 cũ):** thay vì đổi vỏ val_in rồi chạy trong `ToolEnv` (khó, cần môi trường cho tên tool mới), đo **độ đúng bước Q1 trên `val_newapps` (148 câu, 6 app) + `test_newapps` (138 câu, 6 app)** — 12 app không có trong train, có sẵn danh sách app cài. Cách đo giống `diag_public_q1.py`, không cần `ToolEnv`, ~$0.3 trên vLLM. Chỉ đo được chọn tool, không đo được tham số.
+- Các app `test_like` trong `newapps` được thiết kế theo nhóm chức năng của catalog public test (chỉ dùng tên/nhóm app, không dùng nhãn hay câu của public).
+- 3 và 4 và 6 cần sinh bằng luật từ hội thoại train (không có LLM ngoài): chỉ nên chiếm ~10–15% tổng để khỏi lệch phân bố.
+
+## 1f. Đổi vỏ app: bỏ mục tăng iface 2% → 20% (11/11 19:15)
+
+- Data hôm qua đã có **alias** (`synth/train_alias.jsonl`): đổi tên app, tên tool, tên tham số và mô tả sang tiếng Việt (vd `smart_home.get_status` → `nha_thong_minh.xem_thiet_bi`), 80 bản đổi, **1941/7901 mẫu (24.6%)**. Phần "tên lạ" đã được phủ nhiều.
+- **iface** (4.9%) là biến đổi *cấu trúc* (gộp tool, đổi enum, thêm/bớt tham số tuỳ chọn) chỉ có 14 bản; tăng lên 20% nghĩa là lặp lại 14 kiểu đó, ít thông tin mới.
+- Khoảng trống thật của app lạ trên public là **chức năng và luồng chưa từng có** (tìm sự kiện → đặt vé, đặt chỗ gửi xe, tìm công thức, tra cổ phiếu…), không phải đổi tên. Phần này được `newapps` Q1 (đã dựng) + gợi ý luồng I5 (C1) lo; không thể bù bằng đổi vỏ app thật vì app thật không có các chức năng đó.
+- Điều chỉnh: **giữ nguyên iface và alias**, không làm bước "tăng đổi vỏ".
+
+## 1g. Tiến độ A1 (11/11 19:20)
+
+**Đã xong và kiểm chạy:**
+- `agent/clef/build_newapps_q1.py`: ví dụ Q1 cho app lạ từ `synth/newapps` → `agent/clef/data/newapps_q1/` (train 885 ví dụ; val_newapps 137 + test_newapps 129 dùng đo M3b). Kiểm: 0 câu trùng văn bản train↔val/test, không app val/test trong prompt train.
+- `agent/clef/asr_noise_b0.py` + cờ `--asr-b0 --asr-b0-manifest --asr-q` trong `build_data.py`: nhiễu ASR thật từ B0, pha loãng q=0.45 (hiệu chỉnh M2), tra theo văn bản câu chuẩn, mỗi lần pha loãng lại, ép có ≥ 1 lỗi, mẫu ≥ 3 call ưu tiên lỗi ở nửa sau câu, câu không có bản nghe thật thì rơi về bảng cụm cũ. Đã chạy thử với B0 giả: 117 câu dùng lỗi B0, 28 rơi về bảng cũ, 0 lỗi.
+- `agent/clef/make_v3.py`: chọn tập con có coverage (`make_subset`, ~11.5k ví dụ) + thêm 885 ví dụ app lạ + kiểm rò (val_in, val/test newapps) + báo cáo thành phần. Đã chạy thử trên bộ cũ: 147/147 tool, không rò, thành phần câu điều kiện 34.9%, tự sửa 8.9%, nhiều call 41.6%, hỏi lại 13.5%.
+
+**Còn lại (khi B0 xong ~21:30):** chép `b0.base_medium.asr.json` → dựng bản đầy đủ có nhiễu B0 (`build_data.py`, cờ như `fmtA_48e` + `--asr-p 0.6 --asr-hist-p 0.15 --asr-b0 ...`) → `make_v3.py` → `agent/clef/data/fmtA_v3`.
+
+**Không làm trong A1 (ghi nhận để khỏi hiểu nhầm):**
+- *Cặp mẫu hỏi/làm tương phản, cặp tham số tuỳ chọn, mẫu "tìm rỗng → tìm lại → làm tiếp"*: sinh bằng luật cần sửa câu nói và dựng lại chuỗi call; nhãn rất dễ sai (ask luôn kèm các bước đọc trước đó, tham số phụ thuộc kết quả tool) và không có LLM ngoài để kiểm. Nhãn sai gây hại hơn thiếu mẫu → **không làm**; để A4 quyết định sau khi đọc lỗi thật của FC v3 trên M2/M3b (có thể dùng chính lỗi đó để chọn thêm mẫu train sẵn có).
+- *Tăng iface 2% → 20%*: bỏ (§1f).
+- Thành phần câu điều kiện / tự sửa / nhiều call giữ nguyên vì đã đủ (§1e).
+
+## 1h. Kết quả C1 + M3b (11/11 19:45)
+
+Code: `clef_agent.py --n8-tau/--i5`, `eval_newapps_q1.py`. Đo trên server `fmtA_48e`:
+
+| Phép đo | Kết quả |
+|---|---|
+| **M3b mốc** — bước Q1 trên 12 app lạ (`newapps`): `val_newapps` / `test_newapps` | catalog hai tầng **56.9% / 55.8%**; catalog đầy đủ 55.5% / 55.8% |
+| N8 offline trên M3b (τ 0.5–1.0, cùng một lượt gọi) | val 56.9 (không đổi), test 55.8 → 56.6 (chỉ 1 câu) |
+| Q1 kém chắc (conf < 0.7) trên M3b | val 18 câu (13 sai), test 23 câu (16 sai): sai nhiều nhưng hỏi lại với catalog đầy đủ **không sửa được** |
+| N8 + I5 trên M1 (val_in sạch) | 76.5 → 76.5 (0 mẫu khác); N8 thăm dò 15 lần, đổi 0 lần; I5 0 lần |
+| N8 + I5 trên M2 | 63.5 → 62.8 (−0.6, 1 mẫu kém hơn); N8 thăm dò 29, đổi 4; I5 0 lần |
+| Public (ASR v1 large + N1 + N8 + I5), 634 mẫu | N8 thăm dò 155 lần ở 125 mẫu, **đổi 4 lần**; I5 **0 lần**; 7 mẫu khác bản 62.76, trong đó chỉ 1 do N8 (6 mẫu còn lại là dao động của server) |
+
+- **Kết luận:** N8 và I5 không đáng đưa vào bản nộp: không tăng điểm trên M1/M2/M3b, thêm ~25% request. Lỗi bước Q1 ở app lạ **không phải do nén catalog** → chỉ sửa bằng train. Mã giữ lại, mặc định tắt. Không nộp `public_fmtA_48e_e46f_c1.jsonl`.
+- I5 không kích hoạt lần nào: sau tool đọc, Q1 thu hẹp luôn nghiêng về DỪNG/hỏi lại, xác suất tool ghi không đạt 0.5.
+- **M3b mốc 56%** thấp hơn nhiều so với 84.5% của M5 vì `newapps` cố ý có app dễ nhầm (hard negative) với app gốc. Đây là thước đo khó **chưa dùng để train** (12 app giữ riêng) → FC v3 có 885 ví dụ Q1 app lạ (16 app train khác) nên **M3b là cổng kiểm khái quát hoá sạch**: mục tiêu ≥ 65% trên val và test.
+- I4 (bỏ phiếu n-best) chưa làm; hoãn tới khi có n-best và có cách đo.
+
+## 1i. Trạng thái các việc chạy nền (11/11 19:47)
+
+| Việc | Nơi chạy | Trạng thái | Dự kiến xong | Bước kế |
+|---|---|---|---|---|
+| B0 — PhoWhisper gốc nghe 9 854 đoạn train + TTS | Kaggle duongantbat | đang chạy (lần 2; lần 1 lỗi thiếu `/kaggle/temp`) | ~21:30 | dựng `fmtA_v3_full` → `make_v3.py` → **A1 ✅** |
+| Qwen3-ASR-0.6B fine-tune 6 epoch (lr 5e-5, sửa lỗi cộng dồn loss) | Kaggle huthnhlng | đang chạy | ~21:00 | chấm 405 đoạn bằng `metrics asr-detail`; dừng hướng nếu WER > 8% |
+| L2 — `e46f` + 2 epoch data v2.1 | Kaggle andngdngtrnhhoian | đang chạy | ~23:00–23:30 | B3: chấm so với `e46f` (WER câu cuối + sai thực thể 183) |
+| D1 — chạy thử Docker 20 mẫu | Modal A10 | đang dựng image | ~20:30 | đo p50/p95 ASR+FC, bộ nhớ GPU |
+| C1 | Modal | ✗ xong (§1h) | – | – |
+
+Điểm nộp: 59 → 62.04 (ASR v1 large) → **62.76** (+N1). Chưa có lượt nộp mới.
+
 ## 2. Bốn luồng chạy song song
 
 Mỗi luồng tự nối tiếp bên trong; các luồng chạy cùng lúc vì dùng tài nguyên khác nhau.
@@ -98,18 +184,18 @@ Mỗi luồng tự nối tiếp bên trong; các luồng chạy cùng lúc vì d
 |---|---|---|---|---|---|---|
 | B0 | B | PhoWhisper-medium gốc chạy trên audio train + TTS (10.8k đoạn) → lỗi nghe nhầm thật | – | A0, A1, B1 | $0 (Kaggle duongantbat) | đủ 10.8k transcript |
 | B1 | B | *Đang chạy:* Qwen3-ASR 6 epoch (→ ~21:00), L2 = `e46f` + 2 epoch data v2.1 (→ ~23:30) | – | mọi thứ | $0 | Qwen: tiếp chỉ khi WER < 8% |
-| A0 | A | **Thước đo app lạ M3b:** lấy mẫu val_in, đổi vỏ (tên app/tool/tham số/mô tả + thực thể) sang miền chưa gặp, không trùng tool của test; đo mốc `fmtA_48e` (sạch + nhiễu M2) | – | B0, A1 | ~$0.5 | chạy được trong `ToolEnv` đổi vỏ; mốc ghi vào plan |
-| A0b | A | Đọc 40 mẫu **sạch** bị sai của `fmtA_48e` (19 chọn tool + 20 tham số, từ `metrics calls`) → phân loại nguyên nhân | – | B0 | $0 | bảng nguyên nhân → đưa vào A1/A4 |
-| A1 | A | Data FC v3 vòng 1: nhiễu ASR từ B0 pha loãng kiểu M2, 60% mẫu, nhiễu ở câu cuối; ≥ 50% mẫu có nhiễu là mẫu nhiều call, nhiễu rơi vào vế chứa hành động thứ 2–3; nhãn nội dung/tên giữ bản sạch; nhiễu ở ngày giờ và số; câu điều kiện + nhiều yêu cầu ≥ 25%; mẫu "tìm rỗng → tìm lại → làm tiếp" và "tìm thấy → đặt/mua"; **app lạ:** mẫu đổi vỏ 2% → ~20%, **F3b** cặp app trùng chức năng (cùng câu, hai bộ app cài khác nhau → hai tool khác nhau), **28 app tổng hợp** `synth/newapps` (giữ riêng 4–5 app làm val) | B0 (phần nhiễu) | B1, C1 | $0 | không rò val/M3b; đủ 147 tool; đúng phân bố |
-| C1 | C | **N8** (conf < 0.7 → hỏi lại với catalog đầy đủ) + **I4** (2–3 giả thuyết ASR câu cuối, bỏ phiếu ở bước chọn tool) + **I5** (gợi ý luồng từ catalog: tool ghi cần id của tool đọc nào → nhắc bước kế sau khi tìm thấy) | – | A1, B1 | ~$1.5 | từng thứ: M2 tăng, M1 tụt ≤ 1, M3b không tụt (so cặp) |
+| A0 | A | **Thước đo app lạ M3b:** độ đúng bước Q1 trên `val_newapps` + `test_newapps` (12 app lạ, 286 câu; xem §1e); đo mốc `fmtA_48e` (câu sạch) | – | B0, A1 | ~$0.5 | chạy được trong `ToolEnv` đổi vỏ; mốc ghi vào plan |
+| A0b ✅ | A | Đọc 41 mẫu **sạch** bị sai của `fmtA_48e` → phân loại nguyên nhân (xong 11/11 tối, kết quả ở §1d) | – | B0 | $0 | bảng nguyên nhân → đưa vào A1/A4 |
+| A1 🔶 **đang làm 11/11 19:20 — pipeline xong, chờ B0 để ghép nhiễu** (chi tiết ở §1g) | A | Data FC v3 vòng 1: nhiễu ASR từ B0 pha loãng kiểu M2, 60% mẫu, nhiễu ở câu cuối; ≥ 50% mẫu có nhiễu là mẫu nhiều call, nhiễu rơi vào vế chứa hành động thứ 2–3; nhãn nội dung/tên giữ bản sạch; nhiễu ở ngày giờ và số; giữ nguyên tỉ lệ câu điều kiện (đã ~35% theo định nghĩa rộng) và nhiều call (3+ call đã 40%) — xem §1e; nhiễu nhắm vào từ nối điều kiện (nếu/thì/không thì/trừ); mẫu "tìm rỗng → tìm lại → làm tiếp" và "tìm thấy → đặt/mua"; **app lạ:** ~~mẫu đổi vỏ 2% → ~20%~~ (bỏ, xem §1f), **ví dụ Q1 từ `synth/newapps` (đã dựng: `agent/clef/data/newapps_q1/`, 885 ví dụ train)**, **F3b** cặp app trùng chức năng (cùng câu, hai bộ app cài khác nhau → hai tool khác nhau), **28 app tổng hợp** `synth/newapps` (giữ riêng 4–5 app làm val) | B0 (phần nhiễu) | B1, C1 | $0 | không rò val/M3b; đủ 147 tool; đúng phân bố |
+| C1 ✗ **đã đo 11/11 19:45 — N8 và I5 KHÔNG có tác dụng đo được (xem §1h); I4 chưa làm (không có n-best, không đo được offline)** | C | **N8** (conf < 0.7 → hỏi lại với catalog đầy đủ) + **I4** (2–3 giả thuyết ASR câu cuối, bỏ phiếu ở bước chọn tool) + **I5** (gợi ý luồng từ catalog: tool ghi cần id của tool đọc nào → nhắc bước kế sau khi tìm thấy) | – | A1, B1 | ~$1.5 | từng thứ: M2 tăng, M1 tụt ≤ 1, M3b không tụt (so cặp) |
 | B2 | B | Text TTS miền mới (2–3k câu, trọng tâm **tên chưa gặp**: sự kiện, sản phẩm, món ăn, tựa; tỉnh thành, ga, bến, sân bay; số và mã chuyến — nguồn chung, không lấy từ public) → sinh audio; giữ riêng 300 câu + 1–2 giọng làm val miền mới | – | A2 | TTS: nhỏ | nghe thử 20 câu |
 | A2 | A | Train FC v3 vòng 1: `--init-adapter` từ `fmtA_48e`, ~12k ví dụ, LR 5e-5, 1 epoch | A1 | B2, B1 (đêm) | ~$10–12 | – |
 | B3 | B | Chấm L2 trên 405 đoạn so với `e46f` | B1 | A2 | $0 | thắng WER câu cuối **và** tỉ lệ sai thực thể có nhãn (183 thực thể, `metrics asr-detail`) |
 | S-A | – | Nếu B3 qua: ASR public bằng L2 → FC `fmtA_48e` + N1 (+C1 nếu qua) → **nộp A** | B3 | A2 | ~$1.5 | |
 | B4 | B | Train ASR v3: từ bản large tốt nhất (L2 hoặc `e46f`) + data v2.1 + TTS miền mới, 2–3 epoch | B2, B3 | A2, A3, D1 | $0 (Kaggle, 8–12 h, 2 phiên nếu cần) | – |
-| A3 | A | Gộp FC v3 vòng 1 → đo M1 + M2 + **M3b** + `metrics calls` | A2, A0 | B4, D1 | ~$2 | **M2 ≥ 68**, M1 ≥ 75.5, **M3b ≥ mốc + 3**, câu điều kiện tụt ≤ 15; trên M2: recall chọn tool ≥ 0.90, `fuzzy` ≥ 0.70, `datetime` ≥ 0.90, thiếu `sys.ask_missing_info` ≤ 4 (hiện 8) |
+| A3 | A | Gộp FC v3 vòng 1 → đo M1 + M2 + **M3b** + `metrics calls` | A2, A0 | B4, D1 | ~$2 | **M2 ≥ 68**, M1 ≥ 75.5, **M3b (§1h) ≥ 65% cả val lẫn test (mốc 56%)**, câu điều kiện tụt ≤ 15; trên M2: recall chọn tool ≥ 0.90, `fuzzy` ≥ 0.70, `datetime` ≥ 0.90, thiếu `sys.ask_missing_info` ≤ 4 (hiện 8) |
 | S-B | – | Nếu A3 qua: public với ASR tốt nhất → **nộp B** | A3 | D1, C2 | ~$1 | |
-| D1 | D | Image offline (PhoWhisper-large + FC gộp + bộ lọc + vLLM hoặc HF generate + `submit.py`); **seed cố định, greedy**; chạy 20 mẫu tắt mạng; đo thời gian/mẫu, RTF của ASR và bộ nhớ GPU | – | A3, B4, C2 | ~$1 | chạy offline được; ghi p50/p95, bộ nhớ |
+| D1 🔶 **code viết xong 11/11 19:40 (`docker/`: Dockerfile, run.sh, asr_stage.py, build.sh, README; `clef_agent --time-budget`); Dockerfile qua `docker build --check`. **Đang chạy thử trên Modal A10 (19:45)**: Modal không có A30 (đã thử: "A30 is not a valid GPU type") → A10 24 GB, băng thông thấp hơn A30 nên số đo bảo thủ; `docker/modal_d1.py --limit 20` dựng image từ chính Dockerfile; dữ liệu public trên volume `zaic-d1-data`. Lần dựng đầu lỗi vì parser Dockerfile của Modal không nhận `ARG ASR_REV=` rỗng → ghim commit `85081b3` của e46f** | D | Image offline (PhoWhisper-large + FC gộp + bộ lọc + vLLM hoặc HF generate + `submit.py`); **seed cố định, greedy**; chạy 20 mẫu tắt mạng; đo thời gian/mẫu, RTF của ASR và bộ nhớ GPU | – | A3, B4, C2 | ~$1 | chạy offline được; ghi p50/p95, bộ nhớ |
 | C2 | C | **Nghe lại với tên từ kết quả tool:** sau tool đọc trả danh sách, giải mã lại audio câu cuối với các tên vừa trả về trong prompt thiên vị của ASR → FC đi tiếp với transcript đã sửa; ghép với N1 (tìm rỗng → liệt kê → nghe lại) | C1 | D1, A4, B4 | ~$1.5 | M2 tăng, M1 tụt ≤ 1; thời gian thêm ≤ 2 s/mẫu |
 | B5 | B | Chấm ASR v3 trên 405 đoạn + val miền mới (B2) | B4 | A4, C2 | $0 | thắng bản large đang dùng ở cả hai tập |
 | S-C | – | Nếu B5 hoặc C2 qua: public với ASR v3 + FC tốt nhất + C2 → **nộp C** | B5, C2 | A4 | ~$1.5 | |

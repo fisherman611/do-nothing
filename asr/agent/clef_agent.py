@@ -95,6 +95,13 @@ class VLLMOracle:
         return self._req_json(text, max_tokens, **extra)["choices"][0]["text"]
 
     def choose(self, text, labels, kind, info):
+        if kind == "q1" and getattr(self, "force_q1", None):      # I5: ép Q1 vào tool đã chọn bằng Q1 thu hẹp (không gọi server)
+            want, self.force_q1 = self.force_q1, None
+            lab = next((l for l in labels if info.get(l) == want), None)
+            if lab is not None:
+                self.log.append((kind, want))
+                self.plog.append({"kind": "q1_forced", "choice": want, "conf": 1.0, "p": {want: 1.0}})
+                return lab
         if F.n_tokens(self.tok, text) + 1 > A.CONTEXT_LIMIT:
             raise ContextFull(kind)
         ids = [self.tid[l] for l in labels]
@@ -172,6 +179,38 @@ def get_pack(args):
     return _PACK["p"], _PACK["lock"]
 
 
+DEPS = {}
+ASR_SECS = {}            # {id mẫu: giây ASR đã dùng} (D1: trừ vào ngân sách 30 s)
+
+
+def build_deps(catalog):
+    """I5: {tool đọc: {tool ghi cần id từ kết quả của nó}} suy từ x-ref của catalog ("app.field" ↔ tool đọc trả `field[]`)."""
+    prod = {}
+    for n, t in catalog.items():
+        r = t.get("returns") or ""
+        if t.get("kind") == "read" and r.endswith("[]"):
+            prod.setdefault(f"{t.get('app')}.{r[:-2]}", []).append(n)
+    deps = {}
+    for n, t in catalog.items():
+        if t.get("kind") == "read":
+            continue
+        for sch in ((t.get("parameters") or {}).get("properties") or {}).values():
+            ref = sch.get("x-ref") or (sch.get("items") or {}).get("x-ref")
+            for src in prod.get(ref, []):
+                deps.setdefault(src, set()).add(n)
+    return deps
+
+
+def q1_probe(prefix, tools, labels, o, tok, hint, kind):
+    """Hỏi riêng bước Q1 (không chạy Q2): trả (tên phương án chọn, bản ghi xác suất). Không đưa vào `decisions`."""
+    q1, m = F.q1_block(tools, labels, None, F.n_tokens(tok, prefix) > F.SHORT_Q1_AT, hint)
+    lab = o.choose(prefix + q1, list(m), "q1", m)
+    o.log.pop()
+    e = o.plog[-1]
+    e["kind"] = kind
+    return m[lab], e
+
+
 def relax_empty(call, res, catalog):
     """N1 (PLAN_v3_improve): tool đọc trả danh sách rỗng → call mới bỏ các tham số chữ TUỲ CHỌN (thường là truy vấn bị
     ASR nghe sai, vd event_tickets.search{query}). Không áp dụng cho contacts, tham số id/enum. None nếu không nới được."""
@@ -198,7 +237,7 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     o = VLLMOracle(args, tok, labels)
     o.catalog = catalog
     n_invalid, sigs, err, steps = 0, {}, None, 0
-    retried, n_retry = set(), 0
+    retried, n_retry, n_n8, n_n8_switch, n_i5, i5_used, timed_out = set(), 0, 0, 0, 0, False, False
     request = (asr.get(item["id"]) if asr is not None else item.get("audio_text", "")) or ""
     done = []
     tier1 = None
@@ -209,10 +248,38 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
             with lock:
                 tier1 = tier1_for(pack, item, asr)
         for step in range(A.MAX_STEPS):
+            if args.time_budget and time.time() - t0 > args.time_budget - ASR_SECS.get(item["id"], 0.0) - args.budget_margin:
+                timed_out = True                  # D1: hết ngân sách thời gian của mẫu → nộp các call đã có
+                break
             steps += 1
             t1 = None if tier1 is None else tier1 | {app_of(d) for d in done}
-            r = run_step(F.render_prefix(tok, msgs, tools, t1), tools, catalog, seen, labels, o, tok,
-                         hint={"request": request, "done": done})
+            prefix = F.render_prefix(tok, msgs, tools, t1)
+            hint = {"request": request, "done": done}
+            n0 = len(o.plog)
+            r = run_step(prefix, tools, catalog, seen, labels, o, tok, hint=hint)
+            if args.n8_tau is not None and t1 is not None:           # N8: Q1 kém chắc → hỏi lại với catalog đầy đủ (không hai tầng)
+                q1 = next((x for x in o.plog[n0:] if x["kind"] == "q1"), None)
+                if q1 is not None and q1["conf"] < args.n8_tau:
+                    n_n8 += 1
+                    prefix_f = F.render_prefix(tok, msgs, tools, None)
+                    name1 = F.STOP if r["stop"] else r["name"]
+                    name2, e2 = q1_probe(prefix_f, tools, labels, o, tok, hint, "q1_n8")
+                    if name2 != name1 and e2["p"].get(name2, 0) > q1["p"].get(name1, 0):
+                        n_n8_switch += 1
+                        r = run_step(prefix_f, tools, catalog, seen, labels, o, tok, hint=hint)
+            if r["stop"] and args.i5 is not None and not i5_used and done and isinstance(seen[-1][1], dict):
+                # I5: vừa có kết quả của tool đọc mà tool ghi (cần id từ nó) chưa gọi → Q1 thu hẹp {tool ghi đó, hỏi lại, DỪNG}
+                last, res_last = seen[-1]
+                cons = [d for d in sorted(DEPS.get(last, ())) if d in {t["function"]["name"] for t in tools} and d not in done]
+                lists = [v for v in res_last.values() if isinstance(v, list)] if res_last.get("ok") else []
+                if cons and lists and any(lists):
+                    tools_r = [t for t in tools if t["function"]["name"] in cons]
+                    name3, e3 = q1_probe(prefix, tools_r, labels, o, tok, hint, "q1_i5")
+                    if name3 in cons and e3["p"].get(name3, 0) >= args.i5:
+                        i5_used = True
+                        n_i5 += 1
+                        o.force_q1 = name3
+                        r = run_step(prefix, tools, catalog, seen, labels, o, tok, hint=hint)
             if r["stop"]:
                 break
             call = {"name": r["name"], "arguments": r["args"]}
@@ -244,7 +311,7 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     except Exception as e:
         err = f"{type(e).__name__}: {e}"
     return {"id": item["id"], "style": F.STYLE.get("name", "v1"), "fmt": F.fmt_opts(), "tool_calls": env.get_tool_calls(), "state_hash": env.get_state_hash(),
-            "steps": steps, "n_invalid": n_invalid, "n_retry": n_retry, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
+            "steps": steps, "n_invalid": n_invalid, "n_retry": n_retry, "n_n8": n_n8, "n_n8_switch": n_n8_switch, "n_i5": n_i5, "timed_out": timed_out, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
             "prompt_tokens_sum": o.prompt_tokens, "anomaly": o.anomaly,
             "latency": round(time.time() - t0, 2), "error": err}
 
@@ -259,6 +326,11 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--asr", help="JSON {uid: transcript}; mặc định audio_text (chỉ train)")
     ap.add_argument("--log-probs", action="store_true", help="lấy xác suất nhãn mỗi lựa chọn (server cần --max-logprobs 64 --logprobs-mode processed_logprobs), ghi vào trường probs")
+    ap.add_argument("--n8-tau", type=float, help="N8: Q1 có conf < τ (vd 0.7) và đang dùng catalog hai tầng → hỏi lại với catalog đầy đủ; hai lần lệch thì theo lần có xác suất cao hơn. Tự bật --log-probs")
+    ap.add_argument("--i5", type=float, help="I5: model chọn DỪNG ngay sau tool đọc có kết quả mà tool ghi dùng id của nó chưa gọi → hỏi lại Q1 thu hẹp; nếu xác suất tool ghi ≥ ngưỡng (vd 0.5) thì làm tiếp. Tự bật --log-probs")
+    ap.add_argument("--time-budget", type=float, help="D1: giây tối đa cho mỗi mẫu (vd 30); hết thì dừng và nộp các call đã có. Tính cả giây ASR nếu có --asr-secs")
+    ap.add_argument("--budget-margin", type=float, default=2.0, help="chừa cho request đang bay + ghi kết quả (giây)")
+    ap.add_argument("--asr-secs", help="JSON {id mẫu: giây ASR} (docker/asr_stage.py ghi)")
     ap.add_argument("--retry-empty", action="store_true", help="N1: tool đọc trả rỗng → tìm lại một lần, bỏ tham số chữ tuỳ chọn")
     ap.add_argument("--ask-tau", type=float, help="Q1: hỏi lại nếu P(sys.ask_missing_info) > τ và tool argmax là tool ghi (PLAN_generalize_tools §3.1; τ = 0.2). Tự bật --log-probs")
     ap.add_argument("--asr-timings", help="JSON {id: giây ASR} cộng vào elapsed_seconds của <out>.timings.jsonl")
@@ -276,6 +348,8 @@ def main():
     ap.add_argument("--fmt-from", help="config.json của run train hoặc <data>.meta.json: lấy style/q2/q1_desc từ đó, "
                     "ghi đè 3 cờ trên (tránh lệch format train / suy luận)")
     args = ap.parse_args()
+    if args.n8_tau is not None or args.i5 is not None:
+        args.log_probs = True
     if args.fmt_from:
         m = json.load(open(args.fmt_from, encoding="utf-8"))
         F.set_style_from(m.get("fmt", m))
@@ -289,6 +363,9 @@ def main():
     tok = AutoTokenizer.from_pretrained(TOKENIZER[0], revision=TOKENIZER[1])
     labels = F.make_labels(tok)
     catalog = A.load_catalog(os.path.join(args.data, args.split, f"{args.split}_tools_catalog.json"))
+    DEPS.update(build_deps(catalog))
+    if args.asr_secs:
+        ASR_SECS.update(json.load(open(args.asr_secs, encoding="utf-8")))
     items = [json.loads(l) for l in open(os.path.join(args.data, args.split, f"{args.split}.jsonl"), encoding="utf-8")
              if l.strip()]
     keep = None

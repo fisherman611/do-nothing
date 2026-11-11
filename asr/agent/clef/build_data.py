@@ -98,6 +98,10 @@ def main():
     ap.add_argument("--asr-subst", help="A5b asr_subst_<tag>.json: bảng thay thế theo cụm từ")
     ap.add_argument("--asr-p", type=float, default=0.4, help="tỉ lệ mẫu bị nhiễu ASR (câu hiện tại)")
     ap.add_argument("--asr-hist-p", type=float, default=0.3, help="xác suất mỗi lượt user trong history bị nhiễu (trong mẫu bị nhiễu)")
+    ap.add_argument("--asr-b0", help="B0: JSON {hyps: {uid: câu}} của PhoWhisper gốc nghe audio train/TTS; thay bảng cụm bằng lỗi nghe thật pha loãng")
+    ap.add_argument("--asr-b0-manifest", action="append", default=[], help="manifest có uid/text/split để ghép với --asr-b0 (lặp lại cho manifest_v2 và tts_manifest)")
+    ap.add_argument("--asr-table-mix", type=float, default=0.3, help="với --asr-b0: tỉ lệ câu dùng bảng cụm cũ (lỗi ASR đã fine-tune) thay vì lỗi B0")
+    ap.add_argument("--asr-q", type=float, default=0.45, help="xác suất giữ mỗi cụm nghe sai (hiệu chỉnh M2: 0.45 ≈ WER 11%)")
     ap.add_argument("--shard", default="0/1", help="i/n: chỉ dựng các mẫu items[i::n] (chạy song song rồi cat)")
     a = ap.parse_args()
     F.set_style(a.style, q2=a.q2, q1_desc=a.q1_desc, sys=a.sys, rules=a.rules)
@@ -118,8 +122,13 @@ def main():
     if a.asr_errors:
         from agent.clef.asr_noise import AsrNoise
         n_user = {r["id"]: sum(t["role"] == "user" for t in r["history"]) for r in rows}
-        noise = AsrNoise(a.asr_errors, a.asr_subst, random.Random(max(a.shuffle_seed, 0) + 2), p_item=a.asr_p,
-                         p_hist=a.asr_hist_p, n_user_turns=n_user)
+        if a.asr_b0:
+            from agent.clef.asr_noise_b0 import AsrNoiseB0
+            noise = AsrNoiseB0(a.asr_b0, a.asr_b0_manifest, a.asr_errors, a.asr_subst, random.Random(max(a.shuffle_seed, 0) + 2),
+                               q=a.asr_q, p_item=a.asr_p, p_hist=a.asr_hist_p, n_user_turns=n_user, table_mix=a.asr_table_mix)
+        else:
+            noise = AsrNoise(a.asr_errors, a.asr_subst, random.Random(max(a.shuffle_seed, 0) + 2), p_item=a.asr_p,
+                             p_hist=a.asr_hist_p, n_user_turns=n_user)
         print(f"nhiễu ASR: {len(noise.full)} câu có bản ASR sẵn, bảng {len(noise.table)} cụm, p={a.asr_p}/{a.asr_hist_p}")
     def hist_ok(h):
         return not ({c["name"].split(".")[0] for c in h["label"]["tool_calls"]} & held)
