@@ -1,0 +1,4613 @@
+{
+ "summary": {
+  "metric_version": 2,
+  "score_scale": 100,
+  "num_runs": 1,
+  "catalog_fingerprint": "f9025cc7d106368041d2399497aec5ee91a4197ed829d9238773fc859bb62848",
+  "gold_fingerprint": "beb0a10521b55d925fa668250e7440d59cc73889170276e7fde7523694b46edd",
+  "num_samples": 128,
+  "num_submitted_samples": 128,
+  "num_missing_samples": 0,
+  "score": 55.8984375,
+  "mean_sample_score": 0.558984375,
+  "tool_call_f1": 0.8009300595238095,
+  "tie_break_score": 60.23003472222223,
+  "state_match_rate": 0.8515625,
+  "hash_verification": "replay",
+  "num_hash_discrepancies": 0,
+  "num_failed_samples": 27,
+  "num_timeout_samples": 27,
+  "num_replay_timeouts": 0,
+  "timing_available": true,
+  "time_limit_seconds": 30,
+  "average_processing_seconds": 56.626171875,
+  "max_processing_seconds": 263.21,
+  "matched_calls": 221,
+  "submitted_calls": 267,
+  "gold_calls": 272
+ },
+ "samples": [
+  {
+   "id": "train_0002",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 229.1,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08377281100547407,
+   "reported_state_hash": "e50d542a4fbca7839906b7208f8ebac9029124bb400d7084187b33df5770c802",
+   "effective_state_hash": "e50d542a4fbca7839906b7208f8ebac9029124bb400d7084187b33df5770c802",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0013",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 231.34,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08830391500669066,
+   "reported_state_hash": "c6538680ad0d56d0878940e9ca835ff26eca662c08bf40a179e8530da75566dd",
+   "effective_state_hash": "c6538680ad0d56d0878940e9ca835ff26eca662c08bf40a179e8530da75566dd",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0015",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 240.25,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08381340900086798,
+   "reported_state_hash": "51c0e1094701b3f8c4a40794e9f89670404ec0221a38b61d41debfc72295aa0d",
+   "effective_state_hash": "51c0e1094701b3f8c4a40794e9f89670404ec0221a38b61d41debfc72295aa0d",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0016",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 5,
+    "submitted_calls": 5,
+    "gold_calls": 5,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      4,
+      4
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 263.21,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08447971999703441,
+   "reported_state_hash": "d7b8e0e83ae6fd844be77290fc15b23fa2afcc7f0917da147c9617494e92bc12",
+   "effective_state_hash": "d7b8e0e83ae6fd844be77290fc15b23fa2afcc7f0917da147c9617494e92bc12",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0039",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 233.11,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08435055600421038,
+   "reported_state_hash": "f1d1d7ed85a05f110edbae42498bddd152903d2fe0291e45275b415c075c57b7",
+   "effective_state_hash": "f1d1d7ed85a05f110edbae42498bddd152903d2fe0291e45275b415c075c57b7",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0050",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 227.22,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09395343200594652,
+   "reported_state_hash": "471454a3cfc06037c233eabc07b3c664c3c80534f18ecffa45685148b0b65895",
+   "effective_state_hash": "471454a3cfc06037c233eabc07b3c664c3c80534f18ecffa45685148b0b65895",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0065",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 5,
+    "submitted_calls": 5,
+    "gold_calls": 5,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      4,
+      4
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 249.99,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09195628900488373,
+   "reported_state_hash": "a88442d76f0d989435c50d02e1299e66a814d8ab496c7a03375d8128745c66d7",
+   "effective_state_hash": "a88442d76f0d989435c50d02e1299e66a814d8ab496c7a03375d8128745c66d7",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0095",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 230.95,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08594973200524691,
+   "reported_state_hash": "49e3704faf75fce950f6e6a952f06819a11a1f383834d4e6a025eba3001d0692",
+   "effective_state_hash": "49e3704faf75fce950f6e6a952f06819a11a1f383834d4e6a025eba3001d0692",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0108",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 256.86,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08524165699782316,
+   "reported_state_hash": "44d08b74f3ea0d3827dcb7e2283172b7418ba7dea3c1cbc8d3907eab5746e499",
+   "effective_state_hash": "44d08b74f3ea0d3827dcb7e2283172b7418ba7dea3c1cbc8d3907eab5746e499",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0126",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 239.19,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08256442900164984,
+   "reported_state_hash": "084f005308ff5846c78e78dfc3412a853a0b2af6fedc38e077df341f5c802691",
+   "effective_state_hash": "084f005308ff5846c78e78dfc3412a853a0b2af6fedc38e077df341f5c802691",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0147",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 234.58,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08651014599308837,
+   "reported_state_hash": "e854bd2fa1cb54757ee7bd57f2fc96bf876872465b8659c80793ac734e450cfc",
+   "effective_state_hash": "e854bd2fa1cb54757ee7bd57f2fc96bf876872465b8659c80793ac734e450cfc",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0150",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 240.31,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08362729400687385,
+   "reported_state_hash": "6a28b30abc8113c0155b0165d68046cb79cf3ef02e4519266da002627a78dfb4",
+   "effective_state_hash": "6a28b30abc8113c0155b0165d68046cb79cf3ef02e4519266da002627a78dfb4",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0154",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 250.72,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09127310699841473,
+   "reported_state_hash": "2d1111e8674e4425dba6cfe3d7cc79eb9ce8d29cc6a9c13239e8ac49deb462b0",
+   "effective_state_hash": "2d1111e8674e4425dba6cfe3d7cc79eb9ce8d29cc6a9c13239e8ac49deb462b0",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0162",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 242.56,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08981259098800365,
+   "reported_state_hash": "1770a4475e56d97952dd6c6d0efab1ebe84884a066107a48a62f57308f9cd548",
+   "effective_state_hash": "1770a4475e56d97952dd6c6d0efab1ebe84884a066107a48a62f57308f9cd548",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0170",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 247.52,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08890542900189757,
+   "reported_state_hash": "98f3410c729c8c7ef7ca2590f5b07c51812f34d693af11adcb2c37a7a89c19b0",
+   "effective_state_hash": "98f3410c729c8c7ef7ca2590f5b07c51812f34d693af11adcb2c37a7a89c19b0",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0171",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 241.26,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08933077700203285,
+   "reported_state_hash": "e03e9b85782ef692929df6b8139bc9066c788703a634483e31a33fa2ccb429ea",
+   "effective_state_hash": "e03e9b85782ef692929df6b8139bc9066c788703a634483e31a33fa2ccb429ea",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0185",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 239.96,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08929094999621157,
+   "reported_state_hash": "762d8f9b94ce5fddfbe3a1c742cb74e6d6cf6ededf37da8ba9b3eb2b8ce3b353",
+   "effective_state_hash": "762d8f9b94ce5fddfbe3a1c742cb74e6d6cf6ededf37da8ba9b3eb2b8ce3b353",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0208",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 5,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 0,
+    "precision": 0.8,
+    "recall": 1.0,
+    "tool_f1": 0.8888888888888888,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      4,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 248.15,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09484229100053199,
+   "reported_state_hash": "29a57ca814f16ed68b69786f3cbe0d56602e2b26d4eb388a404902635fa583ba",
+   "effective_state_hash": "29a57ca814f16ed68b69786f3cbe0d56602e2b26d4eb388a404902635fa583ba",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0221",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 238.64,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08800997400248889,
+   "reported_state_hash": "b7be3e7df45b446d264331abecb3488fcaae514e279b6aee6be51c478475578a",
+   "effective_state_hash": "b7be3e7df45b446d264331abecb3488fcaae514e279b6aee6be51c478475578a",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0233",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 249.6,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0888807359879138,
+   "reported_state_hash": "76e1a50bf4aad75dfec31c7ffa7c71f9e4974848503cfeb416eed9794b971ac8",
+   "effective_state_hash": "76e1a50bf4aad75dfec31c7ffa7c71f9e4974848503cfeb416eed9794b971ac8",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0254",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 5,
+    "submitted_calls": 5,
+    "gold_calls": 5,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      4,
+      4
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 256.84,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08484713301004376,
+   "reported_state_hash": "d3ab34b6ce4a35c031a6e018f6c191afe19176f8c66549e1044bafead8ee4939",
+   "effective_state_hash": "d3ab34b6ce4a35c031a6e018f6c191afe19176f8c66549e1044bafead8ee4939",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0272",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 241.11,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.10074203200929333,
+   "reported_state_hash": "77467baebcad60ca301618487c920c37780ea535b397762dec3d19dd019900c2",
+   "effective_state_hash": "77467baebcad60ca301618487c920c37780ea535b397762dec3d19dd019900c2",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0280",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 251.56,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08719186000234913,
+   "reported_state_hash": "51479914aed33265072b46b474a3e7e374b0418d8b98065fec3f789b48e5f2cc",
+   "effective_state_hash": "51479914aed33265072b46b474a3e7e374b0418d8b98065fec3f789b48e5f2cc",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0288",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 243.1,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09399649800616316,
+   "reported_state_hash": "2676b6ab5b189e61f95a7ab6d283660be02ae7af05598b9a86322ac8bded8f5f",
+   "effective_state_hash": "2676b6ab5b189e61f95a7ab6d283660be02ae7af05598b9a86322ac8bded8f5f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0296",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 28.66,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09025494901288766,
+   "reported_state_hash": "4f0115294f68c4b2359a240bb45f782a95a5ee2ba2558d6f7ab59cf04d6cea6a",
+   "effective_state_hash": "4f0115294f68c4b2359a240bb45f782a95a5ee2ba2558d6f7ab59cf04d6cea6a",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0304",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 17.7,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08790395299729425,
+   "reported_state_hash": "738ffd1923864667cfd6262807f0d981d54d1712134e2e2bdc0ff3c25afd30be",
+   "effective_state_hash": "738ffd1923864667cfd6262807f0d981d54d1712134e2e2bdc0ff3c25afd30be",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0322",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 5,
+    "submitted_calls": 5,
+    "gold_calls": 5,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      4,
+      4
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 32.35,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08667118899757043,
+   "reported_state_hash": "60db41cb921ac8840ef60b0392a717216e3c4483a4ca192d9a2fd01e61f94717",
+   "effective_state_hash": "60db41cb921ac8840ef60b0392a717216e3c4483a4ca192d9a2fd01e61f94717",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0326",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 21.49,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0861345489975065,
+   "reported_state_hash": "bdff3aadc4f3bdcd4ae58d2529a8667f5e07dc0480379d50b4643ab493f09a80",
+   "effective_state_hash": "bdff3aadc4f3bdcd4ae58d2529a8667f5e07dc0480379d50b4643ab493f09a80",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0334",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 9.67,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08446483899024315,
+   "reported_state_hash": "e4a4fb097cf8228eb3c511b35309f55d9629057a4b9e685491e7236f218bf20c",
+   "effective_state_hash": "e4a4fb097cf8228eb3c511b35309f55d9629057a4b9e685491e7236f218bf20c",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0425",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 9.36,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08795385099074338,
+   "reported_state_hash": "d05c8e967a70373fa629e53d66d3fe07748b94517b9a98dc9d6655886b8fe85d",
+   "effective_state_hash": "d05c8e967a70373fa629e53d66d3fe07748b94517b9a98dc9d6655886b8fe85d",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0427",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 28.7,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08380694700463209,
+   "reported_state_hash": "f9b4fc17e0be95b1874c1080aa6b5b619898440bcf29be96fab1c231644c9122",
+   "effective_state_hash": "f9b4fc17e0be95b1874c1080aa6b5b619898440bcf29be96fab1c231644c9122",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0465",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 4.41,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08495251600106712,
+   "reported_state_hash": "d150463982fff8e84e4eacf9a8bec1a48b18cf823fd60df4624d2b343ecf84e9",
+   "effective_state_hash": "d150463982fff8e84e4eacf9a8bec1a48b18cf823fd60df4624d2b343ecf84e9",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0468",
+   "score": 0.5,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.5,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08987834899744485,
+   "reported_state_hash": "234a4335377e90ff409fdd2652ba2344a163236bd27b9dd3d28d8d47fcca5170",
+   "effective_state_hash": "234a4335377e90ff409fdd2652ba2344a163236bd27b9dd3d28d8d47fcca5170",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0472",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 2,
+    "precision": 0.5,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.4,
+    "matched_pairs": [
+     [
+      1,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4,
+   "execution_status": "ok",
+   "elapsed_seconds": 19.77,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08706778500345536,
+   "reported_state_hash": "f693bc720c70b04aad91f5b8983885871d9c21f08a692260905f8a0d6f9768b7",
+   "effective_state_hash": "f693bc720c70b04aad91f5b8983885871d9c21f08a692260905f8a0d6f9768b7",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0486",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.44,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08337457399466075,
+   "reported_state_hash": "eec8a99b8ae10a0e913c575994e805484cdcce220b7752ab23b53caae0d73c8b",
+   "effective_state_hash": "eec8a99b8ae10a0e913c575994e805484cdcce220b7752ab23b53caae0d73c8b",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0513",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.94,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09283070301171392,
+   "reported_state_hash": "9df0499a0834602adb1af537b97a06eb23277a0eaaee1ca7ab531eabd9f8f6ba",
+   "effective_state_hash": "9df0499a0834602adb1af537b97a06eb23277a0eaaee1ca7ab531eabd9f8f6ba",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0518",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 4.54,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08174071399844252,
+   "reported_state_hash": "3d4fb29ace95ed4918cfa16c2cc014ddb5e130b2bcf478ce58c622a6e59de736",
+   "effective_state_hash": "3d4fb29ace95ed4918cfa16c2cc014ddb5e130b2bcf478ce58c622a6e59de736",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0527",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 5.65,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08731906200409867,
+   "reported_state_hash": "d54f8175a632834fbdfe0efe6258dee99688c16c3ea85a1be103b5e287a6db8b",
+   "effective_state_hash": "d54f8175a632834fbdfe0efe6258dee99688c16c3ea85a1be103b5e287a6db8b",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0545",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.21,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08342684399394784,
+   "reported_state_hash": "c523233e2e1ff61be42c0509189307c4c08781e0895ecbd30cd616c00d912002",
+   "effective_state_hash": "c523233e2e1ff61be42c0509189307c4c08781e0895ecbd30cd616c00d912002",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0596",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.6,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09492143100942485,
+   "reported_state_hash": "c8e806323432b1a7f04f0fcf3ff6fe6e204ddad40940e72e81d423200059e660",
+   "effective_state_hash": "c8e806323432b1a7f04f0fcf3ff6fe6e204ddad40940e72e81d423200059e660",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0616",
+   "score": 0.6666666666666666,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.6666666666666666,
+    "recall": 0.6666666666666666,
+    "tool_f1": 0.6666666666666666,
+    "matched_pairs": [
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.6666666666666666,
+   "execution_status": "ok",
+   "elapsed_seconds": 16.51,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08850514399819076,
+   "reported_state_hash": "03559b86ceb5d6e81f79038fefb546a21fbb9ef59a489b3b45290c70bea8509f",
+   "effective_state_hash": "03559b86ceb5d6e81f79038fefb546a21fbb9ef59a489b3b45290c70bea8509f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0637",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 24.02,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0865406829980202,
+   "reported_state_hash": "aab222fe6ec7116e1d932f6f481bcf40e2eceb888f1d48c77890051975344cb6",
+   "effective_state_hash": "aab222fe6ec7116e1d932f6f481bcf40e2eceb888f1d48c77890051975344cb6",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0647",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 10.99,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08224921899090987,
+   "reported_state_hash": "32700f9ec0d0c07e9011631a2d10027fa8561df442595f6c18160a1e8584c583",
+   "effective_state_hash": "32700f9ec0d0c07e9011631a2d10027fa8561df442595f6c18160a1e8584c583",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0652",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 11.02,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08565397901111282,
+   "reported_state_hash": "3737dc16511c8488e7f09a0bdc9f9e9ec2632509e156a74c12c88901abc26504",
+   "effective_state_hash": "3737dc16511c8488e7f09a0bdc9f9e9ec2632509e156a74c12c88901abc26504",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0669",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 6.95,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08384049400046933,
+   "reported_state_hash": "d08a1dd446627864728d2a4eaf738a55da10c1362d067303dda875714f7ea432",
+   "effective_state_hash": "d08a1dd446627864728d2a4eaf738a55da10c1362d067303dda875714f7ea432",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0672",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.51,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0840138509956887,
+   "reported_state_hash": "7813ff74f14c17f061ab0aae6fb152bdef2e0f3659e473694b859e0fcfe668ab",
+   "effective_state_hash": "7813ff74f14c17f061ab0aae6fb152bdef2e0f3659e473694b859e0fcfe668ab",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0674",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 14.57,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08725722700182814,
+   "reported_state_hash": "9a1a96150faf7f54fc82d9c14441844e56d811beb8caab99c223e6030c5c1426",
+   "effective_state_hash": "9a1a96150faf7f54fc82d9c14441844e56d811beb8caab99c223e6030c5c1426",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0679",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.47,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08501562100718729,
+   "reported_state_hash": "382dd953c4520152864df045e7909552dd80db384a50b891010d17ee60d0aec5",
+   "effective_state_hash": "382dd953c4520152864df045e7909552dd80db384a50b891010d17ee60d0aec5",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0684",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 10.37,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08374921399808954,
+   "reported_state_hash": "8f5c54a2a6eedac5a6ff66d1d1fa6e219f53f8815cb5df2d3f9873cefc8dde4f",
+   "effective_state_hash": "8f5c54a2a6eedac5a6ff66d1d1fa6e219f53f8815cb5df2d3f9873cefc8dde4f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0705",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 23.91,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08502619300270453,
+   "reported_state_hash": "53d252971d1b61da666aaf6f43f0221895c0d255993d8b3813896bf055afa1b1",
+   "effective_state_hash": "53d252971d1b61da666aaf6f43f0221895c0d255993d8b3813896bf055afa1b1",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0708",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 1.85,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09381864599708933,
+   "reported_state_hash": "fdea36001c286bc455712597be275caa1a0c2f0457e9aac6e87050487810ffce",
+   "effective_state_hash": "fdea36001c286bc455712597be275caa1a0c2f0457e9aac6e87050487810ffce",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0730",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 11.97,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.084123709006235,
+   "reported_state_hash": "f68246aa691e77e02d0beaf84af22a0208927aba18863688b408ce48cba7819b",
+   "effective_state_hash": "f68246aa691e77e02d0beaf84af22a0208927aba18863688b408ce48cba7819b",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0731",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.12,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08394809800665826,
+   "reported_state_hash": "72acb6302face425ac8b284fdf03e5ad82e0f4da74651aaf21a2a7b8911cd8c0",
+   "effective_state_hash": "72acb6302face425ac8b284fdf03e5ad82e0f4da74651aaf21a2a7b8911cd8c0",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0735",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 1.42,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08821816500858404,
+   "reported_state_hash": "7c4d3da1029d69de5e2551ee9a8e3ff48f3334387f589510532dd16c31b6f877",
+   "effective_state_hash": "7c4d3da1029d69de5e2551ee9a8e3ff48f3334387f589510532dd16c31b6f877",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0814",
+   "score": 0.3333333333333333,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 2,
+    "missing_gold_calls": 2,
+    "precision": 0.3333333333333333,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.3333333333333333,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.3333333333333333,
+   "execution_status": "ok",
+   "elapsed_seconds": 29.63,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09176727599697188,
+   "reported_state_hash": "0194228c5884292bd8cc087bc0e2b7e15cddb8a058342036a2058095c78da68f",
+   "effective_state_hash": "0194228c5884292bd8cc087bc0e2b7e15cddb8a058342036a2058095c78da68f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0833",
+   "score": 0.6666666666666666,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.6666666666666666,
+    "recall": 0.6666666666666666,
+    "tool_f1": 0.6666666666666666,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.6666666666666666,
+   "execution_status": "ok",
+   "elapsed_seconds": 15.12,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08658295699569862,
+   "reported_state_hash": "cef4b4bb9bb1b906273c0c0b8656f05d434427c569d8f983a2da42b6c3d70659",
+   "effective_state_hash": "cef4b4bb9bb1b906273c0c0b8656f05d434427c569d8f983a2da42b6c3d70659",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0835",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 27.49,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08324734499910846,
+   "reported_state_hash": "ff190103942b4c81ff383e324ce6b66a9431e29a5d92794d3c707e1a35c6eece",
+   "effective_state_hash": "ff190103942b4c81ff383e324ce6b66a9431e29a5d92794d3c707e1a35c6eece",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0870",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 22.08,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08627767598954961,
+   "reported_state_hash": "571b5115a44f05be9de9e825f2276eef3e26af05a5c1d25e16363b4144aa928f",
+   "effective_state_hash": "571b5115a44f05be9de9e825f2276eef3e26af05a5c1d25e16363b4144aa928f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0871",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 4,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 3,
+    "missing_gold_calls": 2,
+    "precision": 0.25,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.2857142857142857,
+    "matched_pairs": [
+     [
+      3,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 42.47,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08485992100031581,
+   "reported_state_hash": "60a375d349191cdf3d51f97de75f22cc373d090aec3fffdc5fc7c7aec33acabc",
+   "effective_state_hash": "60a375d349191cdf3d51f97de75f22cc373d090aec3fffdc5fc7c7aec33acabc",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_0875",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 20.38,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0875644280022243,
+   "reported_state_hash": "1e4f5ec895060ff4f1e8ae62387b2fc471645a2956050fde2aff8bb47abdb213",
+   "effective_state_hash": "1e4f5ec895060ff4f1e8ae62387b2fc471645a2956050fde2aff8bb47abdb213",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0897",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 12.97,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08906973199918866,
+   "reported_state_hash": "443571775a9847e9eabbd39bb9b662682879a7f4d39e69fc59ee4b2e967acfce",
+   "effective_state_hash": "443571775a9847e9eabbd39bb9b662682879a7f4d39e69fc59ee4b2e967acfce",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0920",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 1.56,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08631547600089107,
+   "reported_state_hash": "d5d9faa704f1ddeb725eb1616229de9b6a31657f3570eddd441b16e5525a44da",
+   "effective_state_hash": "d5d9faa704f1ddeb725eb1616229de9b6a31657f3570eddd441b16e5525a44da",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0925",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.75,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08606310600589495,
+   "reported_state_hash": "d28b620a1d3937e71bb95180b0b786c3d89ffe872f44f3c8381a98ce36654ebe",
+   "effective_state_hash": "d28b620a1d3937e71bb95180b0b786c3d89ffe872f44f3c8381a98ce36654ebe",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0929",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 2.48,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09018726399517618,
+   "reported_state_hash": "073241a5b5e9908850ca2b2b57257d063c945cb24d81936e93bd3ae84ccc4896",
+   "effective_state_hash": "073241a5b5e9908850ca2b2b57257d063c945cb24d81936e93bd3ae84ccc4896",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0961",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 9.43,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08428322899271734,
+   "reported_state_hash": "0fe4714aa7a4b9cb0dc3b906f2c914b647402eba9c723d576540f5161dd567cd",
+   "effective_state_hash": "0fe4714aa7a4b9cb0dc3b906f2c914b647402eba9c723d576540f5161dd567cd",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0966",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 2,
+    "precision": 0.5,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.4,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4,
+   "execution_status": "ok",
+   "elapsed_seconds": 16.83,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09388758799468633,
+   "reported_state_hash": "121e8e02654eb5fde64b1c817ffc6ccf4217c546cf78cd91c08cced6f96214e6",
+   "effective_state_hash": "121e8e02654eb5fde64b1c817ffc6ccf4217c546cf78cd91c08cced6f96214e6",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0982",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 1.55,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08388644999649841,
+   "reported_state_hash": "0eb0dde880a4559962245be55fe5ffa92746562ce22240766a7b318e346c5f97",
+   "effective_state_hash": "0eb0dde880a4559962245be55fe5ffa92746562ce22240766a7b318e346c5f97",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0992",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 4.19,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08584956500271801,
+   "reported_state_hash": "3021c9e9290d35816340646163b0af5e8585834cc6b64b697de2e7160c101628",
+   "effective_state_hash": "3021c9e9290d35816340646163b0af5e8585834cc6b64b697de2e7160c101628",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_0998",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 8.84,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08381794499291573,
+   "reported_state_hash": "86fd4e940f18fc097309afc84d54f384435c4004d6145b4776b7f78d25add055",
+   "effective_state_hash": "86fd4e940f18fc097309afc84d54f384435c4004d6145b4776b7f78d25add055",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1003",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 10.59,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08187249199545477,
+   "reported_state_hash": "8b3f98cf090e4a9a128931281fa1caf0748bace60dc971bb29e88b759db9f784",
+   "effective_state_hash": "8b3f98cf090e4a9a128931281fa1caf0748bace60dc971bb29e88b759db9f784",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1016",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.34,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08300598300411366,
+   "reported_state_hash": "23d370bb118a53149a181e42fedf8692d69d412631f2f45513467a1b3133a355",
+   "effective_state_hash": "23d370bb118a53149a181e42fedf8692d69d412631f2f45513467a1b3133a355",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1024",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.37,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08656721400620881,
+   "reported_state_hash": "37fea53737569c45b6719e54ed54ed3f63789990d7fff5789d1b33bb380e7d21",
+   "effective_state_hash": "37fea53737569c45b6719e54ed54ed3f63789990d7fff5789d1b33bb380e7d21",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1029",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 10.42,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08693756799038965,
+   "reported_state_hash": "d9603f5be8df0046de64d019d25379f4e48af8c448cd2e3e065a449d0daa1f22",
+   "effective_state_hash": "d9603f5be8df0046de64d019d25379f4e48af8c448cd2e3e065a449d0daa1f22",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1033",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 20.52,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09535374399274588,
+   "reported_state_hash": "f1e8bdfd16b7d4c7eac8a358a13e5380cb47ff7258db8846014fc09e2e8df4b2",
+   "effective_state_hash": "f1e8bdfd16b7d4c7eac8a358a13e5380cb47ff7258db8846014fc09e2e8df4b2",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1038",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 20.53,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.094925683006295,
+   "reported_state_hash": "3065942aa109ebee76a8a3c1f721467fe0a77bc8f155926c13d7173ad6585f9f",
+   "effective_state_hash": "3065942aa109ebee76a8a3c1f721467fe0a77bc8f155926c13d7173ad6585f9f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1046",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 4,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 20.97,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08490188198629767,
+   "reported_state_hash": "e13159e0e07592563d5d38aea6bb9dd9a11ec4aa7fdd3f03a6edd52fee9d6b19",
+   "effective_state_hash": "e13159e0e07592563d5d38aea6bb9dd9a11ec4aa7fdd3f03a6edd52fee9d6b19",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1061",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 5.01,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08594607800478116,
+   "reported_state_hash": "938b2efefa3db36d80c0ac36e1502387ab9c71131e30dba119a852192fbb4bb2",
+   "effective_state_hash": "938b2efefa3db36d80c0ac36e1502387ab9c71131e30dba119a852192fbb4bb2",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1082",
+   "score": 0.6666666666666666,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 0,
+    "precision": 0.5,
+    "recall": 1.0,
+    "tool_f1": 0.6666666666666666,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.6666666666666666,
+   "execution_status": "ok",
+   "elapsed_seconds": 11.74,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08450447300856467,
+   "reported_state_hash": "391b03fcb1f42164aaadecdeff522f5e3e05dc0e9c7ec3765ad67e7b71e9d889",
+   "effective_state_hash": "391b03fcb1f42164aaadecdeff522f5e3e05dc0e9c7ec3765ad67e7b71e9d889",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1128",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 27.45,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08476345699455123,
+   "reported_state_hash": "43fb87b8574f89faa0d2389f6a6f5e5bd341ed51bad6c8958079c2d2cf88110c",
+   "effective_state_hash": "43fb87b8574f89faa0d2389f6a6f5e5bd341ed51bad6c8958079c2d2cf88110c",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1133",
+   "score": 0.3333333333333333,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 2,
+    "missing_gold_calls": 2,
+    "precision": 0.3333333333333333,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.3333333333333333,
+    "matched_pairs": [
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.3333333333333333,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.97,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08809479000046849,
+   "reported_state_hash": "2bb067a3cf29afab626caa3b4efe70b7e5732266ba75b0c218a5adf398ca07cf",
+   "effective_state_hash": "2bb067a3cf29afab626caa3b4efe70b7e5732266ba75b0c218a5adf398ca07cf",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1139",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 10.66,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0828923740045866,
+   "reported_state_hash": "114e3fc63c7124197742890267bf156b4baa5c73fe3068d75bf4b025d481ce09",
+   "effective_state_hash": "114e3fc63c7124197742890267bf156b4baa5c73fe3068d75bf4b025d481ce09",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1154",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 2,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 12.19,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08902388300339226,
+   "reported_state_hash": "648405e03007a2d399ff4830866f46503edf966d5bf1c57abd0e6e6df3a703d4",
+   "effective_state_hash": "648405e03007a2d399ff4830866f46503edf966d5bf1c57abd0e6e6df3a703d4",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1156",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.41,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08852593899064232,
+   "reported_state_hash": "bcc62047cdc7de85959eed0dc78eaa5ac06967a158da2960f308d016ab0c6983",
+   "effective_state_hash": "bcc62047cdc7de85959eed0dc78eaa5ac06967a158da2960f308d016ab0c6983",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1186",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 2,
+    "precision": 0.5,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.4,
+    "matched_pairs": [
+     [
+      1,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.49,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0964300070045283,
+   "reported_state_hash": "d2d47fa68f050937658d8a43e7a969685d4e699fd36ccc71ed5cbfda63b01acd",
+   "effective_state_hash": "d2d47fa68f050937658d8a43e7a969685d4e699fd36ccc71ed5cbfda63b01acd",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1193",
+   "score": 0.6666666666666666,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 1,
+    "precision": 1.0,
+    "recall": 0.5,
+    "tool_f1": 0.6666666666666666,
+    "matched_pairs": [
+     [
+      0,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.6666666666666666,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.01,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08454419700137805,
+   "reported_state_hash": "6ddc20b694a169d69e13f4e8d2fb8060c2fb9db3e92f3cef52085814d0349f45",
+   "effective_state_hash": "6ddc20b694a169d69e13f4e8d2fb8060c2fb9db3e92f3cef52085814d0349f45",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1218",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 15.96,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09074548000353388,
+   "reported_state_hash": "9fa103a0d4636603986a5ff6d6e5071795f86f0de913fb1d6f65a5385dedf067",
+   "effective_state_hash": "9fa103a0d4636603986a5ff6d6e5071795f86f0de913fb1d6f65a5385dedf067",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1236",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 21.32,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08553961799771059,
+   "reported_state_hash": "3c1e7e5f9b485dd37cef3fe05f7a9a06def5eb8bb1e31dde5c44398e19dbe95c",
+   "effective_state_hash": "3c1e7e5f9b485dd37cef3fe05f7a9a06def5eb8bb1e31dde5c44398e19dbe95c",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1245",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 17.62,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08736420699278824,
+   "reported_state_hash": "2fbc4198a7eaf5aaa9bebf436386203bf8adf3658dc654d30c0cfc9f6b3a6e78",
+   "effective_state_hash": "2fbc4198a7eaf5aaa9bebf436386203bf8adf3658dc654d30c0cfc9f6b3a6e78",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1246",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 3,
+    "precision": 0.5,
+    "recall": 0.25,
+    "tool_f1": 0.3333333333333333,
+    "matched_pairs": [
+     [
+      0,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.3333333333333333,
+   "execution_status": "ok",
+   "elapsed_seconds": 9.23,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09012326400261372,
+   "reported_state_hash": "e832ee012cdbee5be89626558798ee33b26b081fe5ad277bfc46e4506ba3ae92",
+   "effective_state_hash": "e832ee012cdbee5be89626558798ee33b26b081fe5ad277bfc46e4506ba3ae92",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1271",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 19.31,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0854729260026943,
+   "reported_state_hash": "cec77b1d3021808da7c073c8d399a2c7530dd4fcd0ecb183a3f8dc109001a02c",
+   "effective_state_hash": "cec77b1d3021808da7c073c8d399a2c7530dd4fcd0ecb183a3f8dc109001a02c",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1296",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.21,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08543167699826881,
+   "reported_state_hash": "cec9706482af1fc2a6ed7f1d5aa7ce3a3d012bde800a9ee3005e22711f53bef3",
+   "effective_state_hash": "cec9706482af1fc2a6ed7f1d5aa7ce3a3d012bde800a9ee3005e22711f53bef3",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1312",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 12.79,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08833996098837815,
+   "reported_state_hash": "b1258933ffaf43eac2a3be02005881bd109cf10c7ef90548106a030603a3fa24",
+   "effective_state_hash": "b1258933ffaf43eac2a3be02005881bd109cf10c7ef90548106a030603a3fa24",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1316",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 1.94,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08330445399042219,
+   "reported_state_hash": "07698e1afb1b793833b05c9953023cb8c5148ef6a8add54f8380640271372b47",
+   "effective_state_hash": "07698e1afb1b793833b05c9953023cb8c5148ef6a8add54f8380640271372b47",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1325",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 6.52,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08481040500919335,
+   "reported_state_hash": "131b72e5e15351c4a0b78ad3214a2db04c52317daedd292a9d665cdc7119d023",
+   "effective_state_hash": "131b72e5e15351c4a0b78ad3214a2db04c52317daedd292a9d665cdc7119d023",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1333",
+   "score": 0.4,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 2,
+    "precision": 0.5,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.4,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4,
+   "execution_status": "ok",
+   "elapsed_seconds": 15.94,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08309122500941157,
+   "reported_state_hash": "f065e3ad3104c5fcd29db56dd65a621262034dabe4e92db8d6368bfe7f5e2791",
+   "effective_state_hash": "f065e3ad3104c5fcd29db56dd65a621262034dabe4e92db8d6368bfe7f5e2791",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1335",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.15,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08249483398685697,
+   "reported_state_hash": "45150d467fbc3efbb413012193203d3e19429bf3400995062eaaf2d1e9e05571",
+   "effective_state_hash": "45150d467fbc3efbb413012193203d3e19429bf3400995062eaaf2d1e9e05571",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1339",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 4,
+    "gold_calls": 5,
+    "unmatched_submitted_calls": 2,
+    "missing_gold_calls": 3,
+    "precision": 0.5,
+    "recall": 0.4,
+    "tool_f1": 0.4444444444444444,
+    "matched_pairs": [
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4444444444444444,
+   "execution_status": "ok",
+   "elapsed_seconds": 21.99,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08802323399868328,
+   "reported_state_hash": "6621ac960cb9f2743552c18e98a154a4d137d909be9e7ed8cc537ff1fc87ef0c",
+   "effective_state_hash": "6621ac960cb9f2743552c18e98a154a4d137d909be9e7ed8cc537ff1fc87ef0c",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1341",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 2,
+    "missing_gold_calls": 2,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 22.42,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08898859600594733,
+   "reported_state_hash": "4b6edae22b8f0ecd4ed1c64779f51afc7d30ad243fe92dbc59521a4f1c8b57f5",
+   "effective_state_hash": "4b6edae22b8f0ecd4ed1c64779f51afc7d30ad243fe92dbc59521a4f1c8b57f5",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1345",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.91,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.09104025400301907,
+   "reported_state_hash": "0945f939bd8eb1b4af66703a5414b3994e89eaa0bdbcd29115e47917d0cd098c",
+   "effective_state_hash": "0945f939bd8eb1b4af66703a5414b3994e89eaa0bdbcd29115e47917d0cd098c",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1386",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 2.41,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0891376660001697,
+   "reported_state_hash": "91e0ac322b0b17387feaada0cc15d7e7ff57ae0dd1185f6d1705179be31d3a80",
+   "effective_state_hash": "91e0ac322b0b17387feaada0cc15d7e7ff57ae0dd1185f6d1705179be31d3a80",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1388",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 11.94,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08364549701218493,
+   "reported_state_hash": "7e58614ae2419d909d87b3733cd1db47fc6d350f253e21d11e8fa55dbb0cb230",
+   "effective_state_hash": "7e58614ae2419d909d87b3733cd1db47fc6d350f253e21d11e8fa55dbb0cb230",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1404",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 3,
+    "missing_gold_calls": 3,
+    "precision": 0.25,
+    "recall": 0.25,
+    "tool_f1": 0.25,
+    "matched_pairs": [
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "timeout",
+   "elapsed_seconds": 30.41,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08505941700423136,
+   "reported_state_hash": "01fd17084e852db96101366097eb974d21abbdf0c4fbe14c8b0de0046dd8a529",
+   "effective_state_hash": "01fd17084e852db96101366097eb974d21abbdf0c4fbe14c8b0de0046dd8a529",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": "Inference exceeded 30 seconds",
+   "replay_error": null
+  },
+  {
+   "id": "train_1407",
+   "score": 0.75,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 4,
+    "gold_calls": 4,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.75,
+    "recall": 0.75,
+    "tool_f1": 0.75,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      3,
+      3
+     ]
+    ]
+   },
+   "tie_break_f1": 0.75,
+   "execution_status": "ok",
+   "elapsed_seconds": 21.19,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0871228720061481,
+   "reported_state_hash": "9267c101c2327e88c8093ba9646def0a575ac2635f67a35f8caa8e2cc7cc8c58",
+   "effective_state_hash": "9267c101c2327e88c8093ba9646def0a575ac2635f67a35f8caa8e2cc7cc8c58",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1427",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 21.05,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0862910799914971,
+   "reported_state_hash": "1b1694d59c92560aac7aa33602c6576f91b1b09344dd248e06463d3880ce2729",
+   "effective_state_hash": "1b1694d59c92560aac7aa33602c6576f91b1b09344dd248e06463d3880ce2729",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1451",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 6.73,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08653082000091672,
+   "reported_state_hash": "bfac2b8051f31e5b2fdbf3b28bb1f6fa8042af834c581ba8af7f399ac2781357",
+   "effective_state_hash": "bfac2b8051f31e5b2fdbf3b28bb1f6fa8042af834c581ba8af7f399ac2781357",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1469",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 12.64,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08508669299772009,
+   "reported_state_hash": "57a9b46ffc1bb095b25741ccccf8441eb77b6cb7eaec53400bbb951cbad9455b",
+   "effective_state_hash": "57a9b46ffc1bb095b25741ccccf8441eb77b6cb7eaec53400bbb951cbad9455b",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1487",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 17.25,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08679620501061436,
+   "reported_state_hash": "eca9a33234021a5358ed90b57c2f1df42a257ffcca21a7fb0efab480bbbcae60",
+   "effective_state_hash": "eca9a33234021a5358ed90b57c2f1df42a257ffcca21a7fb0efab480bbbcae60",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1504",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 6.93,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08380227501038462,
+   "reported_state_hash": "818d4027359b0604da8fb6afc7e06a2ac6a1e0eaa7a5b054863c434487af2089",
+   "effective_state_hash": "818d4027359b0604da8fb6afc7e06a2ac6a1e0eaa7a5b054863c434487af2089",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1514",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 6.08,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08603248299914412,
+   "reported_state_hash": "ee0f59f9a60bcffc1ef373acd20ce7b280ff1ccff18dca3ebcd713ecd372ec79",
+   "effective_state_hash": "ee0f59f9a60bcffc1ef373acd20ce7b280ff1ccff18dca3ebcd713ecd372ec79",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1518",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 2.09,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.086807013998623,
+   "reported_state_hash": "2a2854a95d052ea01006f14ced7d5877830b61db80d18531f57ebaa256f762a7",
+   "effective_state_hash": "2a2854a95d052ea01006f14ced7d5877830b61db80d18531f57ebaa256f762a7",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1528",
+   "score": 0.5,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 15.12,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08883319101005327,
+   "reported_state_hash": "7df6977b4d2affbeff1246e1d0aa4bd06ee259bdd06e58f3819aafa0127701ce",
+   "effective_state_hash": "7df6977b4d2affbeff1246e1d0aa4bd06ee259bdd06e58f3819aafa0127701ce",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1531",
+   "score": 0.4,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 2,
+    "precision": 0.5,
+    "recall": 0.3333333333333333,
+    "tool_f1": 0.4,
+    "matched_pairs": [
+     [
+      1,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.61,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08874602800642606,
+   "reported_state_hash": "a7bbac908265ecef103792ed8f3535941e41094ca3024d4bff7ffa426574a6d5",
+   "effective_state_hash": "a7bbac908265ecef103792ed8f3535941e41094ca3024d4bff7ffa426574a6d5",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1555",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 7.25,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.0886782250017859,
+   "reported_state_hash": "512b02ceb54c7560e81f274dc165b5a4bc6935f8edae63eef0e94aa5f70d9020",
+   "effective_state_hash": "512b02ceb54c7560e81f274dc165b5a4bc6935f8edae63eef0e94aa5f70d9020",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1566",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 9.48,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08477070600201841,
+   "reported_state_hash": "748cc366daa9ac6541f71ee995cfe9f98ccac67f65f2e525c0188087009ecb57",
+   "effective_state_hash": "748cc366daa9ac6541f71ee995cfe9f98ccac67f65f2e525c0188087009ecb57",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1578",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.59,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08314354399044532,
+   "reported_state_hash": "cd6750b5d3823226ac36b626b74886f7380bfbf0ef68cc5ebc07ccf21bfb966b",
+   "effective_state_hash": "cd6750b5d3823226ac36b626b74886f7380bfbf0ef68cc5ebc07ccf21bfb966b",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1593",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.8,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08806880201154854,
+   "reported_state_hash": "33903a5aa9d1e025cc24f8017c8fa6c354c0bad847cdcaed30b44152e1003c2f",
+   "effective_state_hash": "33903a5aa9d1e025cc24f8017c8fa6c354c0bad847cdcaed30b44152e1003c2f",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1595",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 3,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 18.35,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08817315399937797,
+   "reported_state_hash": "d0a2b330cc1de8f8dc35c6e224a04bbb3d7df8f121cf03a2c80bc22a541b8e17",
+   "effective_state_hash": "d0a2b330cc1de8f8dc35c6e224a04bbb3d7df8f121cf03a2c80bc22a541b8e17",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1599",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 3,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 2,
+    "missing_gold_calls": 1,
+    "precision": 0.3333333333333333,
+    "recall": 0.5,
+    "tool_f1": 0.4,
+    "matched_pairs": [
+     [
+      1,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.4,
+   "execution_status": "ok",
+   "elapsed_seconds": 19.04,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08636215500882827,
+   "reported_state_hash": "f94f092cb161841cd2e02db747c59bbfc466dde37136cf82fac6ff423d9eb7e7",
+   "effective_state_hash": "f94f092cb161841cd2e02db747c59bbfc466dde37136cf82fac6ff423d9eb7e7",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1605",
+   "score": 0.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tool_f1": 0.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 0.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 10.97,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08436736100702547,
+   "reported_state_hash": "0da8746d2898d0c99beb88b967c43d65fa55059ba6c54a1e30a0a56e47d12517",
+   "effective_state_hash": "0da8746d2898d0c99beb88b967c43d65fa55059ba6c54a1e30a0a56e47d12517",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1612",
+   "score": 0.6666666666666666,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 1,
+    "precision": 1.0,
+    "recall": 0.5,
+    "tool_f1": 0.6666666666666666,
+    "matched_pairs": [
+     [
+      0,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.6666666666666666,
+   "execution_status": "ok",
+   "elapsed_seconds": 9.43,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08819942000263836,
+   "reported_state_hash": "87f3ddd90ef462737b3ebbe19be5a99ece93ada3ec6a391f5fc5c7e9f844ba50",
+   "effective_state_hash": "87f3ddd90ef462737b3ebbe19be5a99ece93ada3ec6a391f5fc5c7e9f844ba50",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1655",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 0,
+    "submitted_calls": 0,
+    "gold_calls": 0,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": []
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 2.72,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08571856300113723,
+   "reported_state_hash": "61860c9fee47c6c07eff2439c16eadca6eaff7367363e3b097716cec71abf7dc",
+   "effective_state_hash": "61860c9fee47c6c07eff2439c16eadca6eaff7367363e3b097716cec71abf7dc",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1673",
+   "score": 0.5,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 14.38,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08401712100021541,
+   "reported_state_hash": "f76794758095dc896292e40bba803f2b34778aab84b107dae691a7fcae4a8f42",
+   "effective_state_hash": "f76794758095dc896292e40bba803f2b34778aab84b107dae691a7fcae4a8f42",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1675",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 11.16,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08623809499840718,
+   "reported_state_hash": "5e7baf13b0547d9808a19b5368bd327a8553436fea011aab2c22e2efe48dabc4",
+   "effective_state_hash": "5e7baf13b0547d9808a19b5368bd327a8553436fea011aab2c22e2efe48dabc4",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1712",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.53,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08576310898934025,
+   "reported_state_hash": "cc05748f6c34c99b63e6934469def14ddacf1862dbee64992b4617d5d5a5b818",
+   "effective_state_hash": "cc05748f6c34c99b63e6934469def14ddacf1862dbee64992b4617d5d5a5b818",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1714",
+   "score": 0.5,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 2,
+    "gold_calls": 2,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.5,
+    "recall": 0.5,
+    "tool_f1": 0.5,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 0.5,
+   "execution_status": "ok",
+   "elapsed_seconds": 14.04,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08417489100247622,
+   "reported_state_hash": "5817e47410cf0d7ff1fc96196180ff53d997ac5f36c9fb440b822923522e0afe",
+   "effective_state_hash": "5817e47410cf0d7ff1fc96196180ff53d997ac5f36c9fb440b822923522e0afe",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1733",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 8.84,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08379403500293847,
+   "reported_state_hash": "2ebd94adb21ef34e5fdd220898d998c81b444cd5955b92a2f750b3b1c5df4863",
+   "effective_state_hash": "2ebd94adb21ef34e5fdd220898d998c81b444cd5955b92a2f750b3b1c5df4863",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1741",
+   "score": 1.0,
+   "state_match": true,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 1,
+    "submitted_calls": 1,
+    "gold_calls": 1,
+    "unmatched_submitted_calls": 0,
+    "missing_gold_calls": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tool_f1": 1.0,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ]
+    ]
+   },
+   "tie_break_f1": 1.0,
+   "execution_status": "ok",
+   "elapsed_seconds": 8.88,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08309048399678431,
+   "reported_state_hash": "04881a4e2d0abb2627ef51e817b5d25edd19a0f4b78f6d3b0452ff79b14d4720",
+   "effective_state_hash": "04881a4e2d0abb2627ef51e817b5d25edd19a0f4b78f6d3b0452ff79b14d4720",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  },
+  {
+   "id": "train_1746",
+   "score": 0.0,
+   "state_match": false,
+   "missing_prediction": false,
+   "calls": {
+    "matched_calls": 2,
+    "submitted_calls": 3,
+    "gold_calls": 3,
+    "unmatched_submitted_calls": 1,
+    "missing_gold_calls": 1,
+    "precision": 0.6666666666666666,
+    "recall": 0.6666666666666666,
+    "tool_f1": 0.6666666666666666,
+    "matched_pairs": [
+     [
+      0,
+      0
+     ],
+     [
+      2,
+      2
+     ]
+    ]
+   },
+   "tie_break_f1": 0.6666666666666666,
+   "execution_status": "ok",
+   "elapsed_seconds": 13.69,
+   "replay_status": "ok",
+   "replay_elapsed_seconds": 0.08789880199765321,
+   "reported_state_hash": "a5c80ed30f982bd08e4f6e56529251c9e669668644b9086e3a79c5631b710094",
+   "effective_state_hash": "a5c80ed30f982bd08e4f6e56529251c9e669668644b9086e3a79c5631b710094",
+   "hash_consistent": true,
+   "rejected_call_indices": [],
+   "execution_error": null,
+   "replay_error": null
+  }
+ ],
+ "verification": {
+  "split": "train",
+  "catalog_sha256": "a994984bb580d7e0d60166641858901d428549682ba3614dbf9269037a33cce0",
+  "zaic_tools_sha256": "93f8519e251638178d018e92560475fa325508d663455393b4e582dcff97c2f6"
+ }
+}

@@ -33,7 +33,7 @@ class ContextFull(Exception):
     pass
 
 
-def request_json(url, key, model, prompt, max_tokens, retries=4, **extra):
+def request_json(url, key, model, prompt, max_tokens, retries=8, **extra):
     """POST /v1/completions → JSON đầy đủ (choices[0].text, .logprobs, usage)."""
     body = {"model": model, "prompt": prompt, "max_tokens": max_tokens, "temperature": 0, "seed": 0, **extra}
     data = json.dumps(body).encode()
@@ -46,10 +46,10 @@ def request_json(url, key, model, prompt, max_tokens, retries=4, **extra):
         except Exception:
             if k == retries - 1:
                 raise
-            time.sleep(5 * (k + 1))
+            time.sleep(min(5 * (k + 1), 30))      # mạng chập chờn: 8 lần, chờ tối đa 30 s/lần (~2.5 phút tổng)
 
 
-def request(url, key, model, prompt, max_tokens, retries=4, **extra):
+def request(url, key, model, prompt, max_tokens, retries=8, **extra):
     d = request_json(url, key, model, prompt, max_tokens, retries, **extra)
     return d["choices"][0]["text"], d.get("usage", {})
 
@@ -157,11 +157,13 @@ class VLLMOracle:
 
 
 _PACK = {}
+_PACK_INIT = __import__("threading").Lock()      # chặn nhiều luồng cùng nạp bộ lọc (trước đây: 48 luồng → 52 bản model, tràn RAM/swap)
 
 
 def get_pack(args):
     """Nạp bộ lọc một lần (catalog của split hiện tại, embedder CPU); mã hoá câu qua khoá để an toàn với nhiều luồng."""
-    if "p" not in _PACK:
+    with _PACK_INIT:
+      if "p" not in _PACK:
         import threading
         sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "clef", "app_filter"))
         from pack import AppFilterPack

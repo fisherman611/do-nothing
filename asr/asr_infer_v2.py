@@ -5,6 +5,7 @@ Chia shard theo sid (giữ nguyên hội thoại)."""
 import collections
 import hashlib
 import json
+import os
 import random
 
 
@@ -15,13 +16,17 @@ def run(tag, which, shard=0, n_shards=1, n_train=1500, beams=5, nbest=6, limit=0
     from transformers import WhisperForConditionalGeneration, WhisperProcessor
     import asr_train as T
     import bias_prompt as bp
-    path = f"{T.OUT}/{tag}"
+    # tag: thư mục trong OUT, hoặc repo HF "user/name" (vd fisherman611/w-m4q9 = ASR v2 medium) — kéo thẳng từ HF
+    path = tag if ("/" in tag and not os.path.isdir(f"{T.OUT}/{tag}")) else f"{T.OUT}/{tag}"
     proc = WhisperProcessor.from_pretrained(path)
     model = WhisperForConditionalGeneration.from_pretrained(path, torch_dtype=torch.bfloat16).cuda().eval()
     tok, sot = proc.tokenizer, model.config.decoder_start_token_id
-    man = json.load(open(f"{T.DATA}/manifest_v2.json"))
+    man = json.load(open(f"{T.DATA}/manifest_v2.json")) if which in ("val", "fcval", "train_aug") else None   # manifest train/val
     if which == "val":
         items = [x for x in man if x["split"] == "val"]
+    elif which == "public":
+        # public test: manifest dựng bằng asr_srv/make_public_manifest_v2.py (items_from_row, không nhãn, root=public_test)
+        items = json.load(open(f"{T.DATA}/public_manifest_v2.json"))
     elif which == "fcval":
         want = set(sids)
         items = [x for x in man if x["sid"] in want]
@@ -42,7 +47,7 @@ def run(tag, which, shard=0, n_shards=1, n_train=1500, beams=5, nbest=6, limit=0
             wav = T.load_wavs([it])[0]
             if which == "train_aug":
                 wav = T.augment_wav(wav, random.Random(int(hashlib.md5(it["uid"].encode()).hexdigest(), 16) % (1 << 30) + 999))
-            pid, ents = bp.build_prompt(tok, it, hyps=hyps if which in ("val", "fcval") else None)
+            pid, ents = bp.build_prompt(tok, it, hyps=hyps if which in ("val", "fcval", "public") else None)
             feats = proc.feature_extractor(wav, sampling_rate=16000, return_tensors="pt").input_features.to("cuda", dtype=model.dtype)
             kw = {"prompt_ids": torch.tensor(pid, device="cuda")} if pid else {}
             with torch.no_grad():
@@ -58,3 +63,22 @@ def run(tag, which, shard=0, n_shards=1, n_train=1500, beams=5, nbest=6, limit=0
             hyps[it["uid"]] = nb[0][0]
             res[it["uid"]] = {"sid": sid, "kind": it["kind"], "ref": it["text"], "nbest": nb, "prompt_ents": ents}
     return res
+
+
+if __name__ == "__main__":
+    # chạy ngoài Modal (myserver): ZAIC_DATA=<dir manifest + audio> ZAIC_OUT=<dir chứa model ở <tag>/>
+    #   python asr_infer_v2.py <tag> <which> <out.json> [--nbest 0] [--shard i/n]
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("tag")
+    ap.add_argument("which")
+    ap.add_argument("out")
+    ap.add_argument("--nbest", type=int, default=0)
+    ap.add_argument("--beams", type=int, default=5)
+    ap.add_argument("--shard", default="0/1")
+    ap.add_argument("--limit", type=int, default=0)
+    a = ap.parse_args()
+    si, sn = map(int, a.shard.split("/"))
+    res = run(a.tag, a.which, shard=si, n_shards=sn, beams=a.beams, nbest=a.nbest, limit=a.limit)
+    json.dump(res, open(a.out, "w", encoding="utf-8"), ensure_ascii=False)
+    print(f"{len(res)} utt → {a.out}")
