@@ -1,0 +1,10 @@
+# Môi trường suy luận trong image (đã cài sẵn; file này để đối chiếu, không cần cài lại).
+# Base image: vllm/vllm-openai:v0.31.0 (CUDA 13.0.2) — cung cấp vllm, torch, transformers cho LLM gọi tool.
+sentence-transformers        # embedder của bộ lọc app (CPU)
+pyvi==0.1.1                  # tách từ tiếng Việt cho embedder gốc PhoBERT
+soundfile
+huggingface_hub
+jupyterlab                   # predict_notebook.ipynb
+
+# venv riêng /opt/asr cho PhoWhisper (giống môi trường lúc train/đo ASR):
+#   torch==2.8.0  transformers==4.57.1  accelerate==1.10.1  soundfile  numpy<2.3
