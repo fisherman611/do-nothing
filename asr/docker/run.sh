@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# LƯU Ý: đây là lối chạy THEO LÔ để đo nhanh lúc phát triển (ASR hết mọi mẫu → vLLM → nhiều luồng). Lối chạy BTC chấm là
+# /code/predict.sh (lần lượt từng mẫu, có trường time) — xem docker/README.md.
 # D1: chạy trong container. Biến môi trường (có mặc định):
 #   SPLIT=private_test  DATA=/data  OUT=/result  WORK=/work  WORKERS=16
 #   AGENT_FLAGS="--retry-empty"        # cờ thêm cho clef_agent (vd --n8-tau 0.7 --i5 0.5 sau khi đo xong)
@@ -18,13 +20,13 @@ LIM=""; [ -n "${LIMIT:-}" ] && LIM="--limit $LIMIT"
 
 # 1) ASR: nghe mọi lượt user của mọi mẫu; thoát tiến trình để nhả GPU trước khi bật vLLM
 log "ASR"
-/opt/asr/bin/python /app/docker/asr_stage.py --data "$DATA" --split "$SPLIT" --model /models/asr \
+/opt/asr/bin/python /code/docker/asr_stage.py --data "$DATA" --split "$SPLIT" --model /code/saved_models/asr \
     --out "$WORK/asr.json" --secs "$WORK/asr_secs.json" ${LIMIT:+--limit $LIMIT}
 log "ASR xong sau $(( $(date +%s) - T0 )) s"
 
 # 2) vLLM phục vụ FC (cố định seed, greedy do clef_agent gửi temperature=0, seed=0)
 log "bật vLLM"
-vllm serve /models/fc --served-model-name llm --host 127.0.0.1 --port 8000 --max-model-len 16384 \
+vllm serve /code/saved_models/fc --served-model-name llm --host 127.0.0.1 --port 8000 --max-model-len 16384 \
     --gpu-memory-utilization "${GPU_UTIL:-0.85}" --seed 0 --enable-prefix-caching \
     --max-logprobs 64 --logprobs-mode processed_logprobs --api-key local > "$WORK/vllm.log" 2>&1 &
 VLLM_PID=$!
@@ -38,12 +40,12 @@ curl -sf -H "Authorization: Bearer local" http://127.0.0.1:8000/v1/models >/dev/
 log "vLLM sẵn sàng"
 
 # 3) agent (bộ lọc app + FC từng bước + ToolEnv); mỗi mẫu một ToolEnv
-python3 /app/agent/clef_agent.py --data "$DATA" --split "$SPLIT" --url http://127.0.0.1:8000 --key local \
-    --out "$WORK/run.jsonl" --asr "$WORK/asr.json" --workers "$WORKERS" --fmt-from /models/fmt.json \
-    --app-filter /models/pack --time-budget "$TIME_BUDGET" --asr-secs "$WORK/asr_secs.json" $LIM $AGENT_FLAGS
+python3 /code/agent/clef_agent.py --data "$DATA" --split "$SPLIT" --url http://127.0.0.1:8000 --key local \
+    --out "$WORK/run.jsonl" --asr "$WORK/asr.json" --workers "$WORKERS" --fmt-from /code/saved_models/fmt.json \
+    --app-filter /code/saved_models/pack --time-budget "$TIME_BUDGET" --asr-secs "$WORK/asr_secs.json" $LIM $AGENT_FLAGS
 log "agent xong"
 
 [ -n "${LIMIT:-}" ] && { log "LIMIT=$LIMIT: bỏ bước submit (chỉ đo thử)"; kill "$(cat "$WORK/gpu_mem.pid")" 2>/dev/null || true; exit 0; }
 # 4) gom file nộp (dừng nếu thiếu/thừa/trùng id hoặc state_hash rỗng)
-python3 /app/agent/submit.py --run "$WORK/run.jsonl" --data "$DATA" --split "$SPLIT" --out "$OUT/submission.jsonl"
+python3 /code/agent/submit.py --run "$WORK/run.jsonl" --data "$DATA" --split "$SPLIT" --out "$OUT/submission.jsonl"
 log "xong: $OUT/submission.jsonl, tổng $(( $(date +%s) - T0 )) s"

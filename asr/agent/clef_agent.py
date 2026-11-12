@@ -27,21 +27,24 @@ A = F.A
 TOKENIZER = ("Qwen/Qwen3.5-4B", "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a")
 MAX_FREE_TOKENS = 200
 MAX_TAIL_TOKENS = 400       # đuôi call: nhiều tham số tuỳ chọn (q2=discrete/none)
+REQ_RETRIES = 8             # số lần thử một request; docker/predict.py hạ xuống (vLLM cục bộ, ngân sách 30 s/mẫu)
+REQ_TIMEOUT = 600           # giây chờ một request
 
 
 class ContextFull(Exception):
     pass
 
 
-def request_json(url, key, model, prompt, max_tokens, retries=8, **extra):
+def request_json(url, key, model, prompt, max_tokens, retries=None, **extra):
     """POST /v1/completions → JSON đầy đủ (choices[0].text, .logprobs, usage)."""
     body = {"model": model, "prompt": prompt, "max_tokens": max_tokens, "temperature": 0, "seed": 0, **extra}
     data = json.dumps(body).encode()
+    retries = REQ_RETRIES if retries is None else retries
     for k in range(retries):
         try:
             req = urllib.request.Request(url.rstrip("/") + "/v1/completions", data=data,
                                          headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
-            with urllib.request.urlopen(req, timeout=600) as r:
+            with urllib.request.urlopen(req, timeout=REQ_TIMEOUT) as r:
                 return json.loads(r.read())
         except Exception:
             if k == retries - 1:
@@ -49,7 +52,7 @@ def request_json(url, key, model, prompt, max_tokens, retries=8, **extra):
             time.sleep(min(5 * (k + 1), 30))      # mạng chập chờn: 8 lần, chờ tối đa 30 s/lần (~2.5 phút tổng)
 
 
-def request(url, key, model, prompt, max_tokens, retries=8, **extra):
+def request(url, key, model, prompt, max_tokens, retries=None, **extra):
     d = request_json(url, key, model, prompt, max_tokens, retries, **extra)
     return d["choices"][0]["text"], d.get("usage", {})
 

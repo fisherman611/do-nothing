@@ -243,3 +243,6 @@ asr/agent/runs/clef/fmtA_48e_e1/
 # kết quả eval app_filter đã dọn ở commit 6319a43 (số liệu chuẩn trong REPORT_app_filter_v2.md)
 asr/agent/clef/app_filter/eval_*.json
 asr/agent/clef/app_filter/results.json
+
+# context dựng image (docker/ctx.sh sinh ra; chứa bộ lọc app)
+asr/docker/ctx/
