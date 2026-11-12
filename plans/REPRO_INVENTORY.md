@@ -27,15 +27,16 @@ Model cũ, không dùng trong bản nộp: `fisherman611/w-m4q9` (ASR v2 medium,
 | `fisherman611/au-r7k2` | `45bbce6ca8ba500fbf91ea8afcf675571282ceb1` | audio TTS v2 (6 198 wav), `tts_manifest.json`, `manifest_v2.json`, `lexicon_v2.json`, `tts_text.jsonl`, `REPORT_tts_text.md` | train ASR v2/L2; B0 |
 | `fisherman611/x-k29e` | `f84bccd98d555f2ffc5141524297df2ff5a333ea` | bảng nhiễu ASR v2 (`asr_errors_v2.jsonl`, `asr_subst_v2.json`), transcript held-out, báo cáo lỗi | nhiễu trong data FC |
 | `fisherman611/za-data-5eb2dec0` | `a0f5f8329e1d38ef6f67e25a29a2cb0162bf484f` | 9 715 file: data bộ lọc app (`app_filter/…`) và các bộ khác — **cần kiểm lại nội dung đầy đủ trước khi ghi vào `training_README`** | train bộ lọc |
+| `fisherman611/fc-8099` | `ffabd9a7c6987a26e8ee45cc115ff476b4a72514` | `fmtA_v3/` (12 241 ví dụ, data FC v3), `fmtA_a4/` (12 241, nhiễu e46f-TTS — bảng nhiễu còn lẫn giọng Trung ElevenLabs, xem A6), `newapps_q1/` (train/val/test app lạ) + meta, report | train FC v3 / A4; M3b |
+| `fisherman611/x-8eb9` | `c9b6fb29f5e85306a04b72c759dfb03a2565cc3c` | `b0.base_medium.asr.json` — lỗi nghe của PhoWhisper-medium gốc trên 9 854 câu | nguồn nhiễu B0 của fmtA_v3 |
 | `fisherman611/x-p71q` | `b5cda032289e4413cea2db493ee0a7e081f7b3df` | **kết quả chạy public** (transcript ASR v2 public, log agent, submission 59) | không dùng cho train; cân nhắc gỡ hoặc để riêng, không ghi vào training_code |
 
 ## 3. Chưa lên HF (phải đẩy qua Modal hoặc myserver trước hạn)
 
 | Thứ | Ở đâu | Cần cho |
 |---|---|---|
-| Data FC v3 `agent/clef/data/fmtA_v3/` (12 241 ví dụ) + `fmtA_v3_full/` | local | A2 (train) |
-| `agent/clef/data/newapps_q1/{train,val_newapps,test_newapps}.jsonl` | local | A2, M3b |
-| `agent/runs/asr/b0.base_medium.asr.json` (lỗi nghe của medium gốc trên 9 854 câu) | local | dựng lại fmtA_v3 |
+| ~~Data FC v3, newapps_q1, B0~~ → **đã lên HF 12/11** (`fc-8099`, `x-8eb9`, bảng trên) | HF | A2, M3b |
+| Data ASR v3 (TTS v3 + v2 xử lý lại + noise_bank, `data/asr_v3/` trên myserver, 2,3 GB) | myserver, Modal volume | **KHÔNG đẩy HF** — chưa chuẩn (B4/B4b không qua cổng, giọng Trung ElevenLabs kém); không dùng cho bản nộp |
 | ASR L2 (model gộp) | Modal volume `zaic-out/L2_v21L_e46f`; Kaggle output `andngdngtrnhhoian/zaic-asr-l2` | không dùng (62.60) — lưu để đối chiếu |
 | Model gốc Qwen3.5-4B cắt text (`/hf/qwen35_4b_text`) | Modal volume `hf-cache` | A2; BTC dựng lại được từ `Qwen/Qwen3.5-4B` bằng script cắt (ghi vào training_code) |
 | Dữ liệu tổng hợp text: `synth/`, `synth_phonetic/`, `synth/newapps/`, `synth/tts_text/`, `agent/data/places_vn.json` | git | dựng data FC/ASR |
