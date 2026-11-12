@@ -1,0 +1,27 @@
+{
+ "summary": {
+  "items": 4267,
+  "calls": 7574,
+  "G4_empty_label": 457,
+  "G2_replayed_items": 1416,
+  "G2_replayed_calls": 3266,
+  "G2_no_gold_hash": 1416,
+  "G3_repeated_call": 2
+ },
+ "rows": {
+  "G3_repeated_call": [
+   {
+    "id": "train_0922",
+    "call": [
+     "{\"arguments\": {\"program\": \"prog_815\", \"reward_id\": \"rw_02_1\"}, \"name\": \"loyalty.redeem\"}"
+    ]
+   },
+   {
+    "id": "train_1447",
+    "call": [
+     "{\"arguments\": {\"program\": \"prog_90\", \"reward_id\": \"rw_01_1\"}, \"name\": \"loyalty.redeem\"}"
+    ]
+   }
+  ]
+ }
+}

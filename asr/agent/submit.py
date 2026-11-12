@@ -21,9 +21,10 @@ def main():
     ap.add_argument("--data", required=True)
     ap.add_argument("--split", default="public_test")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--limit", type=int, help="chỉ N mẫu đầu của split (khớp clef_agent --limit; dùng cho smoke test, KHÔNG dùng khi nộp)")
     a = ap.parse_args()
 
-    ids = [json.loads(l)["id"] for l in open(f"{a.data}/{a.split}/{a.split}.jsonl", encoding="utf-8") if l.strip()]
+    ids = [json.loads(l)["id"] for l in open(f"{a.data}/{a.split}/{a.split}.jsonl", encoding="utf-8") if l.strip()][: a.limit]
     rows, dup = {}, []
     for l in open(a.run, encoding="utf-8"):
         if not l.strip():

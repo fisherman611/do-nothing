@@ -60,6 +60,46 @@ def augment_wav(wav, rng):
     return np.clip(wav, -1.0, 1.0)
 
 
+_BANK = {}
+
+
+def augment_v3(wav, rng, p=0.3):
+    """ASR v3 (§1z5): p: tốc độ 0.9/1.1 và/hoặc nhiễu THẬT (DATA/noise_bank, cắt từ im lặng audio train, định dạng phổ theo
+    DATA/noise_bank/eq_dashscope.json) SNR 28–38 dB. Không vang, không nhiễu trắng/hồng. Áp cho mọi mẫu (thật + TTS)."""
+    import json
+    import numpy as np
+    if rng.random() >= p:
+        return wav
+    if rng.random() < 0.5:
+        f = rng.choice([0.9, 1.1]); n = int(len(wav) / f)
+        wav = np.interp(np.linspace(0, len(wav) - 1, n), np.arange(len(wav)), wav).astype("float32")
+    if rng.random() < 0.7:
+        import soundfile as sf
+        if not _BANK:
+            man = json.load(open(f"{DATA}/noise_bank/manifest.json"))
+            _BANK["files"] = [f"{DATA}/noise_bank/{it['file']}" for it in man["items"]]
+            eq = f"{DATA}/noise_bank/eq_dashscope.json"
+            _BANK["ng"] = json.load(open(eq))["noise_gain_db"] if os.path.exists(eq) else None
+            _BANK["edges"] = json.load(open(eq))["edges"] if os.path.exists(eq) else None
+            _BANK["cache"] = {}
+        xf = 160; ramp = np.linspace(0, 1, xf, dtype="float32"); y = np.zeros(0, "float32")
+        while len(y) < len(wav) + xf:
+            fn = rng.choice(_BANK["files"])
+            if fn not in _BANK["cache"]:
+                z = sf.read(fn, dtype="float32")[0]; z = z - z.mean(); _BANK["cache"][fn] = z / (np.sqrt(np.mean(z ** 2)) + 1e-9)
+            z = _BANK["cache"][fn]
+            if len(y) < xf: y = z.copy(); continue
+            y = np.concatenate([y[:-xf], y[-xf:] * (1 - ramp) + z[:xf] * ramp, z[xf:]])
+        y = y[: len(wav)]
+        if _BANK["ng"] is not None:
+            e = np.array(_BANK["edges"], dtype="float64"); c = (e[:-1] + e[1:]) / 2
+            fq = np.fft.rfftfreq(len(y), 1 / 16000)
+            y = np.fft.irfft(np.fft.rfft(y) * 10 ** (np.interp(fq, c, _BANK["ng"]) / 20), n=len(y))
+        ps = float(np.mean(wav ** 2)) + 1e-12; snr = rng.uniform(28, 38)
+        wav = (wav + y * np.sqrt(ps / (10 ** (snr / 10)) / (float(np.mean(y ** 2)) + 1e-12))).astype("float32")
+    return np.clip(wav, -1.0, 1.0)
+
+
 def make_prev_noise(table, names, prob):
     """Hàm làm nhiễu lượt user trước trong prompt lúc train (A4.0(1)): giữ hoa/thường và dấu câu như đầu ra ASR thật;
     thay từ theo bảng nhầm lẫn (table: từ thường → [[từ thay, trọng số], ...]), thỉnh thoảng đổi tên riêng thành tên khác
@@ -207,6 +247,7 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
           eval_bs: int = 16, final_eval: bool = True,
           model_id: str = MODEL_ID, model_revision: str = MODEL_REVISION, tts_manifest: str = "",
           inter_ctc_layer: int = 0, kws_weight: float = 0.0, audio_aug: float = 0.0, prev_noise: float = 0.0,
+          real_repeat: int = 1, aug_v3: float = 0.0, init_adapter: str = "",
           patience: int = 2, save_limit: int = 1, eval_lexicon: bool = True, workers: int = 4, tag_suffix: str = "",
           commit=None):
     """commit: hàm gọi sau mỗi lần lưu (Modal: volume.commit). time_budget_h > 0: dừng train, lưu checkpoint khi
@@ -215,7 +256,11 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
     v2.1 (PLAN_48h A4): model_id/model_revision (vd vinai/PhoWhisper-medium); tts_manifest: file json trong DATA, các item
     split=="train" được thêm vào train (audio ở DATA/tts); inter_ctc_layer > 0: thêm CTC ở lớp encoder đó (chung ctc_head);
     kws_weight > 0: head phụ dự đoán tên nào trong prompt được nói (BCE); audio_aug: xác suất tăng cường audio thật;
-    prev_noise: xác suất làm nhiễu mỗi lượt user trước trong prompt (cần DATA/prev_noise_table.json)."""
+    prev_noise: xác suất làm nhiễu mỗi lượt user trước trong prompt (cần DATA/prev_noise_table.json).
+    v3 (PLAN_72h_v3 B4): real_repeat: lặp audio thật N lần mỗi epoch (thật không bị TTS lấn); aug_v3: xác suất augment_v3
+    (tốc độ + nhiễu thật) cho MỌI mẫu; TTS v3 dùng nhiều root (tts_v2p, tts_v3, tts_v3el) trong cùng tts_manifest.
+    init_adapter: thư mục checkpoint (adapter_model.safetensors [+ ctc_head.pt]) để KHỞI TẠO LoRA rồi train với lịch LR mới
+    (khác resume: không khôi phục optimizer/scheduler). Dùng cho B4c: tiếp từ epoch tốt nhất của B4."""
     import time
     t_start = time.time()
     commit_out = commit or (lambda: None)
@@ -242,8 +287,8 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         tr, va = [x for x in tr if x["sid"] in keep] or tr[:max_items], [x for x in va][:max_items]
         tts = tts[: max_items // 2]
     n_real = len(tr)
-    tr = tr + tts
-    print(f"train: {n_real} thật + {len(tts)} TTS = {len(tr)} | val {len(va)} | model {model_id}")
+    tr = tr * max(1, real_repeat) + tts
+    print(f"train: {n_real} thật ×{max(1, real_repeat)} + {len(tts)} TTS = {len(tr)} lượt/epoch | val {len(va)} | model {model_id} | aug_v3 {aug_v3}")
     rev = model_revision or None
     proc = WhisperProcessor.from_pretrained(model_id, revision=rev)
     proc.tokenizer.set_prefix_tokens(language="vi", task="transcribe")
@@ -258,6 +303,13 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         for prm in model.parameters():
             if prm.requires_grad:
                 prm.data = prm.data.float()
+    if init_adapter:
+        from peft import set_peft_model_state_dict
+        from safetensors.torch import load_file
+        sd = load_file(f"{init_adapter}/adapter_model.safetensors")
+        res_ = set_peft_model_state_dict(model, sd)
+        print(f"init adapter: {init_adapter} | {len(sd)} tensor, thiếu {len(getattr(res_, 'missing_keys', []) or [])} "
+              f"(khoá LoRA thiếu: {sum('lora' in k for k in (getattr(res_, 'missing_keys', []) or []))}), dư {len(getattr(res_, 'unexpected_keys', []) or [])}")
     model.print_trainable_parameters()
     model.config.apply_spec_augment = True
     model.config.mask_time_prob = 0.05
@@ -274,6 +326,11 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
         tok_map = {t: k + 1 for k, t in enumerate(used)}
         model.ctc_head = torch.nn.Linear(model.config.d_model, len(used) + 1)
         print("ctc vocab:", len(used) + 1, "alpha:", ctc_weight, "| inter-CTC lớp:", inter_ctc_layer or "tắt")
+        if init_adapter and os.path.exists(f"{init_adapter}/ctc_head.pt"):
+            try:
+                model.ctc_head.load_state_dict(torch.load(f"{init_adapter}/ctc_head.pt")); print("init ctc_head từ", init_adapter)
+            except Exception as e:  # vocab CTC khác (data khác) → giữ head mới
+                print("ctc_head không khớp, khởi tạo mới:", type(e).__name__)
     if kws_weight > 0:
         d_model = model.config.d_model
 
@@ -327,6 +384,8 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
             wav = load_wavs([x])[0]
             if self.training and audio_aug > 0 and x.get("root", "train") == "train" and random.random() < audio_aug:
                 wav = augment_wav(wav, random)
+            if self.training and aug_v3 > 0:
+                wav = augment_v3(wav, random, aug_v3)
             p, kw_c = [], []
             # Train: bỏ prompt ngẫu nhiên để model không phụ thuộc hoàn toàn vào ngữ cảnh (lượt đầu không có).
             # Eval: luôn có prompt (= nhãn thật của lượt trước, "oracle").
@@ -603,7 +662,7 @@ def train(epochs: int = 6, lr: float = 3e-4, label_smoothing: float = 0.0, full_
                                       "eval_items": eval_items, "eval_bs": eval_bs, "gpu": torch.cuda.get_device_name(),
                                       "revision": model_revision, "model_id": model_id,
                                       "tts_manifest": tts_manifest, "n_real": n_real, "n_tts": len(tts), "inter_ctc_layer": inter_ctc_layer,
-                                      "kws_weight": kws_weight, "audio_aug": audio_aug, "prev_noise": prev_noise, "patience": patience},
+                                      "kws_weight": kws_weight, "audio_aug": audio_aug, "real_repeat": real_repeat, "aug_v3": aug_v3, "init_adapter": init_adapter, "prev_noise": prev_noise, "patience": patience},
                "log": log_history,
                "pairs": [(x["uid"], x["text"], h) for x, h in zip(va, hyp)], **extra},
               open(f"{out}/eval.json", "w"), ensure_ascii=False, indent=1)

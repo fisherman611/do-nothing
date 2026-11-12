@@ -1,0 +1,6319 @@
+{
+ "counts": {
+  "câu cuối: từ thường khác": 130,
+  "state giống | từ thường khác": 108,
+  "câu cuối: động từ hành động": 31,
+  "state giống | động từ hành động": 25,
+  "câu cuối: giống": 266,
+  "state giống | giống": 261,
+  "câu cuối: tên riêng / từ nước ngoài": 149,
+  "state giống | tên riêng / từ nước ngoài": 111,
+  "câu cuối: giá trị số": 34,
+  "state giống | giá trị số": 18,
+  "câu cuối: từ đệm": 12,
+  "state giống | từ đệm": 12,
+  "state KHÁC | tên riêng / từ nước ngoài": 38,
+  "câu cuối: cách viết số": 12,
+  "state giống | cách viết số": 11,
+  "state KHÁC | từ thường khác": 22,
+  "state KHÁC | giá trị số": 16,
+  "state KHÁC | giống": 5,
+  "state KHÁC | cách viết số": 1,
+  "state KHÁC | động từ hành động": 6
+ },
+ "signals_on_diff": {
+  "a: có tool đọc trả rỗng": 9,
+  "a: call không hợp lệ": 0,
+  "a: hỏi lại": 4,
+  "a: không gọi tool": 3,
+  "a: tổng call": 241,
+  "b: có tool đọc trả rỗng": 10,
+  "b: call không hợp lệ": 0,
+  "b: hỏi lại": 8,
+  "b: không gọi tool": 2,
+  "b: tổng call": 254,
+  "cùng tool, khác tham số": 27,
+  "khác chuỗi tool": 61
+ },
+ "n_diff": 88,
+ "rows": [
+  {
+   "id": "public_0010",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Đặt một vé đi Hà Nội ngày chín tháng mười một, bay xong mười hai giờ trưa, cho trong chuyến, rẻ nhất.",
+   "asr_b": "Đặt một vé đi Hà Nội ngày chín tháng mười một, bay sau mười hai giờ trưa, mà cho hướng chuyển rẻ nhất.",
+   "a": {
+    "calls": [
+     "flights.search",
+     "flights.book"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.864
+   },
+   "b": {
+    "calls": [
+     "flights.search",
+     "flights.book"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.871
+   },
+   "calls_a": [
+    {
+     "name": "flights.search",
+     "arguments": {
+      "origin": "TP.HCM",
+      "destination": "Hà Nội",
+      "date": "2026-11-09"
+     }
+    },
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_02",
+      "passengers": 1
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "flights.search",
+     "arguments": {
+      "origin": "TP.HCM",
+      "destination": "Hà Nội",
+      "date": "2026-11-09"
+     }
+    },
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_03",
+      "passengers": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0020",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Còn cái kia, mai mà trời mưa thì cho rèo sớm hơn hai mươi phút, trời khô ráo thì cứ để vậy.",
+   "asr_b": "Còn cái kia, mai mà trời mưa thì cho rèm sớm hơn hai mươi phút, trời khô rám thì cứ để vậy.",
+   "a": {
+    "calls": [
+     "weather.get_forecast",
+     "alarm.update"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.904
+   },
+   "b": {
+    "calls": [
+     "weather.get_forecast",
+     "smart_home.get_status",
+     "smart_home.switch_set",
+     "smart_home.switch_set"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.906
+   },
+   "calls_a": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-16"
+     }
+    },
+    {
+     "name": "alarm.update",
+     "arguments": {
+      "alarm_id": "alm_01",
+      "time": "2026-11-16T05:55:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-16"
+     }
+    },
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.switch_set",
+     "arguments": {
+      "device_id": "light_bedroom2",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.switch_set",
+     "arguments": {
+      "device_id": "light_bedroom2",
+      "power": "on"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0049",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tiền điện tháng này anh chia đôi với Lê Minh, chuyển cho Minh một nửa tiền điện, còn nhẫn thì Lan thì đủ tiền nước. Lấy tài khoản thanh toán, mà không đủ cả hai khoản thì lấy tiết kiệm cho cả hai.",
+   "asr_b": "Tiền điện tháng này anh chia đôi với Lê Minh, chuyển cho Minh một nửa tiền điện, còn Nguyễn Thị Lan thì đủ tiền nước. Lấy tài khoản thanh toán, mà không đủ cả hai khoản thì lấy tiết kiệm cho cả hai.",
+   "a": {
+    "calls": [
+     "bill_payment.list_bills",
+     "banking.get_balance",
+     "banking.list_beneficiaries",
+     "banking.transfer",
+     "banking.transfer"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.881
+   },
+   "b": {
+    "calls": [
+     "bill_payment.list_bills",
+     "banking.get_balance",
+     "banking.list_beneficiaries",
+     "banking.transfer",
+     "banking.transfer"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.887
+   },
+   "calls_a": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "banking.get_balance",
+     "arguments": {}
+    },
+    {
+     "name": "banking.list_beneficiaries",
+     "arguments": {}
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_02",
+      "beneficiary_id": "ben_03",
+      "amount": 425500
+     }
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_02",
+      "beneficiary_id": "ben_02",
+      "amount": 104500
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "banking.get_balance",
+     "arguments": {}
+    },
+    {
+     "name": "banking.list_beneficiaries",
+     "arguments": {}
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_02",
+      "beneficiary_id": "ben_03",
+      "amount": 425500
+     }
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_02",
+      "beneficiary_id": "ben_02",
+      "amount": 209000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0035",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Mai nếu có mưa thì vội lịch đá bóng sáng mai đi, gọi cho Lan báo luôn, còn trời không mưa thì cứ để nguyên.",
+   "asr_b": "Mai nếu có mưa thì bỏ lịch đá bóng sáng mai đi, gọi cho Lan báo luôn, còn trời không mưa thì cứ để nguyên.",
+   "a": {
+    "calls": [
+     "weather.get_forecast",
+     "calendar.list_events",
+     "calendar.update_event",
+     "chat_ott.list_chats",
+     "chat_ott.send_message"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.898
+   },
+   "b": {
+    "calls": [
+     "weather.get_forecast",
+     "calendar.list_events",
+     "calendar.cancel_event",
+     "chat_ott.list_chats",
+     "chat_ott.send_message"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.891
+   },
+   "calls_a": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-11"
+     }
+    },
+    {
+     "name": "calendar.list_events",
+     "arguments": {}
+    },
+    {
+     "name": "calendar.update_event",
+     "arguments": {
+      "event_id": "evt_01"
+     }
+    },
+    {
+     "name": "chat_ott.list_chats",
+     "arguments": {}
+    },
+    {
+     "name": "chat_ott.send_message",
+     "arguments": {
+      "chat_id": "chat_03",
+      "content": "mai đá bóng dời sang 14:30 nhé"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-11"
+     }
+    },
+    {
+     "name": "calendar.list_events",
+     "arguments": {}
+    },
+    {
+     "name": "calendar.cancel_event",
+     "arguments": {
+      "event_id": "evt_01"
+     }
+    },
+    {
+     "name": "chat_ott.list_chats",
+     "arguments": {}
+    },
+    {
+     "name": "chat_ott.send_message",
+     "arguments": {
+      "chat_id": "chat_03",
+      "content": "mai đá bóng sáng mai hủy rồi nhé"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0064",
+   "diff_kind": "giá trị số",
+   "asr_a": "Chuyển cho chủ nhà Phạm Hùng đúng tiền điện tháng này, Trần Văn Tuấn đúng tiền truyền, trừ tài khoản thanh toán, nhưng phải chừa, lại ít nhất 500 nghìn trong đó, không chừa được thì gói đèn tiết kiệm để tra kệ hai nghe.",
+   "asr_b": "Kiểm tra chỗ nhà Phạm Hùng đúng tiền điện tháng này, Trần Văn Tuấn đúng tiền truyền hình, trừ tài khoản thanh toán, nhưng coi chưa là ít nhất năm trăm nghìn trong đó, không dựa được thì gói đèn tiết kiệm để tra cả hai nhé.",
+   "a": {
+    "calls": [
+     "bill_payment.list_bills",
+     "banking.get_balance",
+     "banking.list_beneficiaries",
+     "banking.transfer",
+     "banking.transfer"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.883
+   },
+   "b": {
+    "calls": [
+     "bill_payment.list_bills",
+     "banking.get_balance",
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.light_set",
+     "smart_home.light_set"
+    ],
+    "n_calls": 6,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.867
+   },
+   "calls_a": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "banking.get_balance",
+     "arguments": {}
+    },
+    {
+     "name": "banking.list_beneficiaries",
+     "arguments": {}
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_01",
+      "beneficiary_id": "ben_01",
+      "amount": 852000
+     }
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_01",
+      "beneficiary_id": "ben_03",
+      "amount": 146000
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "banking.get_balance",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_bedroom",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_office",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_bedroom2",
+      "power": "off"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0025",
+   "diff_kind": "giống",
+   "asr_a": "Ơi đặt giúp tôi vé đi Hà Nội ngày mười một tháng mười hai, chuyến rẻ nhất xong mười hai giờ. Hẹn báo thức trước ba tiếng, mà nhắn Zalo cô Mai báo giờ bay nhé.",
+   "asr_b": "Ơi, đặt giúp tôi vé đi Hà Nội ngày mười một tháng mười hai, chuyến rẻ nhất xong mười hai giờ, hẹn báo thức trước ba tiếng, mà nhắn Zalo cô Mai báo giờ bay nhé.",
+   "a": {
+    "calls": [
+     "flights.search",
+     "flights.book",
+     "alarm.create",
+     "chat_ott.list_chats",
+     "chat_ott.send_message"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.871
+   },
+   "b": {
+    "calls": [
+     "flights.search",
+     "flights.book",
+     "alarm.create",
+     "chat_ott.list_chats",
+     "chat_ott.send_message"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.862
+   },
+   "calls_a": [
+    {
+     "name": "flights.search",
+     "arguments": {
+      "origin": "TP.HCM",
+      "destination": "Hà Nội",
+      "date": "2026-12-11"
+     }
+    },
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_02",
+      "passengers": 1
+     }
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-12-11T08:00:00+07:00"
+     }
+    },
+    {
+     "name": "chat_ott.list_chats",
+     "arguments": {}
+    },
+    {
+     "name": "chat_ott.send_message",
+     "arguments": {
+      "chat_id": "chat_04",
+      "content": "Chuyến bay đi Hà Nội ngày 11/12 là 09:00 nhé"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "flights.search",
+     "arguments": {
+      "origin": "TP.HCM",
+      "destination": "Hà Nội",
+      "date": "2026-12-11"
+     }
+    },
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_02",
+      "passengers": 1
+     }
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-12-11T09:00:00+07:00"
+     }
+    },
+    {
+     "name": "chat_ott.list_chats",
+     "arguments": {}
+    },
+    {
+     "name": "chat_ott.send_message",
+     "arguments": {
+      "chat_id": "chat_04",
+      "content": "Chuyến bay đi Hà Nội ngày 11/12 là 09:00 nhé"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0065",
+   "diff_kind": "giá trị số",
+   "asr_a": "Lấy ví điện tử nạp hai trăm nghìn tiền điện thoại cho Lan, rồi gửi bố bằng tiền mạng internet tháng này nhé.",
+   "asr_b": "Lấy ví điện tử nạp 25 nghìn tiền điện thoại cho Lan, rồi gửi bố đúng bằng tiền mạng internet tháng này nhé.",
+   "a": {
+    "calls": [
+     "bill_payment.list_bills",
+     "contacts.search",
+     "ewallet.topup_mobile",
+     "contacts.search",
+     "ewallet.transfer"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.893
+   },
+   "b": {
+    "calls": [
+     "bill_payment.list_bills",
+     "contacts.search",
+     "ewallet.topup_mobile",
+     "contacts.search",
+     "ewallet.transfer"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.9
+   },
+   "calls_a": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Lan"
+     }
+    },
+    {
+     "name": "ewallet.topup_mobile",
+     "arguments": {
+      "phone": "09601184100",
+      "amount": 200000
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Bố"
+     }
+    },
+    {
+     "name": "ewallet.transfer",
+     "arguments": {
+      "contact_id": "c_04",
+      "amount": 222000
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Lan"
+     }
+    },
+    {
+     "name": "ewallet.topup_mobile",
+     "arguments": {
+      "phone": "09601184100",
+      "amount": 25000
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Bố"
+     }
+    },
+    {
+     "name": "ewallet.transfer",
+     "arguments": {
+      "contact_id": "c_04",
+      "amount": 222000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0077",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tôi đang đọc sách Mở đèn phòng khách tám mươi phần trăm cho sáng, quạt phòng khách đừng bật nha, điều hoà phòng khách chạy chế độ hút ấm hai mươi bảy độ giùm tôi.",
+   "asr_b": "Tôi đang đọc sách, mở đèn phòng khách 80 phần trăm cho sáng, quạt phòng khách đừng bật nha, điều hoà phòng khách chạy chế độ hút ẩm 27 độ giùm tôi.",
+   "a": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.897
+   },
+   "b": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.899
+   },
+   "calls_a": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_living",
+      "power": "on",
+      "brightness": 80
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_living",
+      "mode": "heat",
+      "temperature": 27
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_living",
+      "power": "on",
+      "brightness": 80
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_living",
+      "mode": "dry",
+      "temperature": 27
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0116",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Em muốn có báo thức trước giờ có cảnh, chuyển em đã đặt đúng một tiếng, đặt tên là làm thủ tục nhé.",
+   "asr_b": "Em muốn có báo thức trước giờ cất cảnh, chuyển điện lại đặt đúng một tiếng, đặt tên là làm thủ tục nhé.",
+   "a": {
+    "calls": [
+     "flights.my_bookings",
+     "alarm.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.791
+   },
+   "b": {
+    "calls": [
+     "alarm.create"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.536
+   },
+   "calls_a": [
+    {
+     "name": "flights.my_bookings",
+     "arguments": {}
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-11-21T13:00:00+07:00",
+      "label": "Làm thủ tục"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-11-21T12:15:00+07:00",
+      "label": "làm thủ tục"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0036",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Lịch đá bóng mai dời muộn thêm nửa tiếng vào báo thức trước đó một tiếng, rồi nhắn SMS cho Minh giờ mới giúp mình.",
+   "asr_b": "Lịch đá bóng mai dời muộn thêm nửa tiếng, đón báo thức trước đó một tiếng, rồi nhắn SMS cho Minh giờ mới giúp mình.",
+   "a": {
+    "calls": [
+     "calendar.list_events",
+     "calendar.update_event",
+     "alarm.create",
+     "contacts.search",
+     "sms.send"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.877
+   },
+   "b": {
+    "calls": [
+     "calendar.list_events",
+     "calendar.update_event",
+     "alarm.list",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.871
+   },
+   "calls_a": [
+    {
+     "name": "calendar.list_events",
+     "arguments": {}
+    },
+    {
+     "name": "calendar.update_event",
+     "arguments": {
+      "event_id": "evt_01",
+      "start": "2026-11-23T09:30:00+07:00",
+      "end": "2026-11-23T10:30:00+07:00"
+     }
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-11-23T08:30:00+07:00"
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Minh"
+     }
+    },
+    {
+     "name": "sms.send",
+     "arguments": {
+      "contact_id": "c_01",
+      "content": "mai đá bóng dời sang 09:30 nhé"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "calendar.list_events",
+     "arguments": {}
+    },
+    {
+     "name": "calendar.update_event",
+     "arguments": {
+      "event_id": "evt_01",
+      "start": "2026-11-23T09:30:00+07:00",
+      "end": "2026-11-23T10:30:00+07:00"
+     }
+    },
+    {
+     "name": "alarm.list",
+     "arguments": {}
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "alarm.update",
+      "params": [
+       "alarm_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0123",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Đặt báo thức trước giờ bay bốn tiếng giúp tôi, khóa chuyến đi Đà Nẵng tôi đặt hôm trước ấy, tôi còn cái chắc qua đón vợ.",
+   "asr_b": "Đặt báo thức trước giờ bay bốn tiếng giúp tôi, cái chuyến đi Đà Nẵng tôi đặt hôm trước ấy, tôi còn cái chặn mua đón vợ.",
+   "a": {
+    "calls": [
+     "flights.my_bookings",
+     "alarm.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.883
+   },
+   "b": {
+    "calls": [
+     "flights.my_bookings",
+     "alarm.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.876
+   },
+   "calls_a": [
+    {
+     "name": "flights.my_bookings",
+     "arguments": {}
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-11-22T15:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "flights.my_bookings",
+     "arguments": {}
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-11-28T15:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0112",
+   "diff_kind": "giá trị số",
+   "asr_a": "Đặt nhắc chị qua tiệm giặt lấy đồ lúc bảy rưỡi tối nay, rồi nhắn Hương là tối nay chị ghé lấy cuốn sách nhé.",
+   "asr_b": "Đặt nhắc chị qua tiệm giặt lấy đồ lúc bảy giờ, bảy rưỡi tối nay, rồi nhắn Hương là tối nay chị ghé lấy cuốn sách nhé.",
+   "a": {
+    "calls": [
+     "reminders.create",
+     "contacts.search",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.873
+   },
+   "b": {
+    "calls": [
+     "reminders.create",
+     "reminders.create",
+     "contacts.search",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.842
+   },
+   "calls_a": [
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "qua tiệm giặt lấy đồ",
+      "time": "2026-11-19T19:30:00+07:00"
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Hương"
+     }
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "sms.send",
+      "params": [
+       "contact_id"
+      ]
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "qua tiệm giặt lấy đồ",
+      "time": "2026-11-19T19:00:00+07:00"
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "qua tiệm giặt lấy đồ",
+      "time": "2026-11-19T19:30:00+07:00"
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Hương"
+     }
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "sms.send",
+      "params": [
+       "contact_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0190",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Thế thì trả lại đơn đó đi em, hàng học thế này dùng sao được?",
+   "asr_b": "Thế thì trả lại đơn đó đi em, hàng hỏng thế này dùng sao được?",
+   "a": {
+    "calls": [
+     "ecommerce.request_return"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.843
+   },
+   "b": {
+    "calls": [
+     "ecommerce.request_return"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.843
+   },
+   "calls_a": [
+    {
+     "name": "ecommerce.request_return",
+     "arguments": {
+      "order_id": "ord_03",
+      "reason": "other"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "ecommerce.request_return",
+     "arguments": {
+      "order_id": "ord_03",
+      "reason": "damaged"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0178",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Ok, thế thêm buổi đó vào lịch cho anh nhé, hai giờ chiều.",
+   "asr_b": "Ok, thế thêm buổi đó vào lịch cho anh nhé, hai lượt chiều.",
+   "a": {
+    "calls": [
+     "calendar.create_event"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.879
+   },
+   "b": {
+    "calls": [
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.694
+   },
+   "calls_a": [
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Hội thảo An toàn dữ liệu",
+      "start": "2026-09-29T14:00:00+07:00",
+      "end": "2026-09-29T16:00:00+07:00",
+      "location": "Trung tâm Hội nghị 37 Hùng Vương"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "calendar.create_event",
+      "params": [
+       "start"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0152",
+   "diff_kind": "cách viết số",
+   "asr_a": "Đèn phòng ngủ hạ xuống 15 phần trăm thôi, quạt đừng bật nhé. Điều hoà phòng ngủ chạy hút ấm, 25 độ giúp chị.",
+   "asr_b": "Đèn phòng ngủ hạ xuống mười lăm phần trăm thôi, quạt đừng bật nhé, điều hoà phòng ngủ chạy hút ấm hai mươi lăm độ giúp chị.",
+   "a": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.911
+   },
+   "b": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.907
+   },
+   "calls_a": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_bedroom",
+      "brightness": 15
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_bedroom",
+      "mode": "heat",
+      "temperature": 25
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_bedroom",
+      "brightness": 25
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_bedroom",
+      "mode": "heat",
+      "temperature": 25
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0221",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Thôi chuyển cho Lan đi nha.",
+   "asr_b": "Thôi chuyển cho Liên đi nha.",
+   "a": {
+    "calls": [
+     "contacts.search"
+    ],
+    "n_calls": 1,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.864
+   },
+   "b": {
+    "calls": [
+     "contacts.search",
+     "ewallet.transfer"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.895
+   },
+   "calls_a": [
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Lan"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Liên"
+     }
+    },
+    {
+     "name": "ewallet.transfer",
+     "arguments": {
+      "contact_id": "c_07",
+      "amount": 300000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0136",
+   "diff_kind": "giá trị số",
+   "asr_a": "Tắt hết đèn tầng 1 giúp tôi, phòng nào dưới đó đang bật quạt thì chừa đèn ra, rồi bật điều hoà phòng ngủ 26 độ để tôi lên nghỉ trưa.",
+   "asr_b": "Tắt hết đèn tầng một giúp tôi, phòng nào dưới đó đang bật quạt thì chừa đèn ra, rồi bật điều hoà phòng ngủ 16 độ để tôi lên nghỉ trưa.",
+   "a": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.904
+   },
+   "b": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.902
+   },
+   "calls_a": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_kitchen",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_living",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_bedroom",
+      "mode": "cool",
+      "temperature": 26
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_kitchen",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_bedroom",
+      "mode": "cool",
+      "temperature": 16
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0168",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Đèn trên lầu có cái nào đang để sáng dưới một nửa thì tắt luôn giùm tôi, rồi mở điều hoà phòng ngủ 28 độ.",
+   "asr_b": "Đèn trên lầu có cái nào đang để xăng dưới một nửa thì tắt luôn giùm tôi, rồi mở điều hoà phòng ngủ 28 độ.",
+   "a": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.906
+   },
+   "b": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.climate_set"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.902
+   },
+   "calls_a": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_living",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_bedroom",
+      "mode": "cool",
+      "temperature": 28
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_kitchen",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.climate_set",
+     "arguments": {
+      "device_id": "ac_bedroom",
+      "mode": "cool",
+      "temperature": 28
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0238",
+   "diff_kind": "giá trị số",
+   "asr_a": "Tối mai chị đi tàu đêm lên Nạng Sơn thăm mẹ, em đặt cho chị một vé tàu LTV2 nhé, rồi giữ giúp chị một chỗ ở 7B12 ngoài ga Hà Nội 8 rưỡi, tối mai chị gửi xe vang hàng.",
+   "asr_b": "Tối mai chị đi tàu, đem lên Nẵng Sơn thăm mẹ. Em đặt cho chị một vé tàu lượt V2 nhé, rồi giữ giúp chị một chỗ ở bãi B12 ngoài ga Hà Nội tám rưỡi, tối mai chị gửi xe ba ngàn.",
+   "a": {
+    "calls": [
+     "train_bus_tickets.search"
+    ],
+    "n_calls": 1,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.833
+   },
+   "b": {
+    "calls": [
+     "train_bus_tickets.search",
+     "train_bus_tickets.search",
+     "train_bus_tickets.book",
+     "parking.find",
+     "parking.reserve"
+    ],
+    "n_calls": 5,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.839
+   },
+   "calls_a": [
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Nạng Sơn",
+      "date": "2026-09-26"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Nẵng Sơn",
+      "date": "2026-09-26"
+     }
+    },
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Lạng Sơn",
+      "date": "2026-09-26"
+     }
+    },
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_10",
+      "seats": 1
+     }
+    },
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "Ga Hà Nội"
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_06",
+      "from_time": "2026-09-26T20:30:00+07:00",
+      "hours": 3
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0216",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Đặt cho tôi một ví trứng gà nhé, với trừ đi hai gói bột mì trong tủ bếp, tôi vừa làm mẻ bánh xong.",
+   "asr_b": "Đặt cho tôi một ví trứng gà nhé, với trừ đi hai gói Bụt mì trong tủ bếp, tôi vừa làm mẻ bánh xong.",
+   "a": {
+    "calls": [
+     "grocery.search",
+     "grocery.add_to_cart",
+     "pantry.list_items",
+     "pantry.consume"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.685
+   },
+   "b": {
+    "calls": [
+     "grocery.search",
+     "grocery.checkout",
+     "pantry.list_items",
+     "pantry.consume"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.632
+   },
+   "calls_a": [
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "trứng gà"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_06",
+      "quantity": 1
+     }
+    },
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_06",
+      "quantity": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "trứng gà"
+     }
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_06",
+      "quantity": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0256",
+   "diff_kind": "giống",
+   "asr_a": "Dạ vâng, làm yêu cầu trả cái đơn đó giúp em nha.",
+   "asr_b": "Dạ vâng, làm yêu cầu trả cái đơn đó giúp em nha.",
+   "a": {
+    "calls": [
+     "ecommerce.order_status",
+     "ecommerce.request_return"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.881
+   },
+   "b": {
+    "calls": [
+     "ecommerce.order_status",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.881
+   },
+   "calls_a": [
+    {
+     "name": "ecommerce.order_status",
+     "arguments": {}
+    },
+    {
+     "name": "ecommerce.request_return",
+     "arguments": {
+      "order_id": "ord_03",
+      "reason": "wrong_item"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "ecommerce.order_status",
+     "arguments": {}
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "ecommerce.request_return",
+      "params": [
+       "order_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0252",
+   "diff_kind": "giá trị số",
+   "asr_a": "Đặt cho em hai vé chuyến RV253 đi Quy Nhơn, hôm một chín tháng mười ạ, rồi giữ luôn một chỗ ở bãi khu B05 sân bay Nội Bài từ sáu giờ sáng hôm đó, em cứ xem một tuần.",
+   "asr_b": "Đặt cho em hai vé chuyến RV253 đi Quy Nhơn hôm mùng 9 tháng 10 ạ, rồi giữ luôn một chỗ ở bãi khu B05 sân bay Nội Bài từ sáu giờ sáng hôm đó, em cứ xem một tuần.",
+   "a": {
+    "calls": [
+     "flights.search"
+    ],
+    "n_calls": 1,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.856
+   },
+   "b": {
+    "calls": [
+     "flights.search",
+     "flights.book",
+     "parking.find",
+     "parking.reserve"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.848
+   },
+   "calls_a": [
+    {
+     "name": "flights.search",
+     "arguments": {
+      "origin": "HAN",
+      "destination": "QHO",
+      "date": "2026-10-19"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "flights.search",
+     "arguments": {
+      "origin": "HAN",
+      "destination": "Quy Nhơn",
+      "date": "2026-10-09"
+     }
+    },
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_06",
+      "passengers": 2
+     }
+    },
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "Nội Bài"
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_05",
+      "from_time": "2026-10-09T06:00:00+07:00",
+      "hours": 7
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0196",
+   "diff_kind": "giá trị số",
+   "asr_a": "Ờ tìm cho mình công thức sắp bí đạo đi, thêm một quả bí đạo em sắp đi chợ, rồi lưu tên món tìm được cả ghi chú bữa tối luôn nha.",
+   "asr_b": "Ờ tìm cho mình công thức sắp bí đạo đi, thêm vào quán bí đạo em sắp đi chợ, rồi lưu tên món tìm được cả ghi chú bữa tối nữa nha.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "shopping_list.add",
+     "recipes.save",
+     "notes.create"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.864
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "recipes.save",
+     "notes.create"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.864
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "bí đỏ"
+     }
+    },
+    {
+     "name": "shopping_list.add",
+     "arguments": {
+      "name": "bí đỏ",
+      "quantity": 1
+     }
+    },
+    {
+     "name": "recipes.save",
+     "arguments": {
+      "recipe_id": "rcp_02"
+     }
+    },
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "Súp bí đỏ kem tươi",
+      "title": "Bữa tối"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "súp bí đỏ"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bí đỏ"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_05",
+      "quantity": 400
+     }
+    },
+    {
+     "name": "recipes.save",
+     "arguments": {
+      "recipe_id": "rcp_02"
+     }
+    },
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "Súp bí đỏ kem tươi",
+      "title": "Bữa tối"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0260",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Đô tô đức mười hai đi gần cổng ra hơn.",
+   "asr_b": "Đô tô đúc mười hai đi, gần cổng ra hơn?",
+   "a": {
+    "calls": [
+     "parking.reserve"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.599
+   },
+   "b": {
+    "calls": [],
+    "n_calls": 0,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": true,
+    "q1_conf": 0.864
+   },
+   "calls_a": [
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_05",
+      "from_time": "2026-09-25T19:40:00+07:00",
+      "hours": 1
+     }
+    }
+   ],
+   "calls_b": []
+  },
+  {
+   "id": "public_0212",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Em ơi, dịch giúp chị câu Hoá đơn đã được thanh toán xem tiếng Anh, lưu bản dịch vào ghi chú tên Đối soát, xong soạn sẵn email nháp gửi final a còng example chấm test với nội dung đó nha, chị xem lại rồi mới gửi.",
+   "asr_b": "Em ơi, dịch giúp chị câu hoá đơn đã được thanh toán xem tiếng Anh, lưu bản dịch vào ghi chú tên Đối soát, xong soạn sẵn email nháp gửi finance a còng example chấm test với nội dung đó nha, chị xem lại rồi mới gửi.",
+   "a": {
+    "calls": [
+     "translator.translate",
+     "notes.create",
+     "email.create_draft"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.889
+   },
+   "b": {
+    "calls": [
+     "bill_payment.list_bills"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.773
+   },
+   "calls_a": [
+    {
+     "name": "translator.translate",
+     "arguments": {
+      "text": "Hoá đơn đã được thanh toán",
+      "to_lang": "en"
+     }
+    },
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "The invoice has been paid",
+      "title": "Đối soát"
+     }
+    },
+    {
+     "name": "email.create_draft",
+     "arguments": {
+      "to": [
+       "final@example.test"
+      ],
+      "subject": "Hoá đơn đã được thanh toán",
+      "body": "The invoice has been paid"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0268",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Cả nhà mình còn mấy quả cà chua dính sắp hỏng rồi, tìm giúp mình món salad nào làm từ cà chua đi, mình nấu luôn, bên trừ ba quả cà chua trong tủ bếp, còn thiếu loại sốt nào thì xem một vụ vào danh sách khi chở nhé.",
+   "asr_b": "Cả nhà mình còn mấy quả cà chua, dính sắp hỏng rồi. Tìm giúp mình món salad nào làm từ cà chua đi, mình nấu luôn, nên trừ ba quả cà chua trong tủ bếp, còn thiếu loại thuốc nào thì thêm một vụ vào danh sách đi chợ nhé.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "shopping_list.get",
+     "shopping_list.add"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.877
+   },
+   "b": {
+    "calls": [
+     "pantry.list_items",
+     "recipes.search",
+     "pantry.consume",
+     "shopping_list.add"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.784
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cà chua"
+     }
+    },
+    {
+     "name": "shopping_list.get",
+     "arguments": {}
+    },
+    {
+     "name": "shopping_list.add",
+     "arguments": {
+      "name": "sốt tahini",
+      "quantity": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cà chua"
+     }
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_06",
+      "quantity": 3
+     }
+    },
+    {
+     "name": "shopping_list.add",
+     "arguments": {
+      "name": "sốt tahini",
+      "quantity": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0215",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Ờ đặt cho chị một vé tàu SJ5 đi Huế chuyến sáng nay nhé, rồi gọi xe bốn chỗ từ nhà ra ga Hà Nội luôn cho kịp tàu.",
+   "asr_b": "Ờ đặt cho chị một vé tàu SE5 đi Huế chuyến sáng nay nhé, rồi gọi xe bốn chỗ từ nhà ra ga Hà Nội luôn giúp chị.",
+   "a": {
+    "calls": [
+     "train_bus_tickets.search",
+     "train_bus_tickets.book",
+     "ride_hailing.book"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.872
+   },
+   "b": {
+    "calls": [
+     "train_bus_tickets.search",
+     "train_bus_tickets.book",
+     "ride_hailing.book"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.874
+   },
+   "calls_a": [
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Huế",
+      "date": "2026-09-25"
+     }
+    },
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_09",
+      "seats": 1
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "dropoff": "Ga Hà Nội",
+      "schedule_time": "2026-09-25T09:45:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Huế",
+      "date": "2026-09-25"
+     }
+    },
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_09",
+      "seats": 1
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "dropoff": "Ga Hà Nội"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0285",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Em ơi, chị vừa lấy hai cân bột mì làm mẹ bánh, em trừ bớt trong tủ bếp đi, rồi đặt mua thêm hai gói bút bình lại một cân cho chị bộ vào nhé.",
+   "asr_b": "Em ơi, chị vừa lấy hai cân bột mì làm mẹ bánh, em trừ bớt trong tủ bếp đi, rồi đặt mua thêm hai gói, bút mình lại một cân cho chị bộ vào nhé.",
+   "a": {
+    "calls": [
+     "pantry.list_items",
+     "pantry.consume",
+     "grocery.search",
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.907
+   },
+   "b": {
+    "calls": [
+     "pantry.list_items",
+     "pantry.consume",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.checkout"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.902
+   },
+   "calls_a": [
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_01",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bột mì"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_01",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bột mì"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0269",
+   "diff_kind": "động từ hành động",
+   "asr_a": "Em ơi tìm giúp chị một tiệm sửa xe quanh Nhà hát Lớn, xem từ nhà chị qua đấy đường nào, với giữ luôn một chỗ ở bãi chạy sắp tiệm từ mười giờ sáng nay, chỉ dưới hai tiếng thôi.",
+   "asr_b": "Em ơi tìm giúp chị một tiệm sửa xe quanh Nhà hát Lớn xem từ nhà chị qua đấy đường nào, với giữ luôn một chỗ ở bãi chè sắp tiệm từ mười giờ sáng nay, chỉ dời hai tiếng thôi.",
+   "a": {
+    "calls": [
+     "maps.search_place",
+     "maps.get_route",
+     "parking.find",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.901
+   },
+   "b": {
+    "calls": [
+     "maps.search_place",
+     "maps.get_route",
+     "parking.find",
+     "parking.reserve"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.814
+   },
+   "calls_a": [
+    {
+     "name": "maps.search_place",
+     "arguments": {
+      "query": "sửa xe"
+     }
+    },
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Điểm sửa xe An Tâm, 3 Phan Chu Trinh, Hoàn Kiếm, Hà Nội"
+     }
+    },
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "Điểm sửa xe An Tâm"
+     }
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "parking.reserve",
+      "params": [
+       "lot_id"
+      ]
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "maps.search_place",
+     "arguments": {
+      "query": "sửa xe"
+     }
+    },
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Điểm sửa xe An Tâm, 3 Phan Chu Trinh, Hoàn Kiếm, Hà Nội"
+     }
+    },
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "Điểm sửa xe An Tâm"
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_05",
+      "from_time": "2026-10-01T10:00:00+07:00",
+      "hours": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0251",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Trợ lý ơi, câu hợp đồng đã được ký ấy, dịch ra tiếng Anh hộ anh, ghi bản ghi chú theo dõi hợp đồng vừa tạo luôn thư nháp gửi Lego, à còn example chấm test, bằng đúng câu đã dịch nhé.",
+   "asr_b": "Trợ lý ơi, câu hợp đồng đã được ký ấy, dịch ra tiếng Anh hộ anh, ghi bản dịch vừa ghi chú theo dõi hợp đồng vừa tạo luôn thư nháp gửi logo, à không, example chấm test, bằng đúng câu đã dịch nhé.",
+   "a": {
+    "calls": [
+     "notes.list",
+     "notes.create",
+     "translator.translate",
+     "email.create_draft"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.293
+   },
+   "b": {
+    "calls": [
+     "notes.list"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.848
+   },
+   "calls_a": [
+    {
+     "name": "notes.list",
+     "arguments": {}
+    },
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "Hợp đồng đã được ký",
+      "title": "Theo dõi hợp đồng"
+     }
+    },
+    {
+     "name": "translator.translate",
+     "arguments": {
+      "text": "Hợp đồng đã được ký",
+      "to_lang": "en"
+     }
+    },
+    {
+     "name": "email.create_draft",
+     "arguments": {
+      "to": [
+       "lego@example.test"
+      ],
+      "subject": "Hợp đồng đã được ký",
+      "body": "The contract has been signed"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "notes.list",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0254",
+   "diff_kind": "giá trị số",
+   "asr_a": "Đặt cho em hai vé tàu SE7 đi Ninh Bình trưa nay nha, em đi với bạn cùng phòng, xong gọi luôn được cái xe bốn chỗ từ nhà ra ga Hà Nội cho tụi em kịp tàu.",
+   "asr_b": "Đặt cho em hai vé tàu SJC bảy đi Ninh Bình trưa nay nhé, em đi với ban bộ phòng. Xong gọi luôn được cái xe bốn chỗ từ nhà ra ga Hà Nội cho tụi em kiếm tàu.",
+   "a": {
+    "calls": [
+     "train_bus_tickets.search",
+     "train_bus_tickets.book",
+     "ride_hailing.book"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.86
+   },
+   "b": {
+    "calls": [
+     "train_bus_tickets.search",
+     "train_bus_tickets.book",
+     "ride_hailing.book"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.852
+   },
+   "calls_a": [
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Ninh Bình",
+      "date": "2026-09-25"
+     }
+    },
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_09",
+      "seats": 2
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "dropoff": "Ga Hà Nội",
+      "schedule_time": "2026-09-25T11:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "train_bus_tickets.search",
+     "arguments": {
+      "origin": "Hà Nội",
+      "destination": "Ninh Bình",
+      "date": "2026-09-25"
+     }
+    },
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_09",
+      "seats": 2
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "dropoff": "Ga Hà Nội"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0253",
+   "diff_kind": "động từ hành động",
+   "asr_a": "Lấy cho anh bốn vé liên hoan thêm ngắn nhé. Trong khi còn lịch, giúp anh là bảy rưỡi tối thứ ba, một tối tháng mười đi xem phim.",
+   "asr_b": "Lấy cho anh bốn vé liên hoan thiên nhán nhé, trong khi vào lịch giúp anh là bảy rưỡi tối thứ Ba một tối tháng Mười đi xem phim.",
+   "a": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search",
+     "event_tickets.book",
+     "calendar.list_events",
+     "calendar.create_event"
+    ],
+    "n_calls": 5,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.856
+   },
+   "b": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search",
+     "event_tickets.book",
+     "calendar.create_event"
+    ],
+    "n_calls": 4,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.89
+   },
+   "calls_a": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "liên hoan thêm ngắn"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_01",
+      "quantity": 4
+     }
+    },
+    {
+     "name": "calendar.list_events",
+     "arguments": {}
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Xem phim",
+      "start": "2026-10-06T19:30:00+07:00",
+      "end": "2026-10-06T21:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "liên hoan thiên nhiên"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_01",
+      "quantity": 4
+     }
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Xem phim",
+      "start": "2026-10-06T19:30:00+07:00",
+      "end": "2026-10-06T21:30:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0303",
+   "diff_kind": "giá trị số",
+   "asr_a": "Này, hôm hai mươi ba tháng mười tôi phải cóng bật ở nhà với hoá thanh niên lúc bốn giờ bốn lăm chiều. Tìm xe bít thử bến xe long bi đi đến đó, tuyến đó ít phải đỗ xe ấy. Xem đi hết bao lâu rồi nhắc tôi ra bến sớm hơn giờ lên xe hai mươi phút nhé.",
+   "asr_b": "Này, hôm hai bảy ba tháng mười tôi phải cóng mặt ở nhà và gói thanh niên lúc bốn giờ mười lăm chiều. Tìm xe buýt thử bến xe long bi đi ăn đó, tí nó ít với đô xe ấy. Xem đi hết bao lâu rồi nhắc tôi ra bến sớm hơn giờ lên xe hai mươi phút nhé.",
+   "a": {
+    "calls": [
+     "public_transit.find_routes",
+     "reminders.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.876
+   },
+   "b": {
+    "calls": [
+     "public_transit.find_routes",
+     "reminders.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.842
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Bến xe Long Biên"
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "Ra bến xe Long Biên",
+      "time": "2026-10-23T13:25:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Bến xe Long Biên"
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "Ra bến xe Long Biên",
+      "time": "2026-10-27T13:45:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0330",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tối nay nhà bốn người, nấu canh đồ uống cà chua mua. Em ơi công thức cần những gì, trong tủ bếp còn thiếu món nào thì đặt mua đủ số lượng giúp anh nhé.",
+   "asr_b": "Tối nay nhà bốn người nấu canh tủ cà chua, em ơi công thức còn những gì trong tủ bếp còn thiếu món nào thì đặt mua đủ số lượng giúp anh nhé.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "pantry.list_items",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.877
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "pantry.list_items",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.checkout"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.839
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "canh cà chua"
+     }
+    },
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "grocery.add_to_cart",
+      "params": [
+       "product_id"
+      ]
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "canh cà chua"
+     }
+    },
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "đậu hũ non"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_06",
+      "quantity": 1
+     }
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0337",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Cái ấm siêu tốc mới mua dời ra hổng rồi, làm giúp em yêu cầu trả hè nhé. À trong đơn đó sếp gợi ý mấy mẫu thay thế, mẫu nào đang còn hàng thì thêm một cái vào danh sách cần mua cho em.",
+   "asr_b": "Cái ấm siêu tốc mới mua về đã hổng rồi, làm giúp em yêu cầu trả hàng nhé. À trong đơn đó sếp gợi ý mấy mẫu thay thế, mẫu nào đang còn hàng thì thi một cái vào danh sách cần mua cho em.",
+   "a": {
+    "calls": [
+     "ecommerce.order_status",
+     "ecommerce.request_return",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.855
+   },
+   "b": {
+    "calls": [
+     "ecommerce.order_status",
+     "ecommerce.request_return",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.873
+   },
+   "calls_a": [
+    {
+     "name": "ecommerce.order_status",
+     "arguments": {}
+    },
+    {
+     "name": "ecommerce.request_return",
+     "arguments": {
+      "order_id": "ord_04",
+      "reason": "other"
+     }
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "ecommerce.add_to_cart",
+      "params": [
+       "product_id"
+      ]
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "ecommerce.order_status",
+     "arguments": {}
+    },
+    {
+     "name": "ecommerce.request_return",
+     "arguments": {
+      "order_id": "ord_04",
+      "reason": "damaged"
+     }
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "ecommerce.add_to_cart",
+      "params": [
+       "product_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0329",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tối nay tám giờ mình đi xem hòa nhạc ở Nhà hát Lớn, xem giúp mình đường từ nhà đó đi qua thôi lâu, rồi giữ một chỗ đổ xe gần nhà hát, còn trống từ bảy rưỡi tối ở ba tiếng nha.",
+   "asr_b": "Tối nay tám giờ mình đi xem hoa nhạc ở Nhà hát Lớn, xem giúp mình đường từ nhà đó đi qua thôi lâu, rồi giữ một chỗ đổ xe gần nhà hết, còn trống từ bảy rưỡi tối, khỏi ba tiếng nha.",
+   "a": {
+    "calls": [
+     "maps.get_route",
+     "parking.find",
+     "parking.reserve"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.87
+   },
+   "b": {
+    "calls": [
+     "maps.get_route",
+     "parking.find",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.87
+   },
+   "calls_a": [
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Nhà hát Lớn"
+     }
+    },
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "Nhà hát Lớn"
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_06",
+      "from_time": "2026-10-04T19:30:00+07:00",
+      "hours": 3
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Nhà hát Lớn"
+     }
+    },
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "25 Láng Hạ, Đống Đa, Hà Nội"
+     }
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "parking.reserve",
+      "params": [
+       "lot_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0346",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Ok, thế đậu hũ trong tủ bếp, còn mấy hộp thì trừ hết ra luôn, dùm mình dùng tối nay. Còn thiếu bao nhiêu hộp sạch với công thức thì đặt mua thêm cho đủ nha.",
+   "asr_b": "Ok, thế đậu hũ trong tủ bếp còn mấy hộp thì trừ hết ra luôn, dùm mình dùng tối nay, còn thiếu bao nhiêu hộp sợ nhẫn công thức thì đặt, mua thêm cho đủ nha.",
+   "a": {
+    "calls": [
+     "pantry.list_items",
+     "pantry.consume",
+     "grocery.search",
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.898
+   },
+   "b": {
+    "calls": [
+     "pantry.list_items",
+     "pantry.consume",
+     "grocery.search",
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.898
+   },
+   "calls_a": [
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_06",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "đậu hũ non"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 1
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    },
+    {
+     "name": "pantry.consume",
+     "arguments": {
+      "item_id": "pan_06",
+      "quantity": 3
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "đậu hũ non"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0335",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Ừ, em cho tuyến xe buýt đi, cứ tính năm giờ là lên xe luôn, rồi trọng thời gian xe chạy, nếu tới nơi trước sáu giờ tối thì dời lịch sang giờ xe tới, rưỡng họp một tiếng cho đủ, rồi đổi lịch tên lịch thành gặp đối tác ở trung tâm Phong hóa Tây Hồ luôn nha.",
+   "asr_b": "Ừ, em tra tuyến xe buýt đi, cứ tính năm giờ là lên xe luôn, rồi trọng thời gian xe chạy, nếu tới nơi trước sáu giờ tối thì dời lịch sang giờ xe tới, lẫn họp một tiếng cho đủ, rồi đổi tên lịch thành Gặp đối tác ở trung tâm Băng Hoá Tây Hồ luôn nha.",
+   "a": {
+    "calls": [
+     "public_transit.find_routes",
+     "calendar.update_event"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.884
+   },
+   "b": {
+    "calls": [
+     "public_transit.find_routes",
+     "calendar.update_event"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.883
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Trung tâm Phong hóa Tây Hồ"
+     }
+    },
+    {
+     "name": "calendar.update_event",
+     "arguments": {
+      "event_id": "evt_04",
+      "title": "Gặp đối tác ở trung tâm Phong hóa Tây Hồ",
+      "start": "2026-10-11T18:53:00+07:00",
+      "end": "2026-10-11T19:53:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "25 Láng Hạ, Đống Đa, Hà Nội",
+      "destination": "Trung tâm Băng Hoá, Tây Hồ, Hà Nội"
+     }
+    },
+    {
+     "name": "calendar.update_event",
+     "arguments": {
+      "event_id": "evt_04",
+      "title": "Gặp đối tác ở trung tâm Băng Hoá Tây Hồ",
+      "start": "2026-10-11T18:50:00+07:00",
+      "end": "2026-10-11T19:50:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0348",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Rồi, cho em thêm cái đèn đó vào danh sách đi, xong xem giá. Nếu vận dưới chị nói thì đặt luôn hai cái màu hậu phát cho chị.",
+   "asr_b": "Rồi, giờ em thêm cái đèn đó vào danh sách đi, xong xem giá. Nếu vận dưới, chị nói thì đặt luôn hai cái màu hổ phách cho chị.",
+   "a": {
+    "calls": [
+     "shopping_list.add",
+     "ecommerce.search",
+     "ecommerce.add_to_cart",
+     "ecommerce.checkout"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.733
+   },
+   "b": {
+    "calls": [
+     "shopping_list.add",
+     "ecommerce.search"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.825
+   },
+   "calls_a": [
+    {
+     "name": "shopping_list.add",
+     "arguments": {
+      "name": "đèn ngủ màu hổ phách",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "ecommerce.search",
+     "arguments": {
+      "query": "đèn ngủ màu hổ phách"
+     }
+    },
+    {
+     "name": "ecommerce.add_to_cart",
+     "arguments": {
+      "product_id": "prod_08",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "ecommerce.checkout",
+     "arguments": {}
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "shopping_list.add",
+     "arguments": {
+      "name": "đèn ngủ màu hổ phách",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "ecommerce.search",
+     "arguments": {
+      "query": "đèn ngủ màu hổ phách"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0373",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Xem giúp anh từ Hồ Gươm tới Long Biên thì bắt xe buýt chuyến nào rồi, cho anh cái ô tô bốn chỗ thì chỉnh gói làm ra Hồ Gươm luôn nha.",
+   "asr_b": "Xem giúp anh từ hồ Gươm ra Long Biên chạy bắt xe buýt chuyến nào rồi, cho anh cái ô tô bốn chỗ thì chỉ nhớ làm ra hồ Gươm luôn nha.",
+   "a": {
+    "calls": [
+     "public_transit.find_routes",
+     "ride_hailing.book"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.887
+   },
+   "b": {
+    "calls": [
+     "public_transit.find_routes"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.891
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "Hồ Gươm",
+      "destination": "Long Biên"
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "Long Biên",
+      "dropoff": "Hồ Gươm"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "Hồ Gươm",
+      "destination": "Long Biên"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0360",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Ok, lái chuyến Rồng Việt Air tám giờ mười lăm. Mở mình lên thôi, giữ luôn chỗ bãi P2 từ sáu giờ sáng hôm đó, gọi hai ngày nhé. À, trước giờ bãi một tiếng thì nhắc anh rời bãi luôn thủ tục.",
+   "asr_b": "Ok, lái chuyến Rồng Việt Air tám giờ mười lăm. Bỏ mình lên thôi, giữ luôn chỗ bãi P2 từ sáu giờ sáng hôm đó, gửi hai ngày nhé. À, trước giờ bãi một tiếng thì nhắc anh rời bãi luôn thủ tục.",
+   "a": {
+    "calls": [
+     "flights.book",
+     "parking.reserve",
+     "reminders.create"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.531
+   },
+   "b": {
+    "calls": [
+     "flights.book",
+     "parking.reserve",
+     "reminders.create"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.808
+   },
+   "calls_a": [
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_05",
+      "passengers": 2
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_05",
+      "from_time": "2026-10-10T06:00:00+07:00",
+      "hours": 2
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "Rời bãi đỗ xe",
+      "time": "2026-10-10T05:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "flights.book",
+     "arguments": {
+      "flight_id": "fl_05",
+      "passengers": 2
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_05",
+      "from_time": "2026-10-10T06:00:00+07:00",
+      "hours": 48
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "Rời bãi đỗ xe Nội Bài",
+      "time": "2026-10-10T05:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0377",
+   "diff_kind": "giá trị số",
+   "asr_a": "Này giúp tôi tìm cách nấu cháo gà nhé, rồi đặt luôn cho tôi một, con gạch tha làm sáng về nớ.",
+   "asr_b": "Này, giúp tôi tìm cách nấu cháo gà nhé, rồi đặt luôn cho tôi một con rạp 25 sáng về nớ.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "food_delivery.list_restaurants",
+     "food_delivery.get_menu",
+     "food_delivery.place_order"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.892
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "food_delivery.list_restaurants",
+     "food_delivery.get_menu",
+     "food_delivery.place_order"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.894
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cháo gà"
+     }
+    },
+    {
+     "name": "food_delivery.list_restaurants",
+     "arguments": {}
+    },
+    {
+     "name": "food_delivery.get_menu",
+     "arguments": {
+      "restaurant_id": "rest_03"
+     }
+    },
+    {
+     "name": "food_delivery.place_order",
+     "arguments": {
+      "restaurant_id": "rest_03",
+      "items": [
+       {
+        "item_id": "rest_03_m1",
+        "quantity": 1
+       }
+      ]
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cháo gà"
+     }
+    },
+    {
+     "name": "food_delivery.list_restaurants",
+     "arguments": {}
+    },
+    {
+     "name": "food_delivery.get_menu",
+     "arguments": {
+      "restaurant_id": "rest_02"
+     }
+    },
+    {
+     "name": "food_delivery.place_order",
+     "arguments": {
+      "restaurant_id": "rest_02",
+      "items": [
+       {
+        "item_id": "rest_02_m2",
+        "quantity": 2
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0342",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Tìm cho chị công thức mình xào chay cho hai người để cuối tuần chị tự làm, còn trưa nay thì đặt luôn hai suất mình xào chay về nhà nhé. Xong thêm vào danh sách việc cần làm cho chị một việc lúc mười một rưỡi trưa là kiểm tra xem đồ ăn giao tới trưa.",
+   "asr_b": "Tìm cho chị công thức mìn sào chay cho hai người để cuối tuần chị tự làm, còn trưa nay thì đặt luôn hai suất mìn sào chay về nhà nhé, xong thêm vào danh sách việc cần làm cho chị một việc, lúc mười một rưỡi trưa là kiểm tra xem đồ ăn giao tới chưa.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "food_delivery.list_restaurants",
+     "food_delivery.get_menu",
+     "food_delivery.place_order",
+     "tasks.add"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.9
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "recipes.save",
+     "food_delivery.list_restaurants",
+     "food_delivery.get_menu",
+     "food_delivery.place_order",
+     "tasks.add"
+    ],
+    "n_calls": 6,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.897
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "xào chay"
+     }
+    },
+    {
+     "name": "food_delivery.list_restaurants",
+     "arguments": {}
+    },
+    {
+     "name": "food_delivery.get_menu",
+     "arguments": {
+      "restaurant_id": "rest_05"
+     }
+    },
+    {
+     "name": "food_delivery.place_order",
+     "arguments": {
+      "restaurant_id": "rest_05",
+      "items": [
+       {
+        "item_id": "rest_05_m1",
+        "quantity": 2
+       }
+      ],
+      "address": "18 Phạm Hùng, Nam Từ Liêm, Hà Nội"
+     }
+    },
+    {
+     "name": "tasks.add",
+     "arguments": {
+      "title": "Kiểm tra xem đồ ăn giao tới trưa",
+      "due": "2026-10-05T11:30:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "mì sào chay"
+     }
+    },
+    {
+     "name": "recipes.save",
+     "arguments": {
+      "recipe_id": "rcp_06"
+     }
+    },
+    {
+     "name": "food_delivery.list_restaurants",
+     "arguments": {}
+    },
+    {
+     "name": "food_delivery.get_menu",
+     "arguments": {
+      "restaurant_id": "rest_05"
+     }
+    },
+    {
+     "name": "food_delivery.place_order",
+     "arguments": {
+      "restaurant_id": "rest_05",
+      "items": [
+       {
+        "item_id": "rest_05_m1",
+        "quantity": 2
+       }
+      ],
+      "address": "18 Phạm Hùng, Nam Từ Liêm, Hà Nội"
+     }
+    },
+    {
+     "name": "tasks.add",
+     "arguments": {
+      "title": "Kiểm tra xem mì xào chay giao tới chưa",
+      "due": "2026-10-05T11:30:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0394",
+   "diff_kind": "động từ hành động",
+   "asr_a": "Họp ở công ty thì dừng nhà giúp chị, chị đi luôn. Ở nhà thì bạn nhỏ, số hai mươi nhé.",
+   "asr_b": "Họp ở công ty thì dùng nhạc giúp chị, chị đi luôn, ở nhà thì bật nhỏ xuống hai mươi nhé.",
+   "a": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.light_set"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.706
+   },
+   "b": {
+    "calls": [
+     "smart_home.get_status",
+     "music.control"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.404
+   },
+   "calls_a": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_kitchen",
+      "power": "off"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "music.control",
+     "arguments": {
+      "action": "volume",
+      "volume": 20
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0376",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Đặt cho tôi năm vé triển lãm ánh sáng đô thị cho cả nhà nhé, rồi ghi vào lịch giúp tôi là bảy rưỡi tối thứ bảy mùng ba tháng mười đi xem.",
+   "asr_b": "Đặt cho tôi năm vé triển lãm án sáng đô thị cho cả nhà nhé, rồi ghi vào lịch giúp tôi là bảy rưỡi tối thứ Bảy mùng ba tháng mười đi xem.",
+   "a": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.book",
+     "calendar.create_event"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.895
+   },
+   "b": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search",
+     "event_tickets.book",
+     "calendar.create_event"
+    ],
+    "n_calls": 4,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.898
+   },
+   "calls_a": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "triển lãm ánh sáng đô thị"
+     }
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_05",
+      "quantity": 5
+     }
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Xem triển lãm ánh sáng đô thị",
+      "start": "2026-10-03T19:30:00+07:00",
+      "end": "2026-10-03T20:30:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "triển lãm án sáng đô thị"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_05",
+      "quantity": 5
+     }
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Xem triển lãm Ánh sáng Đô thị",
+      "start": "2026-10-03T19:30:00+07:00",
+      "end": "2026-10-03T21:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0356",
+   "diff_kind": "giá trị số",
+   "asr_a": "Mua cho anh bốn vé xem Stand Up Comedy tối thứ bảy tuần sau nha, đặt luôn xe bảy chỗ đón ở công ty lúc năm giờ chiều luôn. Hôm đó chở cả nhóm tới thể diễn, rồi nhắn Zalo cho Minh Lâm là đặt trung vào sân bay.",
+   "asr_b": "Mua cho em bốn vé xem startup company tối thứ bảy tuần sau nha, đặt luôn xe bảy chỗ đón ở công ty lúc năm giờ chiều hôm đó chở cả nhóm xe chạy chuyển, rồi nhắn Zalo cho Minh là năm giờ trước khi xong.",
+   "a": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search",
+     "event_tickets.book",
+     "ride_hailing.book",
+     "chat_ott.list_chats",
+     "chat_ott.send_message"
+    ],
+    "n_calls": 6,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.874
+   },
+   "b": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search"
+    ],
+    "n_calls": 2,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.861
+   },
+   "calls_a": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "Stand Up Comedy"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_02",
+      "quantity": 4
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car7",
+      "pickup": "Tòa nhà Kim Cương, Nam Từ Liêm, Hà Nội",
+      "dropoff": "Trung tâm Hội nghị Quốc gia",
+      "schedule_time": "2026-10-17T17:00:00+07:00"
+     }
+    },
+    {
+     "name": "chat_ott.list_chats",
+     "arguments": {}
+    },
+    {
+     "name": "chat_ott.send_message",
+     "arguments": {
+      "chat_id": "chat_04",
+      "content": "Đã đặt vé xem Stand-up comedy vào ngày 17/10 và xe đón ở công ty lúc 17:00 rồi nhé."
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "startup company"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0390",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Giờ kiếm giúp anh một món cá áp chảo hộp với bữa đó, rồi đặt luôn hai nguyên liệu chính, mua đủ cho cả nhà nha.",
+   "asr_b": "Giờ kiếm giúp anh một món cá áp chảo hợp với bữa đó, rồi đặt luôn hai nguyên liệu chính, mô đủ cho cả nhà nha.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "grocery.search",
+     "grocery.search",
+     "grocery.search",
+     "grocery.search"
+    ],
+    "n_calls": 5,
+    "empty_reads": 2,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.862
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.checkout"
+    ],
+    "n_calls": 6,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.899
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cá áp chảo"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "cá basa phi lê"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "cá basa phi lê"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "đậu phộng rang"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "đậu phộng rang"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cá áp chảo"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "cá hồi phi lê"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_06",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "măng tây"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 1
+     }
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0437",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Tôi chạy cả đêm rồi. Kết thúc lượt gửi ở hộp bao nhiêu xe gần nhà giùm tôi nha.",
+   "asr_b": "Tôi chạy cả đêm rồi, kết thúc lượt gửi ở hôm bao nhiêu xe gần nhà giùm tôi nha.",
+   "a": {
+    "calls": [
+     "parking.list_sessions",
+     "parking.end_session"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.838
+   },
+   "b": {
+    "calls": [
+     "parking.find"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.815
+   },
+   "calls_a": [
+    {
+     "name": "parking.list_sessions",
+     "arguments": {}
+    },
+    {
+     "name": "parking.end_session",
+     "arguments": {
+      "session_id": "park_741"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "parking.find",
+     "arguments": {
+      "near": "88/5 Phạm Văn Đồng, Gò Vấp, TP.HCM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0416",
+   "diff_kind": "giá trị số",
+   "asr_a": "Gửi email biểu Hằng gửi cái radio về nhà cho Ba nghen, ờ lộn, thằng Út mới phải.",
+   "asr_b": "Gửi email biểu Hằng gửi cái radio về nhà cho bà nghen, ờ lộn, thằng Út vừa phải.",
+   "a": {
+    "calls": [
+     "contacts.search",
+     "email.create_draft"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.732
+   },
+   "b": {
+    "calls": [
+     "contacts.search"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.752
+   },
+   "calls_a": [
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Hằng"
+     }
+    },
+    {
+     "name": "email.create_draft",
+     "arguments": {
+      "to": [
+       "ut.nguyen@gmail.example.test"
+      ],
+      "subject": "Gửi radio về nhà",
+      "body": "Ba ơi, con gửi cái radio về nhà cho Ba nghe."
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Hằng"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0429",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Ba dặn Vy thách, qua một trăm hai tám nghìn thì báo. Em coi thử, vợ qua rồi gọi ba liền nghe.",
+   "asr_b": "Ba dặn Vitech qua một trăm hai tám nghìn thì báo em coi thử, rồi gọi ba liền nghe.",
+   "a": {
+    "calls": [
+     "stocks.get_portfolio",
+     "contacts.search",
+     "phone.call"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.736
+   },
+   "b": {
+    "calls": [
+     "stocks.set_price_alert",
+     "contacts.search",
+     "phone.call"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.734
+   },
+   "calls_a": [
+    {
+     "name": "stocks.get_portfolio",
+     "arguments": {}
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Ba"
+     }
+    },
+    {
+     "name": "phone.call",
+     "arguments": {
+      "contact_id": "c_72"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "stocks.set_price_alert",
+     "arguments": {
+      "direction": "above",
+      "symbol": "Vitech",
+      "price": 128000
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Ba"
+     }
+    },
+    {
+     "name": "phone.call",
+     "arguments": {
+      "contact_id": "c_72"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0388",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tìm giúp anh công thức súc ví đỏ nấu cho bốn người nhé, ví đỏ với kem dưa thì đặt bộ online luôn cho đủ lượng, bơ nhà còn rồi, còn thiếu gì nữa thì ghi vào danh sách đi chợ.",
+   "asr_b": "Tìm giúp anh công thức giúp ví đỏ nấu cho bốn người nhé, ví đỏ với kim tươi thì đặt mua online luôn cho đủ lượng, bơ nhà còn rồi, còn thiếu gì nữa thì ghi vào danh sách đi chợ.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.checkout"
+    ],
+    "n_calls": 6,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.896
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "recipes.get",
+     "ecommerce.search",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "pantry.list_items"
+    ],
+    "n_calls": 8,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.898
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "súp bí đỏ"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bí đỏ"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "kem tươi"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_08",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {}
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "ví đỏ"
+     }
+    },
+    {
+     "name": "recipes.get",
+     "arguments": {
+      "recipe_id": "rcp_02"
+     }
+    },
+    {
+     "name": "ecommerce.search",
+     "arguments": {
+      "query": "bí đỏ"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bí đỏ"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "kim tươi"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_08",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "pantry.list_items",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0480",
+   "diff_kind": "giống",
+   "asr_a": "Nạp ba trăm, à thôi, nạp đủ hai chục lượt metro ra suối tiên. Mà vé hơn hai chục nghìn thì khỏi, em đi bếp.",
+   "asr_b": "Nạp ba trăm, à thôi, nạp đủ hai chục lượt metro ra suối tiên. Mà vé hơn hai chục nghìn thì khỏi, em đi bếp.",
+   "a": {
+    "calls": [],
+    "n_calls": 0,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": true,
+    "q1_conf": 0.522
+   },
+   "b": {
+    "calls": [
+     "public_transit.topup_card"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.626
+   },
+   "calls_a": [],
+   "calls_b": [
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 200000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0485",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Ờ mình tính hủy cái đơn nô chiếc Hùng Dầu gần hai triệu á, tuần ni dẫn đoàn suốt, nhãng ai nhắn thì tôi hủy luôn đi hen.",
+   "asr_b": "Ờ mình tự huỷ cái đơn nội tiết hôm giao gần hai triệu đó, tuần ni dẫn đoàn xuống, nhắn Ngai nhớn tôi huỷ luôn đi hen.",
+   "a": {
+    "calls": [],
+    "n_calls": 0,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": true,
+    "q1_conf": 0.514
+   },
+   "b": {
+    "calls": [
+     "ecommerce.order_status",
+     "ecommerce.cancel_order",
+     "contacts.search"
+    ],
+    "n_calls": 3,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.862
+   },
+   "calls_a": [],
+   "calls_b": [
+    {
+     "name": "ecommerce.order_status",
+     "arguments": {}
+    },
+    {
+     "name": "ecommerce.cancel_order",
+     "arguments": {
+      "order_id": "ord_3709"
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Ngai"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0450",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Bán mã sữa đi, à không, Út có dặn trong ghi chú rồi, em coi rồi bán y viện nghen.",
+   "asr_b": "Bán mã sữa đi, à không, Út có dặn trong ghi chú rồi, em coi rồi bán y vậy nghen.",
+   "a": {
+    "calls": [
+     "notes.list",
+     "stocks.place_order"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.901
+   },
+   "b": {
+    "calls": [
+     "notes.list",
+     "stocks.place_order"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.908
+   },
+   "calls_a": [
+    {
+     "name": "notes.list",
+     "arguments": {}
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "sell",
+      "symbol": "ZDV",
+      "quantity": 500,
+      "price": 93400
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "notes.list",
+     "arguments": {}
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "sell",
+      "symbol": "ZDV",
+      "quantity": 500
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0405",
+   "diff_kind": "giá trị số",
+   "asr_a": "Ờ trả chiều thì trả cuốn Ngày của Ba với Hộ Anh hai trăm, à nhầm, một trăm hai lăm.",
+   "asr_b": "Ờ, trả chi từ tháng 4 đến tháng 3 ví hộ anh, hai trăm, à nhầm, trăm hai lăm.",
+   "a": {
+    "calls": [
+     "contacts.search",
+     "contacts.search",
+     "ewallet.transfer",
+     "ewallet.transfer"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.745
+   },
+   "b": {
+    "calls": [],
+    "n_calls": 0,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": true,
+    "q1_conf": 0.572
+   },
+   "calls_a": [
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Ba"
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Anh"
+     }
+    },
+    {
+     "name": "ewallet.transfer",
+     "arguments": {
+      "contact_id": "c_841",
+      "amount": 125000
+     }
+    },
+    {
+     "name": "ewallet.transfer",
+     "arguments": {
+      "contact_id": "c_250",
+      "amount": 125000
+     }
+    }
+   ],
+   "calls_b": []
+  },
+  {
+   "id": "public_0489",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Em kiếm giùm anh vợ kịch mô hai vé vừa tròn số tiền ổng gửi á, mà vừa đó anh không đặt luôn hai vé nghe.",
+   "asr_b": "Em kiếm giùm anh vợ kịch mô hai vé vừa tròn số tiền ổng gửi á, mà vừa đó anh không kẹt, đặt luôn hai vé nghe.",
+   "a": {
+    "calls": [
+     "event_tickets.search"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.889
+   },
+   "b": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.book"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.882
+   },
+   "calls_a": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "kịch"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "kịch"
+     }
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_3317",
+      "quantity": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0436",
+   "diff_kind": "giá trị số",
+   "asr_a": "Ừ, đủ đấy. Em mua thêm Zekien với thêm vé số mỗi mã cho tròn 500 cổ, anh đang vội.",
+   "asr_b": "Ừ, đủ bán. Em mua thêm JetXanh, với thế chuyển số mỗi mã cho Trần năm trăm cổ, anh đang vội.",
+   "a": {
+    "calls": [
+     "stocks.get_portfolio",
+     "stocks.place_order",
+     "stocks.place_order"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.785
+   },
+   "b": {
+    "calls": [
+     "stocks.get_portfolio",
+     "stocks.place_order",
+     "banking.list_beneficiaries",
+     "banking.transfer"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.72
+   },
+   "calls_a": [
+    {
+     "name": "stocks.get_portfolio",
+     "arguments": {}
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "buy",
+      "symbol": "ZTS",
+      "quantity": 300
+     }
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "buy",
+      "symbol": "ZKN",
+      "quantity": 400
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "stocks.get_portfolio",
+     "arguments": {}
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "buy",
+      "symbol": "ZTS",
+      "quantity": 500
+     }
+    },
+    {
+     "name": "banking.list_beneficiaries",
+     "arguments": {}
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_1795",
+      "beneficiary_id": "ben_907",
+      "amount": 500000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0392",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Rồi, em kiếm công thức món đi, đặt mua đủ hai nguyên liệu chính cho cả nhà, xong thêm cái lịch bắt đầu nấu trước giờ ăn một tiếng rưỡi nha em.",
+   "asr_b": "Rồi, em kiếm công thức món đi, đặt mua đủ hai nguyên lý chính cho cả nhà, xong thêm cái lịch bắt đầu nấu trước giờ ăn một tiếng rưỡi nha em.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "calendar.create_event"
+    ],
+    "n_calls": 6,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.903
+   },
+   "b": {
+    "calls": [
+     "recipes.search",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "calendar.create_event"
+    ],
+    "n_calls": 6,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.902
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "canh chua cá"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "cá lóc"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "me chua"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_08",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Nấu canh chua cá",
+      "start": "2026-09-22T06:30:00+07:00",
+      "end": "2026-09-22T07:15:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "canh chua cá"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "cá lóc"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_07",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "me chua"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_08",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Nấu canh chua cá",
+      "start": "2026-09-22T06:30:00+07:00",
+      "end": "2026-09-22T07:10:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0497",
+   "diff_kind": "giá trị số",
+   "asr_a": "Rứa tài khoản thanh toán còn trên mười triệu thì mua thêm hai trăm cổ phiếu, bảy lưỡi đó, không thì trăm cổ thôi.",
+   "asr_b": "Rứa tài khoản thanh toán còn trên mười triệu thì mua thêm hai trăm cổ phiếu, ba lỗi đó, không thì trăm cổ thôi.",
+   "a": {
+    "calls": [
+     "banking.get_balance",
+     "stocks.place_order"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.921
+   },
+   "b": {
+    "calls": [
+     "banking.get_balance",
+     "stocks.place_order",
+     "stocks.place_order"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.925
+   },
+   "calls_a": [
+    {
+     "name": "banking.get_balance",
+     "arguments": {}
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "buy",
+      "symbol": "ZDH",
+      "quantity": 200
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "banking.get_balance",
+     "arguments": {}
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "buy",
+      "symbol": "ZTS",
+      "quantity": 200
+     }
+    },
+    {
+     "name": "stocks.place_order",
+     "arguments": {
+      "side": "buy",
+      "symbol": "ZDH",
+      "quantity": 200
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0523",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Anh Mười mới hỏi, hổng cần ra binh nữa. Ví nào đi binh tôi đặt là huỷ hết giùm tôi nha.",
+   "asr_b": "Anh Mười mới hỏi, hổng cần ra Vinh nữa, vé nào đi Vinh tôi đặt là huỷ hết giùm tôi nha.",
+   "a": {
+    "calls": [
+     "train_bus_tickets.my_bookings",
+     "train_bus_tickets.cancel"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.842
+   },
+   "b": {
+    "calls": [
+     "train_bus_tickets.my_bookings",
+     "train_bus_tickets.cancel"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.832
+   },
+   "calls_a": [
+    {
+     "name": "train_bus_tickets.my_bookings",
+     "arguments": {}
+    },
+    {
+     "name": "train_bus_tickets.cancel",
+     "arguments": {
+      "booking_id": "tk_88"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "train_bus_tickets.my_bookings",
+     "arguments": {}
+    },
+    {
+     "name": "train_bus_tickets.cancel",
+     "arguments": {
+      "booking_id": "tk_03"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0506",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Mai giỗ ba cô, nhà đông lắm. Con lưu giùm cô món thực kho nào nấu được nhiều phần nhất bên ứng dụng nấu ăn nghe.",
+   "asr_b": "Mai giỗ ba cô, nhà đông lắm, con lưu giùm cô món thức kho nào nấu được nhiều phần nhất bên ứng dụng nấu ăn nghe.",
+   "a": {
+    "calls": [
+     "recipes.search",
+     "recipes.save"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.896
+   },
+   "b": {
+    "calls": [
+     "recipes.search"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.891
+   },
+   "calls_a": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "thực kho"
+     }
+    },
+    {
+     "name": "recipes.save",
+     "arguments": {
+      "recipe_id": "rcp_418"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "thức kho"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0547",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Nạp thẻ cho tôi đủ tiền đi tuyến 09 cả đi lẫn về, cho mấy buổi học của cô Anna Smith tuần sau nhé.",
+   "asr_b": "Nạp thẻ cho tôi đủ tiền đi tuyến 09 cả đi lẫn về, cho mấy buổi học cũ của Anna Schmidt tuần sau nhé.",
+   "a": {
+    "calls": [
+     "public_transit.topup_card"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.847
+   },
+   "b": {
+    "calls": [
+     "public_transit.topup_card"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.875
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 21000
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 14000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0509",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Lưu chỗ đó tên Siêu Thị quen nha, bản công viên 239 còn chỗ thì giữ cho anh một tiếng từ ba giờ, hết thì khỏi ghé, bỏ giỏ hai hộp chướng với tui gạch.",
+   "asr_b": "Lưu chỗ đó tên Siêu Thị quê nhà, bản công viên 239 còn chỗ thì giữ cho anh một tiếng từ ba giờ, hết thì khỏi ghé, bỏ giỏ hai hộp chướng với tui gặp.",
+   "a": {
+    "calls": [
+     "maps.save_place",
+     "grocery.search",
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.874
+   },
+   "b": {
+    "calls": [
+     "maps.save_place",
+     "grocery.search",
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.856
+   },
+   "calls_a": [
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_964",
+      "label": "Siêu Thị quen"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "gạo"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_66",
+      "quantity": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_964",
+      "label": "Siêu Thị quê nhà"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "hộp sữa"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_1131",
+      "quantity": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0543",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Sarah báo nhận tiền hai lần, em coi giao gì gần đây của tài khoản vừa chuyển cho bạn ấy giúp chị nghe.",
+   "asr_b": "Sarah báo nhận tiền hai lần, em coi giao dịch gần đây của tài khoản rồi chuyển cho bạn ấy giúp chị nghe.",
+   "a": {
+    "calls": [
+     "banking.list_transactions"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.924
+   },
+   "b": {
+    "calls": [
+     "banking.list_transactions",
+     "banking.transfer"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.91
+   },
+   "calls_a": [
+    {
+     "name": "banking.list_transactions",
+     "arguments": {
+      "account_id": "acc_291"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "banking.list_transactions",
+     "arguments": {
+      "account_id": "acc_291"
+     }
+    },
+    {
+     "name": "banking.transfer",
+     "arguments": {
+      "from_account_id": "acc_291",
+      "beneficiary_id": "ben_744",
+      "amount": 2000000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0534",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Gửi anh Phát đó mail báo giá nghen, xoài loại một bốn lăm nghìn một ký, mai tôi đi khám răng, hẹn ảnh ghé vựa sau giờ đó.",
+   "asr_b": "Gửi anh Phát đón mail gửi báo giá nghen, xoài loại một, bốn lăm nghìn một ký, mai tôi đi khám răng, hẹn ảnh ghé vựa sau giờ đó.",
+   "a": {
+    "calls": [
+     "email.send"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.838
+   },
+   "b": {
+    "calls": [
+     "email.send",
+     "calendar.create_event"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.82
+   },
+   "calls_a": [
+    {
+     "name": "email.send",
+     "arguments": {
+      "to": [
+       "phat.le@mekongfruit.example.test"
+      ],
+      "subject": "Báo giá xoài cát Hòa Lộc loại một",
+      "body": "Chào anh Phát, bên em báo giá xoài cát Hòa Lộc loại một là 45.000 đồng/kg. Anh ghé vựa lúc 10:00 sáng mai nhé."
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "email.send",
+     "arguments": {
+      "to": [
+       "phat.le@mekongfruit.example.test"
+      ],
+      "subject": "Báo giá xoài cát Hòa Lộc loại một",
+      "body": "Chào anh Phát, bên em báo giá xoài cát Hòa Lộc loại một là 45.000 đồng/kg. Anh gửi báo giá này cho chị Ngọc."
+     }
+    },
+    {
+     "name": "calendar.create_event",
+     "arguments": {
+      "title": "Đi khám răng",
+      "start": "2026-10-23T09:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0540",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Chiều ni tôi dẫn hai khách từ nhà đi xe buýt qua Pilgrim Village, em nạp thẻ đúng tiền vé khứ hồi ba nguyện nghe.",
+   "asr_b": "Chiều ni tôi dẫn hai khách từ nhà đi xe buýt qua Pilgrim Village, em nạp thẻ đúng tiền vé khứ hồi ba nguyễn nghe em.",
+   "a": {
+    "calls": [
+     "public_transit.find_routes",
+     "public_transit.topup_card"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.636
+   },
+   "b": {
+    "calls": [
+     "public_transit.find_routes",
+     "public_transit.topup_card"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.682
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "nhà",
+      "destination": "Pilgrim Village"
+     }
+    },
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 24000
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.find_routes",
+     "arguments": {
+      "origin": "nhà",
+      "destination": "Pilgrim Village"
+     }
+    },
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 16000
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0496",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Hai tiệm đó, tiệm nào gần vợ tôi hơn thì lưu tiệm đó nha, đặt tên chỗ sửa máy ghe.",
+   "asr_b": "Hai tiệm đó, tiệm nào gần vựa tôi hơn thì lưu tiệm đó nha, đặt tên chỗ sửa máy ghe.",
+   "a": {
+    "calls": [
+     "maps.get_route",
+     "maps.get_route",
+     "maps.save_place"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.752
+   },
+   "b": {
+    "calls": [
+     "maps.get_route",
+     "maps.get_route",
+     "maps.save_place"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.875
+   },
+   "calls_a": [
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "Chợ nổi Cái Răng, Cần Thơ",
+      "destination": "88 Lê Bình, Cái Răng, Cần Thơ"
+     }
+    },
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "Chợ nổi Cái Răng, Cần Thơ",
+      "destination": "Bến tàu Ba Láng, Cái Răng, Cần Thơ"
+     }
+    },
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_5126",
+      "label": "Chỗ sửa máy ghe"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "Vựa trái cây Bảy Hồng, Cái Răng, Cần Thơ",
+      "destination": "Cơ khí sửa máy ghe Út Hiền, 88 Lê Bình, Cái Răng, Cần Thơ"
+     }
+    },
+    {
+     "name": "maps.get_route",
+     "arguments": {
+      "origin": "Vựa trái cây Bảy Hồng, Cái Răng, Cần Thơ",
+      "destination": "Tiệm sửa máy ghe Hai Lúa, Bến tàu Ba Láng, Cái Răng, Cần Thơ"
+     }
+    },
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_837",
+      "label": "Chỗ sửa máy ghe"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0559",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Lộn rồi. Bảy giờ hai công tác chở Hồng về chợ Cái Răng, ghi chỗ ở chợ rồi giữ bên kệ giờ hồi nãy nghen.",
+   "asr_b": "Lộn rồi, bảy giờ hai con cá chở hổng phải chở cá răng. Hủy chỗ ở chợ rồi giữ bên kệ giờ hồi nãy nghen.",
+   "a": {
+    "calls": [
+     "parking.reserve"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.574
+   },
+   "b": {
+    "calls": [
+     "parking.end_session",
+     "parking.reserve"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.767
+   },
+   "calls_a": [
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_759",
+      "from_time": "2026-12-06T07:00:00+07:00",
+      "hours": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "parking.end_session",
+     "arguments": {
+      "session_id": "park_02"
+     }
+    },
+    {
+     "name": "parking.reserve",
+     "arguments": {
+      "lot_id": "lot_759",
+      "from_time": "2026-12-06T07:00:00+07:00",
+      "hours": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0520",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Coi trạm Trung Kết ở sân đó còn vé không, còn thì lấy hai vé, hết thì lấy hai vé Sài Gòn cười, rồi hẹn báo thức trước giờ riêng một tiếng.",
+   "asr_b": "Coi trận chung kết ở sân đó còn vé không, còn thì lấy hai vé, hết thì lấy hai vé Sài Gòn cười, rồi hẹn báo thức trước giờ dậy một tiếng.",
+   "a": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search",
+     "event_tickets.book",
+     "alarm.create"
+    ],
+    "n_calls": 4,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.903
+   },
+   "b": {
+    "calls": [
+     "event_tickets.search",
+     "event_tickets.search",
+     "event_tickets.book"
+    ],
+    "n_calls": 3,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.91
+   },
+   "calls_a": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "Trung Kết"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_225",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "alarm.create",
+     "arguments": {
+      "time": "2026-10-21T17:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "event_tickets.search",
+     "arguments": {
+      "query": "Sân Thống Nhất"
+     }
+    },
+    {
+     "name": "event_tickets.search",
+     "arguments": {}
+    },
+    {
+     "name": "event_tickets.book",
+     "arguments": {
+      "event_id": "event_225",
+      "quantity": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0571",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Đèn điện tháng này mà dưới một triệu thì cài tự động trả giùm tôi, không thì thôi.",
+   "asr_b": "Tiền điện tháng này mà dưới một triệu thì cài tự động trả giùm tôi, không thì thôi.",
+   "a": {
+    "calls": [
+     "bill_payment.list_bills",
+     "bill_payment.schedule_autopay"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.878
+   },
+   "b": {
+    "calls": [
+     "bill_payment.list_bills"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.871
+   },
+   "calls_a": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    },
+    {
+     "name": "bill_payment.schedule_autopay",
+     "arguments": {
+      "enabled": true,
+      "type": "electricity"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "bill_payment.list_bills",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0560",
+   "diff_kind": "giá trị số",
+   "asr_a": "Em nạp thẻ cho anh đúng bằng tiền vé tuyến R, mười sáu tiếng R1, rồi sáu giờ sáng mai nhắc anh ra trạm nghe.",
+   "asr_b": "Em nạp thẻ cho anh đúng bằng tiền vé tuyến R1, mười sáu giờ sáng mai nhắc anh ra trạm nghe.",
+   "a": {
+    "calls": [
+     "public_transit.topup_card",
+     "reminders.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.879
+   },
+   "b": {
+    "calls": [
+     "public_transit.topup_card",
+     "reminders.create"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.896
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 30000
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "Ra bến xe Trung tâm",
+      "time": "2026-11-08T06:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.topup_card",
+     "arguments": {
+      "amount": 30000
+     }
+    },
+    {
+     "name": "reminders.create",
+     "arguments": {
+      "content": "Ra bến xe Trung tâm",
+      "time": "2026-11-08T16:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0590",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tôi lấy xe ra khỏi bãi Bangkok Garden rồi, tắt cái phim gửi xe ở đó giùm tôi nghen.",
+   "asr_b": "Bố lấy xe ra khỏi bãi Bangkok Gia Đình rồi, tắt cái phim gửi xe ở đó giùm tôi nghen.",
+   "a": {
+    "calls": [
+     "parking.list_sessions",
+     "parking.end_session"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.784
+   },
+   "b": {
+    "calls": [
+     "parking.list_sessions",
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.832
+   },
+   "calls_a": [
+    {
+     "name": "parking.list_sessions",
+     "arguments": {}
+    },
+    {
+     "name": "parking.end_session",
+     "arguments": {
+      "session_id": "park_586"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "parking.list_sessions",
+     "arguments": {}
+    },
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "parking.end_session",
+      "params": [
+       "session_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0510",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Bột hơ búa yến mạch hơ túi. Mưa mà mưa thì đạp vô gì luôn, chị không ra chợ nữa, không mưa thì ghi vô danh sách đi chợ.",
+   "asr_b": "Bộ thơ vú ấy, yến mạch thơ túi. Mưa mà mưa thì đạp vô gì luôn, chị không ra chợ nữa, không mưa thì ghi vô danh sách đi chợ.",
+   "a": {
+    "calls": [
+     "weather.get_forecast",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.432
+   },
+   "b": {
+    "calls": [
+     "weather.get_current",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.search",
+     "grocery.add_to_cart",
+     "grocery.checkout"
+    ],
+    "n_calls": 7,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.643
+   },
+   "calls_a": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-28"
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bột mì"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_864",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "yến mạch"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_295",
+      "quantity": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "weather.get_current",
+     "arguments": {}
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "C0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "bột mì"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_864",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.search",
+     "arguments": {
+      "query": "yến mạch"
+     }
+    },
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_295",
+      "quantity": 2
+     }
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0567",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tìm giúp em tiệm photo mô gần trường em, rồi lưu lại tên là cho anh bài nghe.",
+   "asr_b": "Tìm giúp em tiệm phun Tomo gần trường em, rồi lưu lại tên là chỗ in bài nghe.",
+   "a": {
+    "calls": [
+     "maps.search_place",
+     "maps.save_place"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.922
+   },
+   "b": {
+    "calls": [
+     "maps.search_place",
+     "maps.search_place"
+    ],
+    "n_calls": 2,
+    "empty_reads": 2,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.925
+   },
+   "calls_a": [
+    {
+     "name": "maps.search_place",
+     "arguments": {
+      "query": "photo",
+      "near": "Lê Lợi"
+     }
+    },
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_812",
+      "label": " tiệm photo gần trường"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "maps.search_place",
+     "arguments": {
+      "query": "Tomo",
+      "near": "Lê Lợi"
+     }
+    },
+    {
+     "name": "maps.search_place",
+     "arguments": {
+      "query": "Tomo"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0601",
+   "diff_kind": "động từ hành động",
+   "asr_a": "Thế thắt giùm tớ hai vé chuyến sớm nhất còn đủ chỗ cho tớ với Trang nha.",
+   "asr_b": "Thế tắt giùm tớ hai vé chuyến sớm nhất còn đủ chỗ cho tớ với Trang nha.",
+   "a": {
+    "calls": [
+     "train_bus_tickets.book"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.853
+   },
+   "b": {
+    "calls": [
+     "train_bus_tickets.my_bookings"
+    ],
+    "n_calls": 1,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.781
+   },
+   "calls_a": [
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_361",
+      "seats": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "train_bus_tickets.my_bookings",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0640",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Willowbrook Residence nha em, căn hộ của ảnh đó. Mà khoan giao liền, để chiều mai hẵng giao giùm chị.",
+   "asr_b": "Willowbrook Residence nha em, căn hộ của ảnh đó mà khoan giao liền, để chiều mai hắn giao giùm chị.",
+   "a": {
+    "calls": [],
+    "n_calls": 0,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": true,
+    "q1_conf": 0.619
+   },
+   "b": {
+    "calls": [
+     "grocery.checkout"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.846
+   },
+   "calls_a": [],
+   "calls_b": [
+    {
+     "name": "grocery.checkout",
+     "arguments": {
+      "address": "Willowbrook Residence, 21 Quốc Hương, Thảo Điền",
+      "delivery_time": "2026-10-31T18:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0574",
+   "diff_kind": "từ thường khác",
+   "asr_a": "Chốt đơn giá đó luôn nha con, giao tới tiệm trước giờ livestream một tiếng, xong gạch việc đặt nước uống luôn.",
+   "asr_b": "Chốt đơn giả đó luôn nha con, giao tới tiệm trước giờ livestream một tiếng, xong gạch việc đặt nước uống luôn.",
+   "a": {
+    "calls": [
+     "grocery.checkout",
+     "tasks.complete"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.9
+   },
+   "b": {
+    "calls": [
+     "grocery.checkout",
+     "tasks.complete"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.904
+   },
+   "calls_a": [
+    {
+     "name": "grocery.checkout",
+     "arguments": {
+      "address": "Tiệm tạp hóa Thảo, 203 Lê Văn Sỹ, Quận 3",
+      "delivery_time": "2026-12-20T18:30:00+07:00"
+     }
+    },
+    {
+     "name": "tasks.complete",
+     "arguments": {
+      "task_id": "task_7381"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "grocery.checkout",
+     "arguments": {
+      "address": "Tiệm tạp hóa Thảo, 203 Lê Văn Sỹ, Quận 3",
+      "delivery_time": "2026-12-20T18:00:00+07:00"
+     }
+    },
+    {
+     "name": "tasks.complete",
+     "arguments": {
+      "task_id": "task_7381"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0600",
+   "diff_kind": "giống",
+   "asr_a": "Giỏ vậy là đủ rồi em. Chốt đơn giùm anh, còn giờ giao thì sớm hơn bữa tối với gia đình một tiếng nha.",
+   "asr_b": "Giỏ vậy là đủ rồi em, chốt đơn giùm anh, còn giờ giao thì sớm hơn bữa tối với Gia đình một tiếng nha.",
+   "a": {
+    "calls": [
+     "grocery.checkout"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.695
+   },
+   "b": {
+    "calls": [
+     "calendar.list_events",
+     "grocery.checkout"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.832
+   },
+   "calls_a": [
+    {
+     "name": "grocery.checkout",
+     "arguments": {
+      "delivery_time": "2026-10-17T19:00:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "calendar.list_events",
+     "arguments": {}
+    },
+    {
+     "name": "grocery.checkout",
+     "arguments": {
+      "delivery_time": "2026-10-18T17:00:00+07:00"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0619",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tối nay chị hẹn với Chrisville Hotel, cái đối diện quán Mộc Lan á. Em tìm rồi lưu tên chỗ hẹn tối nay nghe.",
+   "asr_b": "Tối nay chị hẹn với Crestview Hotels cái đối diện quán Mộc Lan á, em tìm rồi lưu tên chỗ hẹn tối nay nghe.",
+   "a": {
+    "calls": [
+     "maps.save_place"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.813
+   },
+   "b": {
+    "calls": [
+     "maps.save_place"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.804
+   },
+   "calls_a": [
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_7742",
+      "label": "Chrisville Hotel"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "maps.save_place",
+     "arguments": {
+      "place_id": "place_418",
+      "label": "Crestview Hotels"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0649",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Trạm xe buýt cần Greenfield Hotel. Khi mô có chuyến, nếu chờ quá hai mươi phút thì đặt xe bốn chỗ về cho chị.",
+   "asr_b": "Trạm xe buýt gần Grandview Hotel khi mưa có chuyến, nếu chờ quá hai mươi phút thì đặt xe bốn chỗ về cho chị.",
+   "a": {
+    "calls": [
+     "public_transit.next_departures"
+    ],
+    "n_calls": 1,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.837
+   },
+   "b": {
+    "calls": [
+     "public_transit.next_departures",
+     "ride_hailing.book"
+    ],
+    "n_calls": 2,
+    "empty_reads": 1,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.503
+   },
+   "calls_a": [
+    {
+     "name": "public_transit.next_departures",
+     "arguments": {
+      "stop": "Greenfield Hotel"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "public_transit.next_departures",
+     "arguments": {
+      "stop": "Grandview Hotel"
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "Grandview Hotel",
+      "dropoff": "15 Trần Phú, Hải Châu, Đà Nẵng"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0656",
+   "diff_kind": "động từ hành động",
+   "asr_a": "À tạo hồi này đã con bỏ vô dạ cho cô hai ký luôn nghen.",
+   "asr_b": "À tảo hoài này đó con, bỏ vô giả cho cô hai ký luôn nghen.",
+   "a": {
+    "calls": [
+     "grocery.add_to_cart"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.344
+   },
+   "b": {
+    "calls": [
+     "sys.ask_missing_info"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": true,
+    "no_call": false,
+    "q1_conf": 0.899
+   },
+   "calls_a": [
+    {
+     "name": "grocery.add_to_cart",
+     "arguments": {
+      "product_id": "gro_285",
+      "quantity": 2
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "sys.ask_missing_info",
+     "arguments": {
+      "tool_name": "grocery.add_to_cart",
+      "params": [
+       "product_id"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0628",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Nếu mà ở đây không mưa thì gọi lại số lạ hồi trưa giùm tôi, còn mưa thì gọi anh Mười nghe.",
+   "asr_b": "Nếu mai ở đây không mưa thì gọi lại số lạ hồi trưa giùm tôi, còn mưa thì gọi anh Mười nghe.",
+   "a": {
+    "calls": [
+     "weather.get_forecast",
+     "contacts.search",
+     "phone.call"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.838
+   },
+   "b": {
+    "calls": [
+     "weather.get_forecast",
+     "phone.call"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.875
+   },
+   "calls_a": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-08"
+     }
+    },
+    {
+     "name": "contacts.search",
+     "arguments": {
+      "query": "Mười"
+     }
+    },
+    {
+     "name": "phone.call",
+     "arguments": {
+      "contact_id": "c_3169"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-09"
+     }
+    },
+    {
+     "name": "phone.call",
+     "arguments": {
+      "phone_number": "09186042375"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0626",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Hai hoá đơn còn lại, bằng tự động thanh toán luôn, rồi ghi chú Ethan Ward là từ tháng sau trả tự động.",
+   "asr_b": "Hai hoá đơn còn lại, bạn tự động thanh toán luôn, rồi ghi thêm vô ghi chú Ethan Ward là từ tháng sau trả tự động.",
+   "a": {
+    "calls": [
+     "bill_payment.schedule_autopay",
+     "bill_payment.schedule_autopay",
+     "notes.create"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.896
+   },
+   "b": {
+    "calls": [
+     "bill_payment.schedule_autopay",
+     "bill_payment.schedule_autopay",
+     "notes.list",
+     "notes.append"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.892
+   },
+   "calls_a": [
+    {
+     "name": "bill_payment.schedule_autopay",
+     "arguments": {
+      "enabled": true,
+      "type": "electricity"
+     }
+    },
+    {
+     "name": "bill_payment.schedule_autopay",
+     "arguments": {
+      "enabled": true,
+      "type": "phone"
+     }
+    },
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "Từ tháng sau trả tự động",
+      "title": "Ethan Ward"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "bill_payment.schedule_autopay",
+     "arguments": {
+      "enabled": true,
+      "type": "electricity"
+     }
+    },
+    {
+     "name": "bill_payment.schedule_autopay",
+     "arguments": {
+      "enabled": true,
+      "type": "phone"
+     }
+    },
+    {
+     "name": "notes.list",
+     "arguments": {}
+    },
+    {
+     "name": "notes.append",
+     "arguments": {
+      "note_id": "note_517",
+      "content": "Từ tháng sau, hai hoá đơn điện và điện thoại sẽ tự động thanh toán"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0682",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Michael Chen có hai cuốn sách trên đó, em đặt cuốn rẻ hơn nha lên công ty cho chị nha.",
+   "asr_b": "Michael Chen có hai cuốn sách trên đó, em đặt cuốn rẻ hơn giao lên công ty cho chị nha.",
+   "a": {
+    "calls": [
+     "ecommerce.search",
+     "ecommerce.add_to_cart"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.763
+   },
+   "b": {
+    "calls": [
+     "ecommerce.search",
+     "ecommerce.add_to_cart",
+     "ecommerce.checkout"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.86
+   },
+   "calls_a": [
+    {
+     "name": "ecommerce.search",
+     "arguments": {
+      "query": "Michael Chen"
+     }
+    },
+    {
+     "name": "ecommerce.add_to_cart",
+     "arguments": {
+      "product_id": "prod_3318",
+      "quantity": 1
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "ecommerce.search",
+     "arguments": {
+      "query": "Michael Chen"
+     }
+    },
+    {
+     "name": "ecommerce.add_to_cart",
+     "arguments": {
+      "product_id": "prod_3318",
+      "quantity": 1
+     }
+    },
+    {
+     "name": "ecommerce.checkout",
+     "arguments": {
+      "address": "Tòa nhà Ngọc Viễn, 2 Hải Triều, Quận 1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0669",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Hôm ni chỗ mình mà mưa thì lưu công thức bên két chuối kiểu robot cà phê cho khách, không thì lưu canh chua cá lóc nghe.",
+   "asr_b": "Hôm ni chỗ mình mà mưa thì lưu công thức bên khách chú ý kiểu bluebird cafe chỗ khách, không thì lưu canh chua cá lóc nghe.",
+   "a": {
+    "calls": [
+     "weather.get_forecast",
+     "recipes.search",
+     "recipes.search",
+     "recipes.search"
+    ],
+    "n_calls": 4,
+    "empty_reads": 3,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.894
+   },
+   "b": {
+    "calls": [
+     "weather.get_forecast",
+     "recipes.search",
+     "recipes.save"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.897
+   },
+   "calls_a": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-22"
+     }
+    },
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cà phê muối"
+     }
+    },
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cà phê muối"
+     }
+    },
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "cà phê muối"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "weather.get_forecast",
+     "arguments": {
+      "date": "2026-11-22"
+     }
+    },
+    {
+     "name": "recipes.search",
+     "arguments": {
+      "query": "Bluebird Cafe"
+     }
+    },
+    {
+     "name": "recipes.save",
+     "arguments": {
+      "recipe_id": "rcp_5128"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0668",
+   "diff_kind": "tên riêng / từ nước ngoài",
+   "asr_a": "Tui ra Bluebird Café đón khách check-in đây, em bật chế độ ra khỏi nhà rồi đặt xe trong máy chờ tui qua đó nghe.",
+   "asr_b": "Tui ra Bluebird Café đón khách check-in đây, em bật chế độ ra khỏi nhà rồi đặt xe trong mấy giờ tối qua đó nghe.",
+   "a": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.scene_run",
+     "ride_hailing.book"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.817
+   },
+   "b": {
+    "calls": [
+     "smart_home.get_status",
+     "smart_home.scene_run",
+     "ride_hailing.get_ride"
+    ],
+    "n_calls": 3,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.552
+   },
+   "calls_a": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.scene_run",
+     "arguments": {
+      "scene_id": "scene_271"
+     }
+    },
+    {
+     "name": "ride_hailing.book",
+     "arguments": {
+      "vehicle": "car4",
+      "pickup": "Bluebird Café",
+      "dropoff": "Ga Huế",
+      "schedule_time": "2026-12-05T07:30:00+07:00"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.scene_run",
+     "arguments": {
+      "scene_id": "scene_271"
+     }
+    },
+    {
+     "name": "ride_hailing.get_ride",
+     "arguments": {}
+    }
+   ]
+  },
+  {
+   "id": "public_0181",
+   "diff_kind": "động từ hành động",
+   "asr_a": "Ờ được, lưu cái tỉ lệ đấy vào ghi chú cho anh, đặt thế là nước sốt chanh nhé.",
+   "asr_b": "Ờ được, lưu cái tỷ lệ đấy vào ghi chú cho anh, đặt thêm nước sốt chanh nhé.",
+   "a": {
+    "calls": [
+     "notes.create"
+    ],
+    "n_calls": 1,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.878
+   },
+   "b": {
+    "calls": [
+     "notes.create",
+     "shopping_list.add"
+    ],
+    "n_calls": 2,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.853
+   },
+   "calls_a": [
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "Sốt chanh cho salad dưa chuột: 2 thìa dầu ô liu, 1 thìa nước cốt chanh",
+      "title": "Tỉ lệ nước sốt chanh"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "notes.create",
+     "arguments": {
+      "content": "Tỷ lệ nước sốt chanh cho salad dưa chuột: 2 thìa dầu ô liu, 1 thìa nước cốt chanh",
+      "title": "Nước sốt chanh cho salad dưa chuột"
+     }
+    },
+    {
+     "name": "shopping_list.add",
+     "arguments": {
+      "name": "nước cốt chanh"
+     }
+    }
+   ]
+  },
+  {
+   "id": "public_0413",
+   "diff_kind": "giống",
+   "asr_a": "Lấy hai vé chín một giờ chiều, xong tắt nhạc tắt mấy cái đèn trên tầng hai đang sáng đi.",
+   "asr_b": "Lấy hai vé chín một giờ chiều. Xong tắt nhạc, tắt mấy cái đèn trên tầng hai đang sáng đi.",
+   "a": {
+    "calls": [
+     "train_bus_tickets.book",
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.light_set"
+    ],
+    "n_calls": 4,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.886
+   },
+   "b": {
+    "calls": [
+     "train_bus_tickets.book",
+     "music.control",
+     "smart_home.get_status",
+     "smart_home.light_set",
+     "smart_home.light_set"
+    ],
+    "n_calls": 5,
+    "empty_reads": 0,
+    "invalid": 0,
+    "ask": false,
+    "no_call": false,
+    "q1_conf": 0.883
+   },
+   "calls_a": [
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_875",
+      "seats": 2
+     }
+    },
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_office",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_bedroom",
+      "power": "off"
+     }
+    }
+   ],
+   "calls_b": [
+    {
+     "name": "train_bus_tickets.book",
+     "arguments": {
+      "trip_id": "trip_875",
+      "seats": 2
+     }
+    },
+    {
+     "name": "music.control",
+     "arguments": {
+      "action": "pause"
+     }
+    },
+    {
+     "name": "smart_home.get_status",
+     "arguments": {}
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_office",
+      "power": "off"
+     }
+    },
+    {
+     "name": "smart_home.light_set",
+     "arguments": {
+      "device_id": "light_bedroom",
+      "power": "off"
+     }
+    }
+   ]
+  }
+ ]
+}

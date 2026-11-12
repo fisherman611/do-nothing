@@ -1,0 +1,12 @@
+{
+ "counts": {
+  "examples": 12241,
+  "main": 11503,
+  "items": 4269,
+  "final_clean": 1792,
+  "final_noised": 2477,
+  "dup_id_examples": 18,
+  "newapps": 738
+ },
+ "issues": {}
+}

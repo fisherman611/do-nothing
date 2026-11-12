@@ -1,0 +1,140 @@
+{
+ "summary": {
+  "samples": 634,
+  "place_calls": 85,
+  "place_calls_empty": 7,
+  "proposed": 2,
+  "fixed_nonempty": 1,
+  "iata_precheck": 1
+ },
+ "rows": [
+  {
+   "id": "public_0187",
+   "kind": "empty",
+   "call": {
+    "name": "flights.search",
+    "arguments": {
+     "origin": "HAN",
+     "destination": "DAD",
+     "date": "2026-09-27"
+    }
+   },
+   "fixed": null,
+   "utter": "Đặt cho tôi một ghế chín giờ V21 đi Đà Nẵng thứ bảy tuần sau, rồi giữ luôn chỗ ở bãi khu A18 sân bay nội bài. Tính từ trước giờ bay hai tiếng, tôi gửi xe ba ngày."
+  },
+  {
+   "id": "public_0238",
+   "kind": "empty",
+   "call": {
+    "name": "train_bus_tickets.search",
+    "arguments": {
+     "origin": "Hà Nội",
+     "destination": "Nạng Sơn",
+     "date": "2026-09-26"
+    }
+   },
+   "fixed": {
+    "name": "train_bus_tickets.search",
+    "arguments": {
+     "origin": "Hà Nội",
+     "destination": "Lạng Sơn",
+     "date": "2026-09-26"
+    }
+   },
+   "utter": "Tối mai chị đi tàu đêm lên Nạng Sơn thăm mẹ, em đặt cho chị một vé tàu LTV2 nhé, rồi giữ giúp chị một chỗ ở 7B12 ngoài ga Hà Nội 8 rưỡi, tối mai chị gửi xe vang hàng.",
+   "fixed_nonempty": true
+  },
+  {
+   "id": "public_0252",
+   "kind": "iata_precheck",
+   "call": {
+    "name": "flights.search",
+    "arguments": {
+     "origin": "HAN",
+     "destination": "QHO",
+     "date": "2026-10-19"
+    }
+   },
+   "fixed": {
+    "name": "flights.search",
+    "arguments": {
+     "origin": "HAN",
+     "destination": "Quy Nhơn",
+     "date": "2026-10-19"
+    }
+   },
+   "fixed_nonempty": false,
+   "utter": "Đặt cho em hai vé chuyến RV253 đi Quy Nhơn, hôm một chín tháng mười ạ, rồi giữ luôn một chỗ ở bãi khu B05 sân bay Nội Bài từ sáu giờ sáng hôm đó, em cứ xem một tuần."
+  },
+  {
+   "id": "public_0287",
+   "kind": "empty",
+   "call": {
+    "name": "flights.search",
+    "arguments": {
+     "origin": "HAN",
+     "destination": "DAD",
+     "date": "2026-10-03"
+    }
+   },
+   "fixed": null,
+   "utter": "Đặt cho em một vé chuyến RV612 đi Đà Nẵng sáng thứ bảy tuần sau nha, gọi luôn cái xe bốn chỗ bốn giờ sáng hôm đó đón em ra sân bay Hà Nội, với tạo lịch trình công tác lúc sáu giờ sáng hôm đó nữa."
+  },
+  {
+   "id": "public_0331",
+   "kind": "empty",
+   "call": {
+    "name": "train_bus_tickets.search",
+    "arguments": {
+     "origin": "Hà Nội",
+     "destination": "Huế",
+     "date": "2026-10-12"
+    }
+   },
+   "fixed": null,
+   "utter": "Thứ bảy tuần sau chị đưa tàu bên từ Hà Nội vô Huế. Em xem chuyến tàu nào tới Huế, trước mười một giờ trưa của Nhật bật thì đặt cho chị hai vé, rồi tạo lịch đúng giờ tàu tới luôn nha."
+  },
+  {
+   "id": "public_0199",
+   "kind": "empty",
+   "call": {
+    "name": "train_bus_tickets.search",
+    "arguments": {
+     "origin": "Hà Nội",
+     "destination": "SJC",
+     "date": "2026-09-30"
+    }
+   },
+   "fixed": null,
+   "utter": "Thứ tư tuần sau anh vào bên compact, em đặt xe anh một vé tàu SJC sáng nhé, rồi giữ luôn một chỗ gửi xe ở bãi ga Hà Nội từ năm giờ sáng hôm đó, anh gửi ba ngày."
+  },
+  {
+   "id": "public_0440",
+   "kind": "empty",
+   "call": {
+    "name": "train_bus_tickets.search",
+    "arguments": {
+     "origin": "Hà Nội",
+     "destination": "Hà Nội",
+     "date": "2026-10-16"
+    }
+   },
+   "fixed": null,
+   "utter": "Hơn nửa tiếng cơ à. Thế vé tàu tối nay với vé chủ nhật chạy mấy giờ, tôi căng giờ đi."
+  },
+  {
+   "id": "public_0440",
+   "kind": "empty",
+   "call": {
+    "name": "train_bus_tickets.search",
+    "arguments": {
+     "origin": "Hà Nội",
+     "destination": "Hà Nội",
+     "date": "2026-10-18"
+    }
+   },
+   "fixed": null,
+   "utter": "Hơn nửa tiếng cơ à. Thế vé tàu tối nay với vé chủ nhật chạy mấy giờ, tôi căng giờ đi."
+  }
+ ]
+}

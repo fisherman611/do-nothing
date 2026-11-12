@@ -117,6 +117,14 @@ def main():
         print("held_out_apps: KHÔNG loại (train có val_ood → 5 app held-out vào train; chỉ còn val_in để kiểm)")
     rows = [json.loads(l) for l in open(f"{a.data}/train/train.jsonl", encoding="utf-8")]
     rows = [r for r in rows if r["id"] in keep][: a.limit]
+    # Kiểm toán nhãn 11/11 (NOTES §1o): gold có call KHÔNG thành công (vd train_1696 gửi tới chat_id không tồn tại) → bỏ cả mẫu
+    # (kèm bản alias/phonetic/iface và mẫu phụ history của nó, vì các bản đó tra theo id gốc).
+    def _failed(res):
+        return not isinstance(res, dict) or res.get("ok") is False or res.get("done") is False or "error" in res
+    bad_gold = [r["id"] for r in rows if any(_failed(x) for x in r["label"].get("tool_results") or [])]
+    if bad_gold:
+        print(f"bỏ {len(bad_gold)} mẫu có call gold không thành công: {bad_gold}")
+        rows = [r for r in rows if r["id"] not in set(bad_gold)]
     rng = random.Random(a.shuffle_seed) if a.shuffle_seed >= 0 else None
     noise = None
     if a.asr_errors:

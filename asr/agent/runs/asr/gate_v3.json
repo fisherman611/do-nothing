@@ -1,0 +1,38 @@
+{
+ "heldout": {
+  "e46f": {
+   "tất cả": 0.0577,
+   "final": 0.0647,
+   "vùng Nam": 0.0501,
+   "vùng Bắc": 0.0555,
+   "history": 0.0513,
+   "vùng Trung": 0.0696,
+   "câu đúng hết": 246,
+   "câu sai giá trị số": 9,
+   "thực thể sai": 12,
+   "thực thể": 148,
+   "n": 405
+  },
+  "ASR v3": {
+   "tất cả": 0.0696,
+   "final": 0.0736,
+   "vùng Nam": 0.0588,
+   "vùng Bắc": 0.0659,
+   "history": 0.066,
+   "vùng Trung": 0.0876,
+   "câu đúng hết": 235,
+   "câu sai giá trị số": 12,
+   "thực thể sai": 19,
+   "thực thể": 148,
+   "n": 405
+  }
+ },
+ "tts": {},
+ "gate": {
+  "câu cuối không tệ hơn": false,
+  "lỗi số không nhiều hơn": false,
+  "thực thể sai ít hơn": false,
+  "WER Trung/Nam giảm": false,
+  "Bắc không tăng quá 0,3 điểm": false
+ }
+}

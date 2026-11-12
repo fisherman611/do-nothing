@@ -10,8 +10,12 @@ ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1 TOKENIZERS_PARALLELISM=fal
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libsndfile1 curl \
     && rm -rf /var/lib/apt/lists/*
 
-# FC + bộ lọc chạy bằng Python của image (vLLM, transformers mới)
-RUN pip install --no-cache-dir sentence-transformers soundfile huggingface_hub
+# FC + bộ lọc chạy bằng Python của image (vLLM, transformers mới). pyvi: bộ lọc app (PhoBERT) cần tách từ, thiếu thì
+# filter.py lặng lẽ bỏ tách từ → điểm embedding khác lúc đo (review/01 §3.2); kiểm ngay lúc build.
+RUN pip install --no-cache-dir sentence-transformers soundfile huggingface_hub pyvi==0.1.1 \
+    && python3 -c "from pyvi import ViTokenizer; assert ViTokenizer.tokenize('bật đèn phòng khách')"
+# ghi đường dẫn Python của image (có vllm/transformers) — nền tảng như Modal chèn thêm Python riêng lên PATH nên `python3` trần có thể là cái khác
+RUN readlink -f "$(which python3)" > /etc/fc_python
 
 # ASR chạy trong venv riêng: PhoWhisper + prompt_ids cần transformers 4.57.1 (như lúc train/đo)
 RUN python3 -m venv /opt/asr \

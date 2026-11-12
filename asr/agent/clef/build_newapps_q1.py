@@ -74,10 +74,18 @@ def main():
         open(f"{a.data}/train/train_tools_catalog.json", encoding="utf-8"))["apps"]}
     na = json.load(open(os.path.join(ROOT, "synth/newapps/newapps_catalog.json"), encoding="utf-8"))["apps"]
     na_tools = {x["id"]: [t for t in x["tools"]] for x in na}
+    # Kiểm toán nhãn 11/11 (NOTES §1o): tool gold có tham số BẮT BUỘC kiểu id (pet_id, book_id, device_id, file_id…) thì theo quy
+    # ước của data chính thức bước đầu phải là tool đọc lấy id, không phải tool đó → nhãn Q1 "gọi thẳng" là sai. newapps không
+    # ghi tool nào cấp id nên không gán lại được → BỎ các câu này (cả train lẫn val/test của M3b).
+    need_id = {t["name"] for x in na for t in x["tools"]
+               if any(k.endswith("_id") or k == "id" for k in t.get("parameters", {}).get("required", []))}
     import apps_a, apps_b, apps_c, apps_d
     app_split = {x["id"]: x["split"] for x in apps_a.APPS + apps_b.APPS + apps_c.APPS + apps_d.APPS}
     rows = [json.loads(l) for l in open(os.path.join(ROOT, "synth/newapps/newapps_utts.jsonl"), encoding="utf-8")]
     rows = [r for r in rows if r["split"] == a.split and r["kind"] in ("single", "neg")][: a.limit]
+    n_all = len(rows)
+    rows = [r for r in rows if r["gold_tools"][0] not in need_id]
+    print(f"bỏ {n_all - len(rows)}/{n_all} câu có tool gold cần id (nhãn Q1 không chắc)")
     donors = [json.loads(l) for l in open(f"{a.data}/train/train.jsonl", encoding="utf-8")]
     rng = random.Random(a.seed)
     pack = None

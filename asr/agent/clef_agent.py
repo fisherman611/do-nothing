@@ -22,6 +22,7 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from agent.clef import fmt as F                 # noqa: E402
 from agent.clef.core import run_step            # noqa: E402
+from agent import geo_fix as G                  # noqa: E402
 
 A = F.A
 TOKENIZER = ("Qwen/Qwen3.5-4B", "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a")
@@ -33,25 +34,64 @@ class ContextFull(Exception):
     pass
 
 
-def request_json(url, key, model, prompt, max_tokens, retries=8, **extra):
-    """POST /v1/completions → JSON đầy đủ (choices[0].text, .logprobs, usage)."""
+class BudgetExceeded(Exception):
+    """D0: hết ngân sách thời gian của mẫu giữa một bước → dừng, nộp các call đã có (không phải lỗi)."""
+
+
+def request_json(url, key, model, prompt, max_tokens, retries=8, deadline=None, **extra):
+    """POST /v1/completions → JSON đầy đủ (choices[0].text, .logprobs, usage).
+    `deadline` (time.time() tuyệt đối, D0/§1v): mỗi request chỉ được chờ tới hạn đó; quá hạn → BudgetExceeded thay vì chờ
+    tới 600 s × 8 lần (review/01 §3.4: vLLM treo thì một mẫu có thể chờ nhiều phút, vượt xa 30 s)."""
     body = {"model": model, "prompt": prompt, "max_tokens": max_tokens, "temperature": 0, "seed": 0, **extra}
     data = json.dumps(body).encode()
     for k in range(retries):
+        timeout = 600.0
+        if deadline is not None:
+            timeout = deadline - time.time()
+            if timeout < 0.5:
+                raise BudgetExceeded(f"còn {timeout:.1f}s")
         try:
             req = urllib.request.Request(url.rstrip("/") + "/v1/completions", data=data,
                                          headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
-            with urllib.request.urlopen(req, timeout=600) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 return json.loads(r.read())
         except Exception:
-            if k == retries - 1:
+            if k == retries - 1 or (deadline is not None and time.time() + 1 >= deadline):
+                if deadline is not None and time.time() + 1 >= deadline:
+                    raise BudgetExceeded("hết hạn khi chờ server")
                 raise
-            time.sleep(min(5 * (k + 1), 30))      # mạng chập chờn: 8 lần, chờ tối đa 30 s/lần (~2.5 phút tổng)
+            time.sleep(min(5 * (k + 1), 30, max(0.0, (deadline - time.time()) / 2) if deadline else 30))   # mạng chập chờn: tối đa 30 s/lần
 
 
 def request(url, key, model, prompt, max_tokens, retries=8, **extra):
     d = request_json(url, key, model, prompt, max_tokens, retries, **extra)
     return d["choices"][0]["text"], d.get("usage", {})
+
+
+def reverse_q1(text, labels):
+    """PriDe (review/02 §3.C, NOTES §1x): dựng lại khối Q1 ở cuối `text` với thứ tự phương án ĐẢO NGƯỢC trên cùng dãy nhãn.
+    Trả (text mới, perm) với perm[i] = chỉ số trong `labels` (thứ tự gốc) của phương án đang đứng ở nhãn labels[i];
+    None nếu không nhận ra khối Q1 (vd chế độ names)."""
+    k = text.rfind("[Q1]")
+    if k < 0:
+        return None
+    head, block = text[:k], text[k:]
+    lines = block.split("\n")
+    idx = [i for i, l in enumerate(lines) if any(l.startswith(f"{lab}) ") for lab in labels[:1])]
+    if not idx:
+        return None
+    start = idx[0]
+    opt = []
+    for j, lab in enumerate(labels):
+        i = start + j
+        if i >= len(lines) or not lines[i].startswith(f"{lab}) "):
+            return None
+        opt.append(lines[i][len(lab) + 2:])
+    rev = opt[::-1]
+    for j, lab in enumerate(labels):
+        lines[start + j] = f"{lab}) {rev[j]}"
+    perm = [len(labels) - 1 - j for j in range(len(labels))]
+    return head + "\n".join(lines), perm
 
 
 def label_probs(d, token_ids):
@@ -86,7 +126,7 @@ class VLLMOracle:
         self.want_lp = bool(getattr(args, "log_probs", False) or getattr(args, "ask_tau", None) is not None)
 
     def _req_json(self, text, max_tokens, **extra):
-        d = request_json(self.a.url, self.a.key, self.a.model_name, text, max_tokens, **extra)
+        d = request_json(self.a.url, self.a.key, self.a.model_name, text, max_tokens, deadline=getattr(self, "deadline", None), **extra)
         self.n_req += 1
         self.prompt_tokens += (d.get("usage") or {}).get("prompt_tokens") or 0
         return d
@@ -116,6 +156,21 @@ class VLLMOracle:
             lab = labels[0]
         p = label_probs(d, ids) if self.want_lp else None
         override = None
+        debias = None
+        # PriDe: hỏi lại Q1 với thứ tự phương án đảo ngược, lấy trung bình xác suất theo PHƯƠNG ÁN (không theo nhãn) → bớt lệch vị trí
+        if p is not None and kind == "q1" and getattr(self.a, "q1_debias", False) and len(ids) <= 64:
+            rv = reverse_q1(text, labels)
+            if rv is not None:
+                d2 = self._req_json(rv[0], 1, allowed_token_ids=ids, **extra)
+                p2 = label_probs(d2, ids)
+                if p2 is not None:
+                    q = [0.0] * len(labels)
+                    for i, j in enumerate(rv[1]):        # nhãn i ở bản đảo mang phương án gốc j
+                        q[j] = p2[i]
+                    avg = [(a + b) / 2 for a, b in zip(p, q)]
+                    lab2 = labels[max(range(len(labels)), key=lambda i: avg[i])]
+                    debias = {"before": info.get(lab), "after": info.get(lab2)}
+                    p, lab = avg, lab2
         # §3.1 ngưỡng hỏi lại: ở Q1, nếu P(sys.ask_missing_info) > τ₁ và tool argmax là tool GHI → hỏi lại
         if p is not None and kind == "q1" and self.a.ask_tau is not None:
             ask = [l for l in labels if info.get(l) == F.ASK]
@@ -129,7 +184,8 @@ class VLLMOracle:
                             else l))
             self.plog.append({"kind": kind, "choice": name(lab), "conf": round(confidence(p), 4),
                               "p": {str(name(l)): round(x, 4) for l, x in sorted(zip(labels, p), key=lambda t: -t[1])[:8]},
-                              **({"override": override} if override else {})})
+                              **({"override": override} if override else {}),
+                              **({"debias": debias} if debias and debias["before"] != debias["after"] else {})})
         return lab
 
     def kind_of(self, tool):
@@ -201,6 +257,25 @@ def build_deps(catalog):
     return deps
 
 
+def prev_turn_reads(item, catalog):
+    """G1 / I5b: tool đọc trả danh sách KHÔNG rỗng ở lượt assistant gần nhất có gọi tool của history, kèm các tool đã gọi SAU nó
+    trong chính lượt đó. Trả ([tên tool đọc], {tên tool đọc: {tool gọi sau}})."""
+    for t in reversed(item.get("history") or []):
+        if t["role"] != "assistant" or not t.get("tool_calls"):
+            continue
+        calls, results = t["tool_calls"], t.get("tool_results") or []
+        reads, after = [], {}
+        for i, (c, res) in enumerate(zip(calls, results)):
+            if (catalog.get(c["name"]) or {}).get("kind") != "read" or not isinstance(res, dict) or not res.get("ok"):
+                continue
+            lists = [v for v in res.values() if isinstance(v, list)]
+            if lists and any(lists):
+                reads.append(c["name"])
+                after[c["name"]] = {x["name"] for x in calls[i + 1:]}
+        return reads, after
+    return [], {}
+
+
 def q1_probe(prefix, tools, labels, o, tok, hint, kind):
     """Hỏi riêng bước Q1 (không chạy Q2): trả (tên phương án chọn, bản ghi xác suất). Không đưa vào `decisions`."""
     q1, m = F.q1_block(tools, labels, None, F.n_tokens(tok, prefix) > F.SHORT_Q1_AT, hint)
@@ -211,7 +286,7 @@ def q1_probe(prefix, tools, labels, o, tok, hint, kind):
     return m[lab], e
 
 
-def relax_empty(call, res, catalog):
+def relax_empty(call, res, catalog, star=False):
     """N1 (PLAN_v3_improve): tool đọc trả danh sách rỗng → call mới bỏ các tham số chữ TUỲ CHỌN (thường là truy vấn bị
     ASR nghe sai, vd event_tickets.search{query}). Không áp dụng cho contacts, tham số id/enum. None nếu không nới được."""
     spec = catalog.get(call["name"]) or {}
@@ -222,22 +297,33 @@ def relax_empty(call, res, catalog):
     req = set(spec.get("parameters", {}).get("required", []))
     drop = [k for k, v in call["arguments"].items() if k not in req and isinstance(v, str)
             and P.get(k, {}).get("type") == "string" and "enum" not in P.get(k, {}) and not k.endswith("id")]
-    if not drop:
-        return None
-    return {"name": call["name"], "arguments": {k: v for k, v in call["arguments"].items() if k not in drop}}
+    if drop:
+        return {"name": call["name"], "arguments": {k: v for k, v in call["arguments"].items() if k not in drop}}
+    # N1b (12/11, NOTES §1v): `query` BẮT BUỘC (grocery/recipes/ecommerce.search) → không bỏ được; zaic_tools nhận "*" là liệt kê
+    # toàn bộ (match_items coi "*" như không lọc) → tìm lại với "*" để model chọn trong danh sách ngắn, như N1 với event_tickets.
+    if star and "query" in req and isinstance(call["arguments"].get("query"), str) and call["arguments"]["query"].strip() not in ("", "*") \
+            and P.get("query", {}).get("type") == "string" and "enum" not in P.get("query", {}):
+        return {"name": call["name"], "arguments": {**call["arguments"], "query": "*"}}
+    return None
 
 
 def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
     t0 = time.time()
     env = ToolEnv(args.split, item["id"], root=args.data)       # ToolEnv duy nhất của mẫu
     msgs = F.build_messages(item, asr)
+    utter = next((m["content"] for m in reversed(msgs) if m["role"] == "user"), "")      # câu cuối (bản ASR) cho C3
     tools = A.tool_specs(item, catalog)
     seen = [(c["name"], r) for t in item["history"] if t["role"] == "assistant"
             for c, r in zip(t.get("tool_calls") or [], t.get("tool_results") or [])]
     o = VLLMOracle(args, tok, labels)
     o.catalog = catalog
+    if args.time_budget:      # D0: hạn tuyệt đối cho mọi request của mẫu = ngân sách − ASR đã dùng − lề
+        o.deadline = t0 + args.time_budget - ASR_SECS.get(item["id"], 0.0) - args.budget_margin
     n_invalid, sigs, err, steps = 0, {}, None, 0
     retried, n_retry, n_n8, n_n8_switch, n_i5, i5_used, timed_out = set(), 0, 0, 0, 0, False, False
+    c3_done, n_c3, tried_args = set(), 0, []
+    n_i5b, n_i5b_probe = 0, 0
+    prev_reads, prev_after = prev_turn_reads(item, catalog) if getattr(args, "i5b", None) is not None else ([], {})
     request = (asr.get(item["id"]) if asr is not None else item.get("audio_text", "")) or ""
     done = []
     tier1 = None
@@ -280,9 +366,27 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
                         n_i5 += 1
                         o.force_q1 = name3
                         r = run_step(prefix, tools, catalog, seen, labels, o, tok, hint=hint)
+            if r["stop"] and args.i5b is not None and not i5_used and not done and prev_reads:
+                # G1 / I5b: DỪNG ngay bước đầu, trong khi lượt assistant gần nhất có tool đọc trả danh sách mà tool ghi cần id
+                # từ nó chưa gọi ("lấy cái thứ hai đi") → Q1 thu hẹp {các tool ghi đó, hỏi lại, DỪNG}; P(tool ghi) ≥ τ thì làm tiếp
+                inst = {t["function"]["name"] for t in tools}
+                cons = sorted({d for rd in prev_reads for d in DEPS.get(rd, ()) if d in inst and d not in prev_after[rd]})
+                if cons:
+                    tools_r = [t for t in tools if t["function"]["name"] in cons]
+                    name3, e3 = q1_probe(prefix, tools_r, labels, o, tok, hint, "q1_i5b")
+                    n_i5b_probe += 1
+                    if name3 in cons and e3["p"].get(name3, 0) >= args.i5b:
+                        i5_used = True
+                        n_i5b += 1
+                        o.force_q1 = name3
+                        r = run_step(prefix, tools, catalog, seen, labels, o, tok, hint=hint)
             if r["stop"]:
                 break
             call = {"name": r["name"], "arguments": r["args"]}
+            if args.c3:                                        # C3: mã IATA bịa → tên nơi nói trong câu, trước khi gọi
+                pre = G.precheck_iata(call, item, utter)
+                if pre is not None:
+                    call, n_c3 = pre, n_c3 + 1
             v = env.validate(call["name"], call["arguments"])
             if not v["ok"]:                                    # không chạy, không ghi vào tool_calls
                 n_invalid += 1
@@ -294,24 +398,38 @@ def run_one(item, args, tok, labels, catalog, ToolEnv, asr):
             done.append(call["name"])
             F.append_step(msgs, call, res)
             seen.append((call["name"], res))
+            last_call, last_res = call, res
             if args.retry_empty and call["name"] not in retried:          # N1: tìm rỗng → tìm lại không kèm chữ tuỳ chọn
-                call2 = relax_empty(call, res, catalog)
+                call2 = relax_empty(call, res, catalog, star=args.retry_star)
                 if call2 is not None and env.validate(call2["name"], call2["arguments"])["ok"]:
                     retried.add(call["name"])
                     res2 = env.call(call2["name"], call2["arguments"])
                     F.append_step(msgs, call2, res2)
                     seen.append((call2["name"], res2))
                     n_retry += 1
+                    last_call, last_res = call2, res2
+            if args.c3 and call["name"] in G.PLACE_TOOLS and call["name"] not in c3_done:   # C3: tìm rỗng vì địa danh nghe sai → sửa tên rồi tìm lại
+                tried_args.append(call["arguments"])
+                call3 = G.fix_empty(last_call, last_res, item, utter, catalog, tried=tried_args)
+                if call3 is not None and env.validate(call3["name"], call3["arguments"])["ok"]:
+                    c3_done.add(call["name"])
+                    res3 = env.call(call3["name"], call3["arguments"])
+                    F.append_step(msgs, call3, res3)
+                    seen.append((call3["name"], res3))
+                    tried_args.append(call3["arguments"])
+                    n_c3 += 1
             sig = A._dump(call)
             sigs[sig] = sigs.get(sig, 0) + 1
             if call["name"] == F.ASK or sigs[sig] >= 3:
                 break
     except ContextFull as e:
         err = f"context_limit:{e}"
+    except BudgetExceeded:
+        timed_out = True                          # D0: hết giờ giữa bước → giữ các call đã chạy, không tính là lỗi
     except Exception as e:
         err = f"{type(e).__name__}: {e}"
     return {"id": item["id"], "style": F.STYLE.get("name", "v1"), "fmt": F.fmt_opts(), "tool_calls": env.get_tool_calls(), "state_hash": env.get_state_hash(),
-            "steps": steps, "n_invalid": n_invalid, "n_retry": n_retry, "n_n8": n_n8, "n_n8_switch": n_n8_switch, "n_i5": n_i5, "timed_out": timed_out, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
+            "steps": steps, "n_invalid": n_invalid, "n_retry": n_retry, "n_c3": n_c3, "n_n8": n_n8, "n_n8_switch": n_n8_switch, "n_i5": n_i5, "n_i5b": n_i5b, "n_i5b_probe": n_i5b_probe, "n_debias_switch": sum(1 for e in o.plog if e.get("debias")), "timed_out": timed_out, "decisions": o.log, **({"probs": o.plog} if o.plog else {}), "n_requests": o.n_req,
             "prompt_tokens_sum": o.prompt_tokens, "anomaly": o.anomaly,
             "latency": round(time.time() - t0, 2), "error": err}
 
@@ -328,10 +446,14 @@ def main():
     ap.add_argument("--log-probs", action="store_true", help="lấy xác suất nhãn mỗi lựa chọn (server cần --max-logprobs 64 --logprobs-mode processed_logprobs), ghi vào trường probs")
     ap.add_argument("--n8-tau", type=float, help="N8: Q1 có conf < τ (vd 0.7) và đang dùng catalog hai tầng → hỏi lại với catalog đầy đủ; hai lần lệch thì theo lần có xác suất cao hơn. Tự bật --log-probs")
     ap.add_argument("--i5", type=float, help="I5: model chọn DỪNG ngay sau tool đọc có kết quả mà tool ghi dùng id của nó chưa gọi → hỏi lại Q1 thu hẹp; nếu xác suất tool ghi ≥ ngưỡng (vd 0.5) thì làm tiếp. Tự bật --log-probs")
+    ap.add_argument("--i5b", type=float, help="G1/I5b: model DỪNG ngay bước đầu trong khi lượt trước có tool đọc trả danh sách và tool ghi cần id từ nó chưa gọi → hỏi lại Q1 thu hẹp; xác suất tool ghi ≥ ngưỡng thì làm tiếp. Tự bật --log-probs")
     ap.add_argument("--time-budget", type=float, help="D1: giây tối đa cho mỗi mẫu (vd 30); hết thì dừng và nộp các call đã có. Tính cả giây ASR nếu có --asr-secs")
     ap.add_argument("--budget-margin", type=float, default=2.0, help="chừa cho request đang bay + ghi kết quả (giây)")
     ap.add_argument("--asr-secs", help="JSON {id mẫu: giây ASR} (docker/asr_stage.py ghi)")
     ap.add_argument("--retry-empty", action="store_true", help="N1: tool đọc trả rỗng → tìm lại một lần, bỏ tham số chữ tuỳ chọn")
+    ap.add_argument("--retry-star", action="store_true", help="N1b (cần --retry-empty): tool đọc có `query` BẮT BUỘC trả rỗng → tìm lại với query=\"*\" (zaic_tools liệt kê toàn bộ). Tách cờ để --retry-empty một mình tái lập đúng bản 62.76")
+    ap.add_argument("--c3", action="store_true", help="C3/N4: tool đọc có tham số nơi chốn trả rỗng → sửa địa danh theo âm (agent/geo_fix.py) rồi tìm lại một lần; mã IATA bịa sửa trước khi gọi")
+    ap.add_argument("--q1-debias", action="store_true", help="PriDe: hỏi Q1 hai lần (thứ tự phương án gốc và đảo ngược), lấy trung bình xác suất theo phương án. Tự bật --log-probs; +1 request mỗi bước")
     ap.add_argument("--ask-tau", type=float, help="Q1: hỏi lại nếu P(sys.ask_missing_info) > τ và tool argmax là tool ghi (PLAN_generalize_tools §3.1; τ = 0.2). Tự bật --log-probs")
     ap.add_argument("--asr-timings", help="JSON {id: giây ASR} cộng vào elapsed_seconds của <out>.timings.jsonl")
     ap.add_argument("--ids", help="file id, mỗi dòng một id")
@@ -348,7 +470,7 @@ def main():
     ap.add_argument("--fmt-from", help="config.json của run train hoặc <data>.meta.json: lấy style/q2/q1_desc từ đó, "
                     "ghi đè 3 cờ trên (tránh lệch format train / suy luận)")
     args = ap.parse_args()
-    if args.n8_tau is not None or args.i5 is not None:
+    if args.n8_tau is not None or args.i5 is not None or args.i5b is not None or args.q1_debias:
         args.log_probs = True
     if args.fmt_from:
         m = json.load(open(args.fmt_from, encoding="utf-8"))

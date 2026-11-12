@@ -41,8 +41,10 @@ def run(limit: int = 20, split: str = "public_test", workers: int = 16, agent_fl
     res["asr"] = json.loads(load("/work/asr.json") or "{}")
     res["gpu_mem_csv"] = load("/work/gpu_mem.csv")
     res["vllm_log_tail"] = (load("/work/vllm.log") or "")[-2500:]
-    if os.path.exists("/out/submission.jsonl"):
-        res["submission_lines"] = len(open("/out/submission.jsonl", encoding="utf-8").read().splitlines())
+    for name in ("submission.jsonl", "submission_smoke.jsonl"):
+        if os.path.exists(f"/out/{name}"):
+            res[name] = open(f"/out/{name}", encoding="utf-8").read()
+            res["submission_lines"] = len(res[name].splitlines())
     return res
 
 
