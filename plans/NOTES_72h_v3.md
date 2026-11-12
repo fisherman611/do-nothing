@@ -532,3 +532,23 @@ Kết luận: (1) **train và public cùng một kiểu kênh**: nhiễu nền g
 **Vì sao data hôm nay "chưa chuẩn":** (1) ElevenLabs Flash v2.5 giọng miền Trung: e46f nghe sai 17–20% (người Trung thật: 7%) → giọng tổng hợp lơ lớ, không phải phương ngữ thật; (2) miền Nam Flash 13–14% cũng gấp 2,5× người Nam thật; (3) chưa có cổng kiểm từng nguồn TTS trước khi cho vào train; (4) B4b đổi 3 thứ cùng lúc (data, head CTC mới, aug_v3) nên không tách được nguyên nhân. Chủ repo: **không đẩy data sáng nay lên HF.**
 **Kế hoạch:** B7 (ASR v4) và A6 (FC) trong PLAN §3 — cốt lõi: **đối chứng công thức trước**, **cổng WER từng nguồn TTS** (≤ 1,5× audio thật cùng vùng), thử `eleven_v4`/`v4_turbo` cho giọng vùng, TTS ≤ 25% lượt, bỏ/warm-up head CTC khi train tiếp từ e46f; FC: dựng lại bảng nhiễu A4 loại giọng Trung ElevenLabs. Ưu tiên vẫn là FC (A2/A4) → B7 chỉ khi còn ≥ 1 ngày.
 **D4 — đẩy data FC lên HF (12/11 tối, từ myserver):** `fisherman611/fc-8099` `ffabd9a7…` (fmtA_v3, fmtA_a4, newapps_q1 + meta/report; meta đã thay đường dẫn scratchpad bằng `agent/clef/app_filter/pack_b`); `fisherman611/x-8eb9` `c9b6fb29…` (b0.base_medium.asr.json). Cả hai public, đã kiểm không có key/đường dẫn tạm. **Data ASR v3 không đẩy** (chưa chuẩn, theo chủ repo).
+
+## 1z9. Phân tích lỗi e46f trên 405 held-out + câu hỏi "e46f chưa converge, train tiếp?" (12/11 tối)
+
+**Nguồn:** `asr/agent/runs/asr/nbest_e46f/nbest_B.json` (phần `heldout`, beam 5, lấy bản 1); script `asr/agent/asr_errors_e46f.py`; báo cáo đầy đủ + phụ lục 71 câu: `asr/agent/runs/asr/REPORT_e46f_heldout_errors.md`. Chuẩn hoá local không đổi số → chữ (thiếu `vi_num`) nên WER 6,75% so với 5,77% của `gate_v3.json`; cấu trúc lỗi không đổi.
+
+**Số liệu:** câu cuối 7,80% (123) / lịch sử 5,80% (282); Bắc 6,77 / Nam 5,66 / **Trung 7,97**. 218/405 đúng hết; 187 sai: 99 sai 1 từ, 49 sai 2, 39 sai ≥ 3. **Câu cuối: 44 đúng, 8 chỉ khác dạng viết/từ đệm, 71 sai thật (58%)** → đúng chỗ M2 tụt 76,5 → 63,5.
+
+**Loại lỗi (257 cụm):** từ thường nghe nhầm 63,5% (`tạm dừng → tập trường`, `vặn → đặt`, `pháp chế → khách chị`); số 9,2% nhưng gần hết là dạng viết `9 ↔ chín`, **sai giá trị thật ≈ 0**; tên Latin/từ nước ngoài 8,9% (`Brightpath → Bia Pratt`, `Ryan Cooper → ra hàng khách với`, `Mọt Sách → họp khách`, `Nhã Văn → Chảo Phan`); mất từ 8,2% (phương ngữ Trung `rứa con`, `chi`, `nghe con`); thừa từ 5% (`train_1009` bịa cả câu đầu — nghi ảo giác từ prompt); từ đệm 5% (vô hại).
+
+**Beam 2–5 bù:** 66/187 câu sai có bản đúng hẳn, 108/187 có bản tốt hơn; **câu cuối 15/71 đúng hẳn, 37/71 tốt hơn** (khớp B6 bước 1: 55 câu / câu cuối 17/74 với chuẩn hoá khác).
+
+**Kết luận:** (1) lỗi đắt nhất là **thực thể tên riêng ở câu cuối** → tìm rỗng → chuỗi chết, N1/N1b không cứu (khớp §1s); (2) số không còn gì để sửa; (3) 63% "từ thường" không có cấu trúc → chỉ sửa bằng audio thật thêm, mà không có; (4) dư địa còn lại là **FC chịu lỗi 1–2 từ** (A2) và **FC thấy beam 5** (A4 (5)).
+
+**"e46f chưa converge, train tiếp được không?" — Không, với căn cứ:**
+- e46f dùng công thức `PLAN_PhoWhisper_finetune.md`: LoRA r32/α64, LR 3e-4, **tối đa 6 epoch, early stop patience 2**, giữ best. Log từng epoch của e46f đã mất (§1z7), nhưng cấu hình chị em `c3d9` (cùng data, cùng loss, chỉ thiếu prompt) **chạy đủ 6 epoch, eval phẳng từ epoch 3**; full fine-tune bị bỏ vì "loss đã bão hoà, capacity không phải nút thắt".
+- Nút thắt là **4 631 câu thật** (6,8 h), không phải số epoch. Thêm epoch trên cùng data chỉ học thuộc (Qwen 0.6B 6 epoch: 13,2 → 16,3, §1n).
+- Train tiếp đã thử 2 lần với data thêm: L2 (+2 epoch v2.1) → public 62.60 < 62.76; B4b (+1 epoch v3) → WER xấu đi 1,2 điểm. Cả hai đổi nhiều thứ cùng lúc nên không kết luận được "train tiếp trên data v1 với LR thấp" có hại hay không — đó là **B8**.
+- **B8 (tuỳ chọn, $0):** e46f + chính data v1, không head CTC mới, không aug_v3, LR 2e-5, 2 epoch, patience 1, cổng `asr_gate_v3.py`. Kỳ vọng ≈ 0 điểm; giá trị là đóng dứt điểm câu hỏi và tách nguyên nhân B4b (data hay công thức). Chỉ chạy trên GPU miễn phí (Cheaha A100 / Kaggle) và **không chen A2**.
+
+**Hạ tầng mới (12/11 tối):** vào được **Cheaha** (UAB) qua tunnel Cloudflare (`ssh cheaha-cf`, job Slurm `cf-tunne` giữ tunnel trên node CPU `c0154`, 12 h); SSH thẳng `cheaha.rc.uab.edu:22` bị timeout. A100: partition `amperenodes` (2 GPU/node, 12 h) và `amperenodes-medium` (2 ngày); lúc kiểm có 1 node idle, 18 node mix. Cách xin: `sbatch -p amperenodes --gres=gpu:1 --cpus-per-task=8 --mem=64G -t 12:00:00 job.sh`. Dùng cho A2/A4/B8 thay Modal; cần đưa data `fmtA_v3` và model gốc `qwen35_4b_text` lên đó trước. Lịch mới ở PLAN §4b.
