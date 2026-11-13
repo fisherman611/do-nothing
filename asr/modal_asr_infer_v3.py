@@ -31,6 +31,7 @@ def transcribe(items: list, model_id: str, num_beams: int = 5, use_prompt: bool 
     import collections, time
     import soundfile as sf, torch
     from transformers import WhisperForConditionalGeneration, WhisperProcessor
+    out_vol.reload()        # thấy model vừa commit từ app khác (soup) khi container còn ấm
     proc = WhisperProcessor.from_pretrained(model_id)
     model = WhisperForConditionalGeneration.from_pretrained(model_id, torch_dtype=torch.float16).to("cuda").eval()
     sot, tok = model.config.decoder_start_token_id, proc.tokenizer

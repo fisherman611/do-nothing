@@ -1,0 +1,2040 @@
+#0 public_0318:history:0 [H] d=1/1
+  F: Anh cần hỏi lại lịch uống thuốc của bố với người chăm sóc trực chiều. Trong danh bạ có đưa mấy người chăm sóc ấy không em?
+  M: Anh cần hỏi lại lịch uống thuốc của bố với người chăm sóc trực triệu. Trong danh bạ có đưa mấy người chăm sóc ấy không em?
+  S: Anh cần hỏi lại lịch uống thuốc của Bố với người chăm sóc trực chiều, trong danh bạ có lưu mấy người chăm sóc ấy không em?
+  prev: -
+  next: Danh bạ có hai người chăm sóc bố: chị Dung trực sáng, số 09020000416, và chị Hạnh trực chiều, số 09020000438. || [{'name': 'contacts.search', 'arguments': {'query': 'chăm sóc'}}]
+#1 public_0328:history:0 [H] d=8/7
+  F: Dưới thuê thuê một chỗ ở bãi B mười hai ngoài ga Hà Nội nhé, chưa nghề mười chín này thường mười một giờ, chừng ba tiếng thôi.
+  M: Giữa trường tôi một chỗ ở bãi B mười hai ngoài cái Hà Nội nhé, trưa ngày mười chín này thường một giờ, chừng ba tiếng thôi.
+  S: Giữ cho tôi một chỗ ở bãi B12 ngoài ga Hà Nội nhé, trưa ngày mười chín này từ mười một giờ chừng ba tiếng thôi.
+  prev: -
+  next: Đã giữ chỗ ở Bãi đỗ B12 Ga Hà Nội ngày 19/10 từ 11 giờ đến 14 giờ, tổng 60.000 đồng. || [{'name': 'parking.find', 'arguments': {'near': 'ga Hà Nội'}}, {'name': 'parking.reserve', 'arguments': {'lot_id': 'lot_05', 'from_time': '2026-10-19T
+#2 public_0335:history:2 [H] d=5/5
+  F: Mình đã muốn đổi qua trung tâm văn hóa Tây Hồ mà không đến năm giờ chiều anh mới ra khỏi nhà được, đi xe buýt thôi.
+  M: Mình đã muốn đổi qua trung tâm văn hóa Tây Hồ, mà hôm đấy nắng cho chiều em mới ra khỏi nhà được đi xe buýt thôi.
+  S: Bên đó muốn đổi qua trung tâm Phong Hóa Tây Hồ, mà hôm đấy năm giờ chiều anh mới ra khỏi nhà được, đi xe buýt thôi.
+  prev: Dạ đúng rồi anh, chủ nhật 11/10 lúc 6 giờ chiều anh có lịch Gặp đối tác tại văn phòng ạ. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-10-11', 'date_to': '2026-10-11'}}]
+  next: Dạ em nhớ rồi, chủ nhật anh đi xe buýt từ nhà lúc 5 giờ chiều. Anh có muốn em xem tuyến rồi sửa lịch luôn không ạ? || 
+#3 public_0336 [F] d=3/0
+  F: Lấy cho anh hai vé đêm nhạc Charles tối thứ 6 tuần sau, rồi đặt luôn xe 4 chỗ từ nhà tới đúng chỗ diễn. Hẹn đón trước giờ mở màn 45 phút và nhận anh lúc đó ra khỏi nhà nhé.
+  M: Lấy cho anh hai vé đêm nhạc jazz tối thứ Sáu tuần sau, rồi đặt luôn xe bốn chỗ từ nhà tới đúng chỗ diễn, hẹn đón trước giờ mở màn bốn lăm phút, và nhận anh lúc đó ra khỏi nhà nhé.
+  S: Lấy cho anh hai vé đêm nhạc Charles tối thứ Sáu tuần sau, rồi đặt luôn xe bốn chỗ từ nhà tới đúng chỗ diễn, hẹn đón trước giờ mở màn 45 phút, và nhắc anh lúc đó ra khỏi nhà nhé.
+  prev: -
+  next: -
+#4 public_0337 [F] d=8/7
+  F: Cái ampule tóc mới mua về đã hỏng rồi, là giúp em yêu cầu trả hàng nhé. À, trong đơn đó có tùy ý, mấy mẫu thay thế, mẫu nào đang còn hàng thì thêm một cái vào danh sách cần mua cho em.
+  M: Cái anh chưa thóc mới mua về đã hỏng rồi là giúp em yêu cầu trả hàng nhé. Trong đơn đó, shop để ý mang mẫu thay thế mẫu nào đang còn hàng thì thêm một cái vào danh sách cần mua cho em.
+  S: Cái ấm siêu tốc mới mua về đã hổng rồi, làm giúp em yêu cầu trả hè nhé. À trong đơn đó sếp gợi ý mấy mẫu thay thế, mẫu nào đang còn hàng thì thêm một cái vào danh sách cần mua cho em.
+  prev: -
+  next: -
+#5 public_0338:history:0 [H] d=7/11
+  F: Mở lại, dùng anh, bạn chắc để shop máy xay không? Qua xem họ bảo đơn bị lỗi gì nhỉ?
+  M: Mở lại cho mấy đứa ăn sáng thì shop máy say không có xe, họ bảo đừng bị lũ gì nhỉ?
+  S: Mở lại giúp anh bản chat với shop máy xay hôm qua xem, họ bảo luôn bị lỗi gì ấy nhỉ.
+  prev: -
+  next: Shop MiniMix nhắn là kho đóng nhầm sang mẫu MiniMix M1, còn mẫu anh đặt đúng là MiniMix M2. Shop nhờ anh tạo yêu cầu trả hàng lý do giao sai rồi đặt l || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_06'}}]
+#6 public_0339 [F] d=7/3
+  F: Rồi, em đặt 2 vé sân cỏ, xe như chị dặn, xong nhắn ngoài nhắn đi xem nhạc là xe đón lúc 7 giờ 10, và cổng B nha.
+  M: Rồi em đặt hai vé số đó vào xe như chị dặn. Xong, nhắn ngoài nhắn đi xem nhạc là xe đón lúc bảy giờ mười và cổng B nha.
+  S: Em đặt hai vé suất đó vào xe như chị dặn, xong nhắn vào nhóm đi xem nhạc là xe đón lúc bảy giờ mười vào cổng B nha.
+  prev: Dạ em nhớ rồi ạ: suất 20 giờ ngày 18/10, xe 4 chỗ đón ở nhà lúc 19 giờ 10 tới Nhà hát Lớn, vào cổng B. || 
+  next: -
+#7 public_0345 [F] d=7/6
+  F: Em ở tin nhắn của các bạn trên tin mới nhất nói gì? Nếu cô bảo hủy buổi học rồi thì xóa cái lịch đó đi cho chị nhé.
+  M: Em ở thiên nhắn của các bạn xem tin mới nhất nói gì nếu cô báo gửi buổi họp buổi thì xóa cái lịch đó đi cho chị nhé.
+  S: Em mở tin nhắn của cô Hạnh xem tin mới nhất nói gì, nếu cô báo hủy buổi học bù thì xoá cái lịch đó đi cho chị nhé.
+  prev: Buổi học bù Toán sáng thứ bảy ở Trường THCS Láng Thượng chị ạ. || 
+  next: -
+#8 public_0345:history:2 [H] d=2/6
+  F: Ờ, buổi học bù đó ở đâu ấy nhỉ?
+  M: ở với lập ở đó đâu anh nhỉ
+  S: Ờ, buổi gặp bồ đó ở đâu ấy nhỉ?
+  prev: Thứ bảy chị có hai lịch: Học bù Toán từ 9 giờ đến 10 rưỡi sáng và Đi siêu thị cuối tuần lúc 4 giờ chiều. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-10-10', 'date_to': '2026-10-10'}}]
+  next: Buổi học bù Toán sáng thứ bảy ở Trường THCS Láng Thượng chị ạ. || 
+#9 public_0347 [F] d=2/5
+  F: Thế đặt cho tôi một vé chuyến đó, xưởng chỗ ở bãi phía Bắc ga từ 7 giờ sáng hôm ấy, gửi 2 ngày rồi thêm việc, rời bãi ra tàu trước cho chạy nửa tiếng nhé.
+  M: Thế đặt cho tôi một vé chuyến đó, dưỡng chỗ ở bãi phía bắc ca từ giờ sáng hôm ấy, gửi hai ngày rồi thêm việc rồi bãi ra tàu trước trời chạy nửa tiếng nhé.
+  S: Thế đặt cho tôi một vé chuyến đó, sửa chỗ ở bãi phía Bắc ga từ bảy giờ sáng hôm ấy, gửi hai ngày, rồi thêm việc rời bãi ra tàu trước giờ chạy nửa tiếng nhé.
+  prev: Gần ga Hà Nội có Bãi đỗ phía Bắc ga Hà Nội, 20 nghìn một giờ, còn 12 chỗ, và Bãi xe Lê Duẩn, 25 nghìn một giờ, còn 5 chỗ ạ. || [{'name': 'parking.find', 'arguments': {'near': 'Ga Hà Nội'}}]
+  next: -
+#10 public_0350 [F] d=4/3
+  F: Rồi giờ em vào cái ứng dụng thuê khơ anh vừa nói, giữ chỗ cái nhanh đó cho anh Tùng Thế đi.
+  M: Rồi giờ em vào cái ứng dụng thuê kho anh vừa nói, giữ chỗ cái nhanh đó cho anh tuần tới đi.
+  S: Rồi, giờ em vào cái ứng dụng thuê kho anh vừa nói, giữ chỗ cái ngân đó cho anh Tuần tới đi.
+  prev: Dạ, em hiểu. Nếu không có ứng dụng đó thì em sẽ không đặt qua dịch vụ khác ạ. || 
+  next: -
+#11 public_0351:history:0 [H] d=5/6
+  F: Tại sao anh giúp mình cái thư nháp gửi chị Thu nhé? Tiêu đề là tổng kết quý ba, nội dung là gửi chị bạn tổng kết quý ba để duyệt nội bộ để nháp thôi, chưa gửi đâu.
+  M: Tại sao lại giúp mình kết thuê nháp gửi chị Thu nhé. Chủ đề là tổng kết quý ba, nội dung là gửi chị bản tổng kết quý ba đề duyệt nội bộ để nháp thôi, chưa gửi đâu.
+  S: Bạn soạn giúp mình cái thư nháp gửi chị Thu nhé, tiêu đề là tổng kết quý ba, nội dung là gửi chị bản tổng kết quý ba là duyệt nội bộ, để nháp thôi, chưa gửi đâu.
+  prev: -
+  next: Mình đã soạn thư nháp gửi chị Thu, tiêu đề Tổng kết quý ba, chưa gửi đi nhé. || [{'name': 'contacts.search', 'arguments': {'query': 'Thu'}}, {'name': 'email.create_draft', 'arguments': {'to': ['thu.tran@congty.example.test'], 'sub
+#12 public_0353:history:0 [H] d=1/1
+  F: Xem giúp tôi mấy hôm tới ở nhà hát có buổi diễn nào hay không?
+  M: Xem giúp tôi mấy hôm tới ở giải hát có buổi diễn nào hay không?
+  S: Xem giúp tôi mấy hôm tới ở Dạy Hát có buổi diễn nào hay không.
+  prev: -
+  next: Dạ, mấy hôm tới có bốn buổi ạ: nhạc kịch Mùa Thu Hà Nội ở Nhà hát Lớn Hà Nội lúc 20 giờ ngày 12/10, vé 350.000 đồng; Stand-up comedy Sài Gòn Cười lúc  || [{'name': 'event_tickets.search', 'arguments': {'query': 'nhà hát'}}]
+#13 public_0355:history:0 [H] d=2/6
+  F: Nghe mấy đơn hàng anh mua tuần trước về hết cho em.
+  M: mấy đứa này anh mua chồng trước về hết
+  S: Mấy đơn hàng anh mua tuần trước về hết chưa em?
+  prev: -
+  next: Dạ, nồi chiên không dầu Philips và áo sơ mi Owen xanh navy size L đều đã giao hôm 4/10, còn ấm siêu tốc Lock&Lock thì đang trên đường giao ạ. || [{'name': 'ecommerce.order_status', 'arguments': {}}]
+#14 public_0357:history:2 [H] d=4/1
+  F: Tuấn về tới là bắt đầu đấy, mua được thì nhớ ghi lịch cho tôi.
+  M: tú về tới là bắt đầu đấy mua được thì nhớ ghi lịch cho tôi.
+  S: Tám bốn giờ tối là bắt đầu đấy, mua được thì nhớ ghi lịch cho tôi.
+  prev: Dạ em nhớ rồi: chỉ mua vé khu A nếu giá dưới 900 nghìn, ghế ưu tiên A12 ạ. || 
+  next: Dạ, concert bắt đầu lúc 20 giờ ngày 14/10, mua được vé em sẽ ghi vào lịch cho anh ạ. || 
+#15 public_0358:history:0 [H] d=2/5
+  F: Ê, gạn tối thứ bảy này có đêm nhạc mùa thu đúng không? Xem giúp mình diễn ở đâu, vé bao nhiêu với?
+  M: Ê, có cái bẫy này có đem nhạc mùa thu đúng không? Xem giúp mình diễn ở đâu, vé bao nhiêu, với.
+  S: Ê bạn, tối thứ bảy này có đêm nhạc mùa thu đúng không, xem giúp mình diễn ở đâu với bao nhiêu với.
+  prev: -
+  next: Đêm nhạc Mùa Thu diễn lúc 8 giờ tối thứ bảy 10/10 ở Quảng trường Biển Hồ Biển Xanh Park, vé 350.000 đồng, hiện còn 46 vé ạ. || [{'name': 'event_tickets.search', 'arguments': {'query': 'Mùa Thu'}}]
+#16 public_0360 [F] d=20/21
+  F: OK, live stream công việc EA tốn giờ người làm, bọn mình nên thôi. Giữ luôn chỗ ở BPH từ 6 giờ sáng hôm đó, gửi hàng ngày nhé. À, trước khi bài một kiến thì nhắc anh rời bể ở luôn thường tục.
+  M: kết lại chuyến đồng việt nam mỗi mình nên thôi giữ luôn chỗ bẹ phea từ sáu giờ sáng hôm đó gửi hàng ngày nhé trước như vậy một tiếng thì nhét anh rời bẹ luôn thủ tục
+  S: Ok, lái chuyến Rồng Việt Air tám giờ mười lăm, mở mình lên thôi. Giữ luôn chỗ bãi P2 từ sáu giờ sáng hôm đó, gọi hai ngày nhé. À, trước giờ bãi một tiếng thì nhắc anh rời bãi luôn thủ tục.
+  prev: Ở Nội Bài, bãi P2 còn 34 chỗ, giá 15.000 đồng một giờ. Bãi P1 thì hết chỗ rồi. || [{'name': 'parking.find', 'arguments': {'near': 'Nội Bài'}}]
+  next: -
+#17 public_0368 [F] d=3/2
+  F: Em đọc to cho chị Minh Khanh, cái cuốn sách chị đang đọc dở đi, từ trang đầu tới trang cuối luôn nha.
+  M: Em đọc to cho chị Minh Văn ca cuốn sách chị đang đọc dở đi từ trang đầu tới trang cuối luôn nha.
+  S: Em đọc to cho chị Nguyên Văn ca cuốn sách chị đang đọc dở đi, từ trang đầu tới trang cuối luôn nha.
+  prev: -
+  next: -
+#18 public_0379:history:0 [H] d=4/0
+  F: Tìm cho tôi công thức ra sao, xem nào.
+  M: tìm cho tôi công thức ra sao xem nào.
+  S: Tìm cho tôi công thức gà xào xả ở xem nào.
+  prev: -
+  next: Có món gà xào sả ớt cho ba người, cần 500 gam đùi gà, 3 cây sả, 2 quả ớt và 3 tép tỏi, xào khoảng nửa tiếng ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt'}}]
+#19 public_0390 [F] d=5/4
+  F: Giờ cho em giúp anh một món cá áp chảo hợp với bữa đó, trộn đã từ luôn hai nguyên liệu chính, mua đủ cho cả nhà nha.
+  M: giờ kiếm giúp anh một món cá áp chảo hợp với bữa đó rồi đã tự luôn hai nguyên liệu chính mua đủ cho cả nhà nha.
+  S: Giờ kiếm giúp anh một món cá áp chảo hợp với bữa đó, rồi đặt luôn hai nguyên liệu chính, mua đủ cho cả nhà nha.
+  prev: Dạ em nhớ rồi: tối mai bốn người ăn, tránh hẳn đậu phộng ạ. || 
+  next: -
+#20 public_0392 [F] d=3/3
+  F: Rồi em chuyển công thức món đi, đặt mua đủ hàng nguyên liệu chính cho cả nhà, xong thêm cái lịch bắt đầu nấu, suốt giờ ăn một tiếng rưỡi nha em.
+  M: Rồi em kiếm công thức món đi đặt mua đủ hai nguyên liệu chính cho cả nhà, xong thêm cái lịch bắt đầu nấu, chốt giờ ăn một tiếng rưỡi nha em.
+  S: Rồi, em kiếm công thức món đi, đặt mua đủ hai nguyên liệu chính cho cả nhà, xong thêm cái lịch bắt đầu nấu trước giờ ăn một tiếng rưỡi nha em.
+  prev: Dạ, em nhớ rồi ạ: bữa tối mai lúc 8 giờ, nhà mình sáu người, món canh chua cá. || 
+  next: -
+#21 public_0392:history:0 [H] d=1/2
+  F: Tối mai nhà chị có sáu người, muốn ăn canh chua cá, tám giờ mới ăn nha. Lén nữa chị nhờ em chuẩn bị.
+  M: Tối mai nhà chị có sáu người muốn ăn canh chua cá, giờ mới ăn nha. Lát nữa chị nhờ em chuẩn bị.
+  S: Tối mai nhà chị có sáu người, muốn ăn canh chua cá, tám giờ mới ăn nha, láng nữa chị nhờ em chuẩn bị.
+  prev: -
+  next: Dạ, em nhớ rồi ạ: bữa tối mai lúc 8 giờ, nhà mình sáu người, món canh chua cá. || 
+#22 public_0398 [F] d=8/5
+  F: Ờ hủy cái đơn bún bò Huế cho Mạnh, làm mà thôi. Đường nào chưa ra thì hủy hết đi, vợ kêu về ăn cơm rồi.
+  M: Hủy cái đơn bún bò Huế giùm anh, à mà thôi, đường nào chưa ra thì hủy hết đi, vợ kêu về ăn cơm mà.
+  S: Ờ, huỷ cái đơn bún bò lẹ giùm anh... à mà thôi, đơn nào chưa giao thì huỷ hết đi, vợ kêu về ăn cơm rồi.
+  prev: Anh có ba đơn: cơm tấm sườn bì chả năm chục nghìn giao xong rồi, còn bún bò Huế đặc biệt với chả cua bảy chục nghìn và trà sữa trân châu đường đen bốn || [{'name': 'food_delivery.order_history', 'arguments': {}}]
+  next: -
+#23 public_0399:history:0 [H] d=2/1
+  F: Coi dùm anh mấy cái thói quen bữa nay, thích cái nào chưa?
+  M: Coi chừng, anh mấy cái thói quen bữa nay thích cái nào chưa?
+  S: Coi giùm anh mấy cái thói quen, bữa nay tích cái nào chưa?
+  prev: -
+  next: Hôm nay anh chưa tích cái nào. Chạy bộ buổi sáng với đọc sách ba mươi phút mới ghi tới hôm qua, còn học từ vựng tiếng Anh thì chưa có chuỗi. || [{'name': 'habit_tracker.list_habits', 'arguments': {}}]
+#24 public_0407 [F] d=6/4
+  F: Thưa sau này chị không ra bên nữa em ạ, các bé tàu bé em hủy hộ chị luôn đi.
+  M: Thứ sáu này chị không ra bên nữa em ạ. Các bé tao ế em hủy hộ chị luôn đi.
+  S: Thứ sáu này chị không ra bên nữa em ạ, cái vé tàu ấy em huỷ hộ chị luôn đi.
+  prev: -
+  next: -
+#25 public_0411 [F] d=0/1
+  F: Sữa Mộc Xanh bữa nay mà tăng thì bán bớt một trăm cổ, giảm thì mua thêm một trăm, xong lấy hai chục triệu bên tài khoản Thanh Toán hồi nãy gửi tiết kiệm ba tháng nha con.
+  M: Sữa mọc xanh bữa nay mà tăng thì bán bớt một trăm cổ, giảm thì mua thêm một trăm, xong lấy hai chục triệu bên tài khoản thanh toán hồi nãy gửi tiết kiệm ba tháng nha con.
+  S: Sữa mộc xanh bữa nay mà tăng thì bán bớt một trăm cổ, giảm thì mua thêm một trăm, xong lấy hai chục triệu bên tài khoản thanh toán hồi nãy gửi tiết kiệm ba tháng nha con.
+  prev: Dạ cô đang có 200 cổ Sữa Mộc Xanh, giá hiện 60 nghìn 950, ngoài ra còn 200 cổ Thịnh Phát Bank ạ. || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+  next: -
+#26 public_0414 [F] d=3/1
+  F: Ghi lại cái phiên chín giờ tối mai trên VTV ba cho em à thôi khỏi mai em ở phòng xem luôn.
+  M: Ghi lại cái phim chín giờ tối mai trên VTV ba cho em. À thôi khỏi, mai em ở phòng xem luôn.
+  S: Ghi lại cái phim chín giờ tối mai trên VTV3 cho em, à thôi khỏi, mai em ở phòng xem luôn.
+  prev: -
+  next: -
+#27 public_0419:history:2 [H] d=1/0
+  F: Học xong từ trường về nhà, đi xe máy mất bao lâu em nhỉ?
+  M: học xong từ trường về nhà đi xe máy mất bao lâu em nhỉ?
+  S: Họp xong từ trường về nhà đi xe máy mất bao lâu em nhỉ?
+  prev: Hôm nay chị có một nhắc việc: họp tổ chuyên môn lúc hai giờ chiều ạ. || [{'name': 'reminders.list', 'arguments': {'date': '2026-10-20'}}]
+  next: Từ trường về nhà khoảng 1,8 cây số, đi xe máy chừng bốn phút chị ạ. || [{'name': 'maps.get_route', 'arguments': {'origin': 'Trường THCS Thanh Xuân, Hà Nội', 'destination': '12 Nguyễn Trãi, Thanh Xuân, Hà Nội', 'mode': 'mo
+#28 public_0422 [F] d=12/7
+  F: Trời, cái nhất tâm chuối con chuột thảm. Nếu bữa nay thì cho xe bốn chỗ, lúc tôi chút nữa chuyến này.
+  M: cái nhất tâm trí con chúa tháng nếu bữa nay thì cho xe bốn chỗ lúc thôi chút nữa chứ nghe.
+  S: Coi cái nhắc đám cưới con Chú Tám nếu bữa nay thì kêu xe bốn chỗ trước tôi, trước nửa tiếng nghe.
+  prev: -
+  next: -
+#29 public_0425:history:2 [H] d=4/5
+  F: Nhắn thần trí chiều nay ra ngựa phụ ba bốc hàng nhà.
+  M: Nhắn thành thế chiều nay ra mưa, phụ ba bóc hàng nha.
+  S: Nhắn thằng Tí chiều nay ra vựa phụ ba bốc hàng nha.
+  prev: Dạ, ví của mình còn một triệu hai trăm năm chục nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+  next: Dạ, em đã nhắn tin cho Thằng Tí: chiều nay ra vựa phụ ba bốc hàng. || [{'name': 'contacts.search', 'arguments': {'query': 'Thằng Tí'}}, {'name': 'sms.send', 'arguments': {'contact_id': 'c_9470', 'content': 'Chiều nay ra 
+#30 public_0435 [F] d=5/5
+  F: Trả lời mail giùm anh. Dịch tiếng Anh: "Tám giờ sáng mai tôi đến viếng quan khách sạn cả."
+  M: trả lời mail dùm anh dịch tiếng anh 8 giờ sáng mai tôi đem bí qua khách sạn trả.
+  S: Trả lời mail giùm anh, dạy tiếng Anh tám giờ sáng mai tôi đem ví qua khách sạn trả.
+  prev: Dạ, em đã đặt nhắc tám giờ sáng mai mang ví qua Khách sạn Hoàng Kim rồi anh. || [{'name': 'reminders.create', 'arguments': {'content': 'Mang ví qua Khách sạn Hoàng Kim trả khách David', 'time': '2026-11-12T08:00:00+07:00'}}]
+  next: -
+#31 public_0436 [F] d=3/1
+  F: Ừ, đủ đấy. Em mua thêm ZKN với thế giới số, mỗi mã cho tròn 500 cổ, anh đang vội.
+  M: Ừ đủ đấy em mua thêm ZKN với thế giới số mọi mã cho tròn năm trăm cổ anh đang vội.
+  S: Ừ, đủ đấy. Em mua thêm JetXin với thêm vé số mỗi mã cho tròn 500 cổ, anh đang vội.
+  prev: Tài khoản thanh toán còn 42 triệu 600 nghìn, tiết kiệm 120 triệu anh ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+  next: -
+#32 public_0441 [F] d=3/3
+  F: Mưa vậy thôi khỏi chạy xe máy đi, chắc chuyến xe sớm nhất đi Đà Lạt, mà nhắc chuyện trước một tiếng nha.
+  M: Mưa vậy thôi khỏi chạy xe máy đi, chắc chuyến xe sớm nhất đi Đà Lạt mai nhá, chuyển trước một tiếng nha.
+  S: Mưa vậy thôi khỏi chạy xe máy đi, chắc chuyến xe sớm nhất đi Đà Lạt. Mai nhắc chị trước một tiếng nghe.
+  prev: Mai thành phố có mưa rào chị ơi, nhiệt độ khoảng 22 đến 32 độ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-11-25'}}]
+  next: -
+#33 public_0441:history:0 [H] d=3/0
+  F: Em nay Sài Gòn có mưa không?
+  M: Em nay Sài Gòn có mưa không?
+  S: Ê em, mai Sài Gòn có mưa hông?
+  prev: -
+  next: Mai thành phố có mưa rào chị ơi, nhiệt độ khoảng 22 đến 32 độ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-11-25'}}]
+#34 public_0449 [F] d=3/5
+  F: Rửa nhẫn ba à không, nhẫn mạ chớ, nói vé tàu em đặt rồi hết bao nhiêu luôn nghe.
+  M: rửa nhấn ba à không nhấn mạng chớ nói về tao em đặt rồi hết bao nhiêu luôn nghe.
+  S: Rứa nhắn ba, à không, nhắn mạ chớ, nói vé tàu em đặt rồi, hết bao nhiêu luôn nghe.
+  prev: Mạ nhắn hỏi bạn đặt vé tàu ra Lào Cai chưa, hết bao nhiêu thì nhắn để mạ chuyển khoản cho. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_800'}}]
+  next: -
+#35 public_0451 [F] d=2/0
+  F: Chị về đây, ở gươm còn dở, gửi xe thì kết thúc luôn, rồi ra loa báo anh ấy chị đang về.
+  M: Chị về đây, hồ gươm còn giờ gửi xe thì kết thúc luôn rồi, ra loa báo anh ấy chị đang về.
+  S: Chị về đây. Hồ Gươm còn giờ gửi xe thì kết thúc luôn, rồi Zalo báo anh ấy chị đang về.
+  prev: Em tắt đèn phòng ngủ nhỏ rồi chị ạ, đèn bếp với đèn phòng ngủ vẫn sáng. || [{'name': 'smart_home.light_set', 'arguments': {'device_id': 'light_bedroom2', 'power': 'off'}}]
+  next: -
+#36 public_0452:history:0 [H] d=11/8
+  F: Coi các nội dung của đoạn mở trước, sau đó chưa rước.
+  M: Con ơi, các nội dung cô đã bảo trước sao vẫn chưa rút?
+  S: Con ơi, cái nồi chiên cô đặt bữa trước sao tới chưa rứa?
+  prev: -
+  next: Dạ, nồi chiên không dầu Philips giao tới hôm qua rồi cô. Còn cái sạc dự phòng Xiaomi thì đang trên đường giao. || [{'name': 'ecommerce.order_status', 'arguments': {}}]
+#37 public_0454:history:2 [H] d=4/0
+  F: Thế mười hai giờ, thế mười giờ hai mươi nhắc em ra ga bắt chuyến mười giờ ba tư nhé.
+  M: thế mười hai giờ thế mười giờ hai mươi nhắc em ra ga bắt chuyến mười giờ ba tư nhé.
+  S: Thế mười giờ hai mươi nhắc em ra ga, bắt chuyến mười giờ ba tư nhé.
+  prev: Ở ga Kim Mã, tuyến Metro Nhổn - Ga Hà Nội có chuyến 10 giờ 14, rồi 10 giờ 24 và 10 giờ 34 ạ. || [{'name': 'public_transit.next_departures', 'arguments': {'stop': 'Kim Mã'}}]
+  next: Dạ, 10 giờ 20 em sẽ nhắc Linh ra ga Kim Mã bắt chuyến 10 giờ 34 ạ. || [{'name': 'reminders.create', 'arguments': {'content': 'Ra ga Kim Mã bắt metro chuyến 10 giờ 34', 'time': '2026-11-20T10:20:00+07:00'}}]
+#38 public_0462 [F] d=12/5
+  F: Thôi, nó muốn khỏi này, con nó sai chúng đi là bỏ một biểu vô vợ cho tôi.
+  M: Thôi, nó muốn coi này, con nó xài trứng đi là bỏ một vỉa vô giời cho tôi.
+  S: Thôi nấu món kho hồi nãy, coi nó xài trứng gì rồi bỏ một vỉ vô giỏ cho tôi.
+  prev: Dạ có Gà xào sả ớt, cho ba người, nấu chừng ba chục phút thôi ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào'}}]
+  next: -
+#39 public_0464 [F] d=17/11
+  F: Chúc thằng Huyền đi, năm nay chưa lấy gặp thằng Huyền Lê Lợi nha. Có tiếng nịnh nó sợ luôn, à khoan khách đi hàng, tiến hàng đi.
+  M: Chúc thằng Huyền đi, năm nay chừ lấy gặp thằng Huyền lên lại nha. Có tiếng Nhật nói sao nha, à khoan, khách người Hàn tiếng Hàn đi.
+  S: Chốt Cao Nguyên đi, năm giờ chiều nay gặp ở Cao Nguyên Lê Lợi nha. Có tiếng Nhật nói sao, à khoan, khách người Hàn tiếng Hàn đi.
+  prev: Quận 1 có Nhà Cà Phê 86 Nguyễn Huệ, Cao Nguyên Coffee 7 Lê Lợi và Ký Ức Cà Phê 26 Lý Tự Trọng. || [{'name': 'maps.search_place', 'arguments': {'query': 'cafe', 'near': 'Quận 1'}}]
+  next: -
+#40 public_0464:history:2 [H] d=7/6
+  F: Hiển thị kết quả màu cam.
+  M: Em lấy cả hai quả móng tay.
+  S: Tìm quán cà phê Quận 1 coi.
+  prev: Chiều nay Sài Gòn có mây, cao nhất ba mươi hai độ, không mưa anh. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-10-29'}}]
+  next: Quận 1 có Nhà Cà Phê 86 Nguyễn Huệ, Cao Nguyên Coffee 7 Lê Lợi và Ký Ức Cà Phê 26 Lý Tự Trọng. || [{'name': 'maps.search_place', 'arguments': {'query': 'cafe', 'near': 'Quận 1'}}]
+#41 public_0470:history:0 [H] d=7/6
+  F: Em mời quản công viên thống nhất có bạn ý sẽ nào bao nhiêu tiền một giờ.
+  M: Em ơi, quanh khu viên thống nhất có bãi gửi xe nào bao nhiêu tiền một giờ?
+  S: Em ơi, quanh Cô Vinh Thống Nhất có bài gửi xăng nào, bao nhiêu tiền một giờ?
+  prev: -
+  next: Có bãi xe ngầm Trần Nhân Tông ngay trong công viên Thống Nhất, hai mươi lăm nghìn một giờ, còn 25 chỗ; với bãi Sao Kim Plaza Bà Triệu ba mươi nghìn mộ || [{'name': 'parking.find', 'arguments': {'near': 'Hai Bà Trưng'}}]
+#42 public_0473 [F] d=14/7
+  F: Mà anh có đi chợ sớm, sợ bên coi, căn anh ấy cho biết hết trứng giờ đó, khi mua lên ba trăm nghìn thì đã cảnh báo nhanh con.
+  M: Mà có đi chợ sớm, sợ bên coi các anh ấy trong cái thức chín giờ đó khi mua lên ba trăm nghìn thì đặt cảnh báo nhanh con.
+  S: Mai cô đi chợ sớm, sổ quên coi. Cái mã ghi trong báo thức chín giờ đó, khi mua lên ba trăm nghìn thì đặt cảnh báo nghen con.
+  prev: -
+  next: -
+#43 public_0474 [F] d=6/7
+  F: Giữa cô hai chiếc xe đạp ở toa đàn, sáu giờ sáng mai, à, tôi khỏi chú năm rồi.
+  M: Giữ cô hai chiếc xe đạp ở toa đàn sáu giờ sáng mai nhé.
+  S: Giữ cô hai chiếc xe đạp ở Cao Đằng, sáu giờ sáng mai nha, à thôi khỏi, Chú Năm dẫn.
+  prev: -
+  next: -
+#44 public_0476 [F] d=12/8
+  F: À em hiện sập chỉ chờ đồ xe chuyển nhận nhé. À khoan, chuyển nhận chỉ phóng đi vì cách trưa nay thôi.
+  M: À em nghĩ thật chỉ trò đồ xe chủ nhật nhé. À khoan, chủ nhật chỉ phóng đi vì cái trưa nay thôi.
+  S: À, em hẹn giúp chị chở đồ xe chủ nhật nhé... à khoan, chủ nhật chị vẫn đi, hủy cái trưa nay thôi.
+  prev: Em đã đặt báo thức sáu giờ sáng Chủ nhật rồi chị ạ. || [{'name': 'alarm.create', 'arguments': {'time': '2026-11-22T06:00:00+07:00'}}]
+  next: -
+#45 public_0477 [F] d=5/3
+  F: Một giờ trưa nay là báo thức, chiều tôi coi lại tiếp lại Hương nha, vì luôn giá bây giờ vô để tôi so.
+  M: Một giờ trưa nay là báo thức cho tôi coi lại thép lại hơn nha, vì luôn giá bây giờ vô để tôi so.
+  S: Một giờ trưa nay đặt báo thức kêu tôi coi lại tiếp đại Hưng nha, ghi luôn giá bây giờ vô để tôi so.
+  prev: -
+  next: -
+#46 public_0482:history:0 [H] d=7/4
+  F: Vừa nhận ra lỗi, dàn chị anh hôn em.
+  M: Vợ nhận ra lỗi và chỉ anh không em.
+  S: Vợ nhắn Zalo dặn chi anh không em?
+  prev: -
+  next: Chị nhắn lúc mười giờ hai mươi, dặn anh đặt hai ký cà chua với ba bó cải ngọt trên app đi chợ để tối nấu canh ạ. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_19'}}]
+#47 public_0486 [F] d=6/2
+  F: Ờ, quay sang anh chín lăm nha anh. Trên hai ba rưỡi thì ghi lịch đổi sang tối nay tám giờ, không thì sáu giờ sáng mai. Có bài khác luôn.
+  M: Ờ quay sang chín lăm dùng anh, trên hai ba rưỡi thì ghi lịch đổi sang tối nay tám giờ, không thì sáu giờ sáng mai, có bài khác luôn.
+  S: Ờ, coi xăng chín lăm giùm anh, trên hai ba rưỡi thì ghi lịch đổi xăng tối nay tám giờ, không thì sáu giờ sáng mai, coi bài khác luôn.
+  prev: Dạ, ngoài hai lịch ngày mai thì thứ ba anh có lịch khám răng lúc ba giờ chiều ở Phòng khám Nha khoa Việt. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-11-30', 'date_to': '2026-12-06'}}]
+  next: -
+#48 public_0487:history:0 [H] d=0/2
+  F: Ghi giùm tôi cái việc thứ sáu lên Sài Gòn giao xoài cho mối nha.
+  M: Ghi dùm tôi cái việc thứ sáu lên Sài Gòn giao sò cho mối nha.
+  S: Ghi giùm tôi cái việc thứ sáu lên Sài Gòn giao xoài cho mối nha.
+  prev: -
+  next: Dạ, em đã ghi việc thứ Sáu lên Sài Gòn giao xoài cho mối rồi ạ. || [{'name': 'tasks.add', 'arguments': {'title': 'Thứ Sáu lên Sài Gòn giao xoài cho mối'}}]
+#49 public_0487:history:2 [H] d=5/6
+  F: Mỗi mới người hàng vịt coi, câu sòi nhầy ngọt lắm qua tiếng Hàn.
+  M: Mỗi mỗi người hàng dịch coi câu soài này, ngọt lắm quá tiếng hàng.
+  S: Mối mới người Hàn, dịch coi câu xoài này ngọt lắm qua tiếng Hàn.
+  prev: Dạ, em đã ghi việc thứ Sáu lên Sài Gòn giao xoài cho mối rồi ạ. || [{'name': 'tasks.add', 'arguments': {'title': 'Thứ Sáu lên Sài Gòn giao xoài cho mối'}}]
+  next: Dạ, câu đó tiếng Hàn là "이 망고는 아주 달아요" nha. || [{'name': 'translator.translate', 'arguments': {'text': 'Xoài này ngọt lắm', 'to_lang': 'ko'}}]
+#50 public_0494 [F] d=4/6
+  F: Tôi bảy một nửa số Zecano của tôi đây, giá nhỉnh hơn giá em vừa đọc năm trăm đồng, nhanh lên nhé.
+  M: Tôi bán một nửa số rất cần ở của tôi đây, giá nhỉnh hơn giá vừa đóng năm trăm đồng, nhanh lên nhé!
+  S: Tôi bán một nửa số ZKN của tôi đi, đặt giá nhỉnh hơn giá em vừa đọc, năm trăm đồng, nhanh lên nhé.
+  prev: Dạ ba mươi ba nghìn một trăm năm mươi đồng một cổ, giảm 3,3% ạ. || 
+  next: -
+#51 public_0496:history:0 [H] d=0/0
+  F: Máy ghe tôi hư rồi, quanh đây có ai sửa máy ghe không?
+  M: máy ghe tôi hư rồi, quanh đây có ai sửa máy ghe không?
+  S: Máy ghe tôi hư rồi, quanh đây có ai sửa máy ghe không?
+  prev: -
+  next: Dạ có hai chỗ: Cơ khí sửa máy ghe Út Hiền ở 88 Lê Bình, với Tiệm sửa máy ghe Hai Lúa ở bến tàu Ba Láng, đều bên Cái Răng. || [{'name': 'maps.search_place', 'arguments': {'query': 'sửa máy ghe'}}]
+#52 public_0497 [F] d=2/2
+  F: Rứa tài khoản thanh toán còn trên mười triệu thì mua thêm hai trăm cổ phiếu, mẹ lỗi đó không thì trăm cổ thôi.
+  M: Rưới tài khoản thanh toán còn trên mười triệu thì mua thêm hai trăm cổ phiếu mã lỗi đó không thì trăm cổ thôi.
+  S: Rứa tài khoản thanh toán còn trên mười triệu thì mua thêm hai trăm cổ phiếu, bảy lưỡi đó, không thì trăm cổ thôi.
+  prev: Bạn đang có ba mã: ZKN đang lời, còn ZTS và ZDH đang lỗ, ZTS giá 57.450, ZDH giá 27.450. || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+  next: -
+#53 public_0499 [F] d=4/1
+  F: Mèo Ba gửi hôm qua, á, có vô lưu trữ dùm em nha.
+  M: Mèo ba gửi hôm qua á, cấp vô lưu trữ dùm em nha.
+  S: Mail ba gửi hôm qua á, cất vô lưu trữ giùm em nghe.
+  prev: -
+  next: -
+#54 public_0500 [F] d=7/16
+  F: Vậy cho dừng xe 19 ở tòa Nam Sơn Dầm, chuyến ké mà sau 5 giờ 10 thì gì? Thì dời hẹn vi sang 6 rưỡi, còn sớm hơn thì nhắc anh 5 giờ ra trạm nha.
+  M: Chuyến kế mà sau năm giờ mười thì về, thì giờ hẹn vi sen sáu rưỡi, còn sớm hơn thì nhắc anh năm giờ ra tạm nha.
+  S: Vậy cho anh dừng xe mười chín ở tòa Nam Sơn giùm. Chuyến chế mà sau năm giờ mười thì dời hẹn Vy sang sáu rưỡi, còn sớm hơn thì nhắc anh năm giờ ra tạm nha.
+  prev: Chiều nay còn một nhắc: gửi báo giá cho sếp Trân lúc năm rưỡi. || [{'name': 'reminders.list', 'arguments': {'date': '2026-11-02'}}]
+  next: -
+#55 public_0503 [F] d=12/10
+  F: Mở xưa ngày nó về tập ba mươi, lùi lượt mặt biển vô quá lít luôn, à thôi khỏi hết đi, nay còn bé trai.
+  M: Mở thư ngày 9/30, lui lượt mặt bẫy vô white list luôn. À thôi, khỏi hết đi, mai còn đẹp trai.
+  S: Mở thư ngày nắng dài tập ba mươi, lưu lịch Mạch Bảy vô watch list luôn... à thôi, khỏi hết đi, mai còn deadline.
+  prev: -
+  next: -
+#56 public_0505 [F] d=6/6
+  F: Hủy đơn trên ADIEM xong cho anh hai con tụt logic vào gió.
+  M: hủy đơn từ ngay đi em, xong cho anh hai con tục logistics vào gió.
+  S: Hủy đơn tai nghe đi em, xong cho anh hai con tục Logitech vào gió.
+  prev: -
+  next: -
+#57 public_0506 [F] d=3/4
+  F: Mai giỗ bà cô, nhà đông lắm, con lưu giùm cô mốt cái kho nào nấu được nhiều phần nhất bên ứng dụng nấu ăn nghe.
+  M: Mai giỗ bà cô, nhà đông lắm, con lưu dùm cô món thịt kho nào nấu được nhiều phần nhất bên ứng dụng nấu ăn nha.
+  S: Mai giỗ ba cô, nhà đông lắm. Con lưu giùm cô món thực kho nào nấu được nhiều phần nhất bên ứng dụng nấu ăn nghe.
+  prev: -
+  next: -
+#58 public_0509:history:0 [H] d=1/2
+  F: Hợp mát có nguyên nằm chỗ nào em?
+  M: Hợp mát không quen nằm chỗ nào em?
+  S: Hộp mát có nguyên nằm chỗ nào em?
+  prev: -
+  next: HợpMart Cống Quỳnh ở 189C Cống Quỳnh, Quận 1 anh nha. || [{'name': 'maps.search_place', 'arguments': {'query': 'HợpMart Cống Quỳnh'}}]
+#59 public_0510 [F] d=11/8
+  F: Bột khô vừa vừa, ít mạch khô, thú vị, mưa và mưa thì đạp vô về luôn, chị không ra chợ nữa, không mưa thì đi vô danh sách đi chợ.
+  M: Bột khô vô ít mặt hơi thúi, mơ và mưa thì đạp vô về luôn chứ không ra chợ nữa. Không mưa thì đi vô danh sách đi chợ.
+  S: Bầu kho búa yến mạch thơ túi. Mưa mà mưa thì đạp vô gì luôn, chị không ra chợ nữa, không mưa thì ghi vô danh sách đi chợ.
+  prev: Chị muốn lấy mấy gói bột mì và mấy túi yến mạch ạ? || [{'name': 'sys.ask_missing_info', 'arguments': {'tool_name': 'grocery.add_to_cart', 'params': ['quantity']}}]
+  next: -
+#60 public_0513:history:2 [H] d=4/4
+  F: Ủa, Phương Anh giờ sao rồi? Nó đẹp ghê.
+  M: của phía anh và sao rồi nó đẹp vậy.
+  S: Ủa phiếu anh giờ sao rồi, đánh lẹ coi.
+  prev: Dạ chiều nay TP.HCM nhiều mây, không mưa đâu anh, khoảng ba mươi độ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-11-23'}}]
+  next: Dạ, Vitech đang 127 nghìn 850, vốn 116 nghìn 450, đang lời. ZKN 34 nghìn 150, vốn 32 nghìn 150, cũng lời. ZTS 58 nghìn 900, vốn 62 nghìn 300, đang lỗ  || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+#61 public_0514:history:4 [H] d=2/0
+  F: Tóm lại mình có lịch gì không ta?
+  M: Tóm lại, mình có lịch gì không ta?
+  S: Tối mai mình có lịch gì không ta?
+  prev: Em đặt rồi nha chị, hai ly trà đào cam sả 78 nghìn, giao tới Nam Đô Centre. || [{'name': 'food_delivery.place_order', 'arguments': {'restaurant_id': 'rest_32', 'items': [{'item_id': 'rest_04_m2', 'quantity': 2}], 'address': 'Nam 
+  next: Sáu giờ chiều mai chị có lịch khám răng ở Nha khoa Việt nha. || [{'name': 'calendar.list_events', 'arguments': {}}]
+#62 public_0515 [F] d=6/5
+  F: Mấy thằng đang lẩu thì bán quá đi, họ quen đừng bán, chừng nào nó lên lại bằng giá tôi mua thì báo tôi.
+  M: mã nào đang lỗ thì bán quất đi, hàng quen đừng bán, chừng nào nó lên lại bằng giá tôi mua thì báo tôi.
+  S: Mã nào đang lỗ thì bán bớt đi, à khoan, đừng bán, chừng nào nó lên lại bằng giá tôi mua thì báo tôi.
+  prev: Dạ, em mở tivi qua kênh VTV1 rồi ạ. || [{'name': 'tv.control', 'arguments': {'action': 'on'}}, {'name': 'tv.guide', 'arguments': {}}, {'name': 'tv.tune', 'arguments': {'channel': 'VTV1'}}]
+  next: -
+#63 public_0515:history:2 [H] d=10/12
+  F: Mua váy cho tôi nhé, mã từ V0V1 cho tôi nha.
+  M: Mỗi vị theo dõi nhà hàng mách tôi vị cần với vị một cho tôi nha.
+  S: Mưa vậy thôi tôi ở nhà, mở tivi kênh VTV1 cho tôi nghe.
+  prev: Dạ, Cần Thơ đang mưa rào, hai mươi tám độ ạ. || [{'name': 'weather.get_current', 'arguments': {}}]
+  next: Dạ, em mở tivi qua kênh VTV1 rồi ạ. || [{'name': 'tv.control', 'arguments': {'action': 'on'}}, {'name': 'tv.guide', 'arguments': {}}, {'name': 'tv.tune', 'arguments': {'channel': 'VTV1'}}]
+#64 public_0516 [F] d=7/9
+  F: Bán hết chỗ Zucchini này đi, dạ không, giữ lại hai trăm. Mua thì đi lật ba giờ chiều mà đánh cờ, nhắn ông Ba sang nhà tôi.
+  M: bán hết chỗ trái cây nãy đi, giờ không, dỗi lại hai trăm, mưa thì ghi lịch ba giờ chiều mai đánh cờ, nhắn ông ba sang nhà tôi.
+  S: Bán hết chỗ JKL ấy đi, à không, giữ lại hai trăm, mưa thì ghi lịch ba giờ chiều mai đánh cờ, nhắn ông Ba sang nhà tôi.
+  prev: Dạ mai Hà Nội có mưa rào, từ 20 đến 30 độ ạ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-11-26'}}]
+  next: -
+#65 public_0516:history:2 [H] d=4/3
+  F: Mẹ nó có mưa không?
+  M: Mày có nói có mưa không?
+  S: Mai Hà Nội có mưa hông?
+  prev: Dạ còn 500 cổ ZKN, giá đang 33.900, thấp hơn giá mua 36.250 ạ. || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+  next: Dạ mai Hà Nội có mưa rào, từ 20 đến 30 độ ạ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-11-26'}}]
+#66 public_0517:history:4 [H] d=4/4
+  F: Trời em đang phải xe ở mốt nữa.
+  M: Chờ em đang phải xem ở môn rửa.
+  S: Chừ em đang gửi xe ở mô rứa?
+  prev: Dạ, mình đã đánh dấu xong việc đặt lịch khám răng. || [{'name': 'tasks.complete', 'arguments': {'task_id': 'task_393'}}]
+  next: Bạn đang có hai phiên: bãi xe Sao Kim Plaza Huế từ chín giờ, bốn tiếng, và bãi chợ Đông Ba từ mười giờ rưỡi, hai tiếng. || [{'name': 'parking.list_sessions', 'arguments': {}}]
+#67 public_0518 [F] d=10/9
+  F: Ship vào pizza cả phòng rồi, hôm nào đang chờ giao lên công ty thì nguội hết, chúng ăn à khoai lang trà sữa gọn lánh.
+  M: Xếp bao pizza cả phòng rồi, hôm nào đang chờ giao lên công ty thì mũi hết, dùng ăn à khoan, chả sửa gọn lách.
+  S: Sếp bao pizza cả phòng rồi, đơn nào đang chờ giao lên công ty thì hủy hết dùm anh, à khoan, trà sữa vẫn lấy.
+  prev: Em đặt xong rồi anh: ba ly trà sữa trân châu đường đen 135 nghìn bên Trà sữa Nhà Mèo, và một pizza hải sản cỡ vừa 189 nghìn bên Pizza Nhà Làm, giao tớ || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}, {'name': 'food_delivery.place_order', 'arguments': {'restaurant_id': 'rest_15', 'items':
+  next: -
+#68 public_0520 [F] d=9/10
+  F: Coi trọng chung kết ở sân đó, còn bé không còn được bé hai bé, hai bé Sài Gòn cười rồi hẹn báo thức trước giải dịch một tiếng.
+  M: Có trong chung kết ở sân đó còn bé không còn được với hai bé hát thể lấy hai bé Sài Gòn cười rồi hẹn báo thức trước giờ diễn một tiếng.
+  S: Coi trận chung kết ở sân đó còn vé không, còn thì lấy hai vé, hết thì lấy hai vé Sài Gòn cười, rồi hẹn báo thức trước giờ dịp một tiếng.
+  prev: Từ nhà anh lên sân Thống Nhất gần mười cây số, chạy xe máy khoảng hai mươi sáu phút. || [{'name': 'maps.get_route', 'arguments': {'origin': 'nhà', 'destination': 'Sân vận động Thống Nhất', 'mode': 'motorbike'}}]
+  next: -
+#69 public_0523 [F] d=11/7
+  F: Anh mười mấy tuổi không thành ra Vinh nữa, cái nào đi Vinh tôi đặt là Huế hết cho tôi nha.
+  M: anh mười mới hỏi không cần ra bên nữa cái nào đi bên tôi đặt là quý hết chúng tôi nha.
+  S: Anh mời mới hội, hổng cần ra binh nữa, vé nào đi binh tôi đặt là huỷ hết giùm tôi nghen.
+  prev: Dạ đặt xong hai vé xe Hoàng Vân bảy giờ tối thứ bảy, tổng cộng 500 nghìn ạ. || [{'name': 'train_bus_tickets.book', 'arguments': {'trip_id': 'trip_28', 'seats': 2}}]
+  next: -
+#70 public_0527:history:0 [H] d=4/3
+  F: Này, thứ tư, tôi có tạo đi vịnh buổi sáng không?
+  M: Này, thứ tư tới có tàu đi Vinh buổi sáng không?
+  S: Này, thứ tư tới có tàu đi Vinh buổi sáng hông?
+  prev: -
+  next: Sáng thứ tư có tàu SE7 chạy sáu giờ, 680 nghìn một vé, còn nhiều chỗ ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Cần Thơ', 'destination': 'Vinh', 'date': '2026-11-11', 'type': 'train'}}]
+#71 public_0528:history:0 [H] d=0/0
+  F: Này, tôi có đặt mấy cái vé máy bay, kiểm lại coi ngày nào nha.
+  M: Này, tôi có đặt mấy cái vé máy bay kiểm lại coi ngày nào nha.
+  S: Này, tôi có đặt mấy cái vé máy bay, kiểm lại coi ngày nào nha.
+  prev: -
+  next: Dạ, có hai vé: Cần Thơ đi Đà Nẵng ngày 19 tháng 12, JetXanh bay 7 giờ tối, và Cần Thơ đi Hà Nội ngày 26 tháng 12, Rồng Việt Air bay 8 giờ sáng. || [{'name': 'flights.my_bookings', 'arguments': {}}]
+#72 public_0529 [F] d=7/4
+  F: Ờ, chị Minh Thanh tối nay có đủ rưỡi hai cái, còn nửa một cái thôi nha.
+  M: ờ chị Minh Thanh tới đâu có đủ rưỡi hai cái con nữa một cái thôi nha.
+  S: Ờ, tiền bên thanh toán đâu có đủ gửi hai cái, con mở một cái thôi nha.
+  prev: Dạ hôm nay còn hai nhắc gửi tiết kiệm: 20 triệu kỳ hạn 6 tháng lúc 9 giờ sáng, với 15 triệu kỳ hạn 12 tháng lúc 12 giờ trưa, cộng cái gọi anh Lộc lúc  || [{'name': 'reminders.list', 'arguments': {'date': '2026-12-15'}}]
+  next: -
+#73 public_0530:history:2 [H] d=4/4
+  F: Cái khoản thanh toán của chị không có nhiều.
+  M: khó khăn tối của chị không có nhiều
+  S: Tài khoản thanh toán của chị còn bao nhiêu?
+  prev: Tủ bếp còn tám quả trứng gà chị ạ. || [{'name': 'pantry.list_items', 'arguments': {}}]
+  next: Tài khoản thanh toán còn 12 triệu 500 nghìn, tài khoản tiết kiệm 50 triệu chị ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+#74 public_0533 [F] d=11/11
+  F: Mẹ muốn cái hồi nãy đi cho má nha, đã thôi, món đó ăn chuột rồi. Đi cái canh chua cá lóc đi, đi mẹ món đó.
+  M: mẹ muốn cái hồi nãy đi cho má nha đã thôi muốn đoán thuộc rồi. Dù cái cảnh Chúa ca lóc đi vì mẹ muốn đỡ.
+  S: Mà món gà hồi nãy lưu giùm anh nha, à thôi, món đó anh chuộc rồi. Giữ cái canh chua cá lóc đi, đi mê món đó.
+  prev: Em bỏ một khay đùi gà góc tư một ký, 89 nghìn, vô giỏ rồi anh. || [{'name': 'grocery.search', 'arguments': {'query': 'đùi gà'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_6213', 'quantity': 1}}
+  next: -
+#75 public_0533:history:2 [H] d=9/10
+  F: Hơi dễ tính lắm. Tối nay đi qua anh Cường có công thức kè xài sở không?
+  M: tôi này đi qua anh cương có công thức kẻ sợ sợ không.
+  S: Ừ, dậy tỉnh. Tối nay đi qua ăn cơm, có công thức trà sả sữa không?
+  prev: Tiền điện EVN 855 nghìn hạn thứ ba mùng một, tiền nước Sawaco 209 nghìn hạn mùng ba, còn điện thoại với truyền hình hạn mùng năm anh. || [{'name': 'bill_payment.list_bills', 'arguments': {}}]
+  next: Có anh, gà xào sả ớt cho ba người, nấu khoảng 30 phút, cần nửa ký đùi gà, ba cây sả, hai trái ớt với ba tép tỏi. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt'}}]
+#76 public_0536:history:2 [H] d=2/2
+  F: Gà Lan chuyến metro tiếp theo mấy giờ?
+  M: gà lá chuyển metro tiếp theo mấy giờ
+  S: Ga lán chuyến metro tiếp theo mấy giờ?
+  prev: Ví chị còn một triệu hai trăm năm mươi nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+  next: Chuyến metro 2A ở ga Láng gần nhất lúc hai giờ năm mươi ba, sau đó ba giờ một phút chị ạ. || [{'name': 'public_transit.next_departures', 'arguments': {'stop': 'Láng'}}]
+#77 public_0536:history:4 [H] d=1/1
+  F: Số chị.
+  M: số chỉ.
+  S: Số chị Yến?
+  prev: Chuyến metro 2A ở ga Láng gần nhất lúc hai giờ năm mươi ba, sau đó ba giờ một phút chị ạ. || [{'name': 'public_transit.next_departures', 'arguments': {'stop': 'Láng'}}]
+  next: Số chị Yến là 0919 559 7285 ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Chị Yến'}}]
+#78 public_0537 [F] d=2/6
+  F: Ờm, chắc tầm mười giờ hai tiếng. À, thôi, thôi, búp nha. Anh Long chở chị đi rồi.
+  M: Trách tầm mười giờ hai tiếng à thôi khỏi bút nha, anh Long trẻ gì đi rồi.
+  S: Ờm, chắc tầm mười giờ hai tiếng. À thôi khỏi bút nha, anh Long chở chị đi rồi.
+  prev: Gần Lê Lợi có bãi Nam Đô Centre, 35 nghìn một tiếng, còn 3 chỗ. Chị muốn đậu từ mấy giờ, trong mấy tiếng ạ? || [{'name': 'parking.find', 'arguments': {'near': 'Lê Lợi'}}, {'name': 'sys.ask_missing_info', 'arguments': {'tool_name': 'parking.reserve', 'params': [
+  next: -
+#79 public_0539:history:2 [H] d=0/2
+  F: Thêm giúp tớ việc reply mail thầy Phong trước tám giờ tối nay nhé.
+  M: Thêm giúp tớ việc việc like mail thầy Phong trước 8 giờ tối nay nhé.
+  S: Thêm giúp tớ việc reply mail thầy Phong trước tám giờ tối nay nhé.
+  prev: Chiều nay bạn có hai cuộc gọi nhỡ: Trang lúc ba giờ mười hai và thầy Phong lúc bốn giờ năm phút. || [{'name': 'phone.recent_calls', 'arguments': {'missed_only': True}}]
+  next: Đã thêm việc 'Reply mail thầy Phong', hạn tám giờ tối nay. || [{'name': 'tasks.add', 'arguments': {'title': 'Reply mail thầy Phong', 'due': '2026-10-30T20:00:00+07:00'}}]
+#80 public_0541 [F] d=10/3
+  F: Còn học lý thuyết bóng không phải lớp B đâu, lớp của Mr. Bastille đấy. Để có khóa răng chưa, bao nhiêu hả em?
+  M: còn học lý thuyết bóng không phải lớp bơi đâu, lớp của Mr. Bastille đấy, để có khóa đăng ký bao nhiêu hả em?
+  S: Còn học phí của Bống, không phải lớp bơi trâu, lớp của Mr. Pascal ấy, đã có hoá đơn chưa, bao nhiêu hả em?
+  prev: Em đã nhắn cho chị Lan: tiền điện anh trả rồi. || [{'name': 'contacts.search', 'arguments': {'query': 'Lan'}}, {'name': 'sms.send', 'arguments': {'contact_id': 'c_9670', 'content': 'Tiền điện anh trả 
+  next: -
+#81 public_0541:history:6 [H] d=1/3
+  F: ừ trả luôn hoài ngân hàng đi.
+  M: Thả luôn qua ngân hàng đi.
+  S: Ừ trả luôn qua ngân hàng đi.
+  prev: Hoá đơn điện EVN Hà Nội là một triệu hai trăm bốn mươi lăm nghìn, hạn ngày mùng sáu tháng Mười Một anh ạ. || [{'name': 'bill_payment.list_bills', 'arguments': {'type': 'electricity'}}]
+  next: Em đã thanh toán hoá đơn điện một triệu hai trăm bốn mươi lăm nghìn bằng tài khoản ngân hàng rồi ạ. || [{'name': 'bill_payment.pay', 'arguments': {'bill_id': 'bill_3318', 'source': 'bank'}}]
+#82 public_0542:history:6 [H] d=1/0
+  F: Rồi biết còn bao nhiêu tiền vậy?
+  M: Rồi biết còn bao nhiêu tiền vậy?
+  S: Rồi, ví còn bao nhiêu tiền vậy?
+  prev: Dạ có hai task ưu tiên cao: đặt lịch khám răng, hạn chín giờ sáng mai, và dọn kho đồ cũ, hạn mười hai giờ trưa thứ ba tuần sau. || [{'name': 'tasks.list', 'arguments': {'status': 'open'}}]
+  next: Dạ ví của chị còn một triệu hai trăm năm mươi nghìn đồng ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+#83 public_0544:history:0 [H] d=1/2
+  F: Em cho chị vào giỏ đi chợ một khay cá hồi phi lê với hai khay thịt ba chỉ nhé.
+  M: Em cho chị vào giỏ đi chợ một khay cá hồi fillet với hai khay thịt ba chỉ nhé.
+  S: Em cho chị vào giỏ đi chợ một khay cá hồi phi lê, với hai khay thật ba chỉ nhé.
+  prev: -
+  next: Dạ em đã thêm một khay cá hồi phi lê và hai khay thịt ba chỉ, giỏ hàng hiện tổng cộng ba trăm hai mươi ba nghìn ạ. || [{'name': 'grocery.search', 'arguments': {'query': 'cá hồi'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_4984', 'quantity': 1}}
+#84 public_0545 [F] d=6/4
+  F: Lư dùng tôi còn thích bún bò màu nấu chưa tới một tiếng, nghe khách muốn học nấu.
+  M: Lưu Dung tuy còn thích bún bò, muốn nấu chưa tới một tiếng, nghe khách muốn học nấu.
+  S: Lưu giùm tui công thức bún bò mô nấu chưa tới một tiếng nghe, khách muốn học nấu.
+  prev: -
+  next: -
+#85 public_0546 [F] d=9/16
+  F: Thế giới số mà chín sáu chục nghìn thì mở VOV một, không thể đọc được, nghe tin bài họa làm chậm máy hiện.
+  M: Theo dân số một chín sáu trăm nghìn thì mở v o v một, không thì đọc tôi nghe tên máy bay hóa giám trong máy hen.
+  S: Thế giới số mà trên sáu chục nghìn thì mở VOV1, không thì đọc tôi nghe tin bài Hoài Lâm trong máy hen.
+  prev: Dạ Thế Giới Số đang năm mươi tám nghìn một trăm năm chục đồng, tăng hai phẩy tám phần trăm ạ. || [{'name': 'stocks.get_quote', 'arguments': {'symbol': 'ZTS'}}]
+  next: -
+#86 public_0549 [F] d=1/5
+  F: Dịch vụ anh nội dung ghi chú Lumina Tech qua tiếng Anh nha, anh gửi cho khách.
+  M: dịch cho mình nội dung ghi chú qua tiếng anh nha anh gửi cho.
+  S: Dịch giùm anh nội dung ghi chú Lumina Tech qua tiếng Anh nha, anh gửi cho khách.
+  prev: Dạ có hai note về meeting. Cái đầu là Meeting Lumina Tech: chốt timeline giai đoạn hai, xin thêm hai tuần để test, gửi lại báo giá trước thứ tư tuần s || [{'name': 'notes.list', 'arguments': {}}]
+  next: -
+#87 public_0550 [F] d=8/5
+  F: Ờ chết, sữa tối nay hết hộp chứ không phải một, trưa thêm cho đúng nha, tắt tivi luôn, tối chạy đến lại đây.
+  M: Ờ chết, sữa tối lấy hai hộp chứ không phải một, rửa thêm cho đúng nha. Tắt tivi luôn, tối chạy deadline đây.
+  S: Ơ… chết. Sữa tớ lấy hai hộp chứ không phải một, trừ thêm cho đúng nha. Tắt tivi luôn, tớ chạy deadline đây.
+  prev: Đã mở VTV1 rồi nha, đang chiếu Bản tin Chào buổi sáng tới tám giờ. || [{'name': 'tv.guide', 'arguments': {}}, {'name': 'tv.tune', 'arguments': {'channel': 'VTV1'}}]
+  next: -
+#88 public_0556:history:4 [H] d=6/6
+  F: Mày tạo lịch hẹn 10 giờ sáng mai cho cái đơn mắt nhất trong mấy đơn chửi giờ.
+  M: bạn tạo lịch những hàng mười giờ sáng mai cho cái đơn mắc nhất trong mấy đơn chủ
+  S: Vậy tạo lịch nhận hàng mười giờ sáng mai cho cái đơn mắc nhất trong mấy đơn chưa giao.
+  prev: Dạ mai anh có họp team từ hai giờ rưỡi tới ba giờ rưỡi chiều ở văn phòng ạ. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-12-05', 'date_to': '2026-12-05'}}]
+  next: Dạ em tạo lịch nhận bàn phím AKKO lúc mười giờ sáng mai rồi ạ. || [{'name': 'calendar.create_event', 'arguments': {'title': 'Nhận hàng bàn phím AKKO', 'start': '2026-12-05T10:00:00+07:00'}}]
+#89 public_0557:history:0 [H] d=11/9
+  F: Trên đây thì nhà cho anh các bạn còn sáu cân.
+  M: trình bày đi nhé trẻ em các bạn.
+  S: Check máy đi nha trang thứ ba tuần sau con.
+  prev: -
+  next: Thứ Ba hai mươi hai có bốn chuyến đi Nha Trang: tàu SE7 tám giờ sáng chín trăm hai mươi nghìn, xe Hoàng Vân một giờ chiều hai trăm rưỡi, xe Hoàng Vân  || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'TP.HCM', 'destination': 'Nha Trang', 'date': '2026-12-22'}}]
+#90 public_0558 [F] d=6/6
+  F: Em xóa giúp chị cái bia rượu cocktail trong danh sách đi chợ nhé. À thôi, mình bảo mai mới mua, cứ để đấy.
+  M: Em xóa giúp chị cái bìa di động của video trong danh sách đi chợ nhé. À thôi, mình bảo Mai mua, cứ để đấy.
+  S: Em xoá giúp chị cái bìa riêng Porto Bio trong danh sách đi chợ nhé, à thôi, Minh bảo mai mới mua, cứ để đấy.
+  prev: -
+  next: -
+#91 public_0559 [F] d=9/13
+  F: Rõ rồi, bảy giờ hai con khác chở họng về chợ Cái Răng, huy chỗ ở chợ rồi, giữ bên kia, bây giờ hồi nãy nghen.
+  M: Rồi, bạn cần hai con cá chứ không phải chờ cá răng, huy chúa, chợ rồi giữa bên kia, bây giờ hồi nãy ngang.
+  S: Lộn rồi, bãi gần hai công tác chở họng phải chở Cái Răng, huy chỗ ở chợ rồi giữ bên kệ giờ hồi nãy nghen.
+  prev: Dạ em giữ chỗ ở Bãi xe chợ Cái Răng từ chín giờ tới mười hai giờ trưa nay rồi ạ, ba tiếng hết bốn mươi lăm nghìn. || [{'name': 'parking.find', 'arguments': {'near': 'chợ Cái Răng'}}, {'name': 'parking.reserve', 'arguments': {'lot_id': 'lot_759', 'from_time': '2026-12
+  next: -
+#92 public_0561:history:0 [H] d=7/7
+  F: Mấy đơn đồ ăn mình đặt trên công ty cho bọn họ với protein súp Royale sau rồi.
+  M: Mấy đơn đồ ăn mình đặt trên công ty cho bộ họp với protest software sao rồi em?
+  S: Mấy đơn đồ ăn mình đặt trên công ty cho buổi họp với protest software sao rồi em?
+  prev: -
+  next: Hai đơn cho buổi họp Vertex Software đều đang chờ giao lên công ty: một đơn hai pizza hải sản 378 nghìn, một đơn sáu phần cơm tấm sườn bì chả 300 nghì || [{'name': 'food_delivery.order_history', 'arguments': {}}]
+#93 public_0564:history:2 [H] d=1/0
+  F: Đặt em hai vé chuyến bảy rưỡi nha, em với Sang đi ăn cưới.
+  M: Đặt em hai vé chuyến bảy rưỡi nha, em với Sang đi ăn cưới.
+  S: Đặt em hai vé chuyến bảy rưỡi nha, em với Trang đi ăn cưới.
+  prev: Sáng mai đi Hải Phòng có tàu HP1 lúc sáu giờ, một trăm linh năm nghìn; xe khách Đông Hải bảy giờ rưỡi, một trăm năm mươi nghìn; và xe khách Cát Bà Xan || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Hải Phòng', 'date': '2026-10-24'}}]
+  next: Em đặt xong hai vé xe khách Đông Hải bảy giờ rưỡi sáng mai, tổng ba trăm nghìn ạ. || [{'name': 'train_bus_tickets.book', 'arguments': {'trip_id': 'trip_786', 'seats': 2}}]
+#94 public_0565 [F] d=11/10
+  F: Bà xã em muốn nấu món gỏi chua, em coi món nào làm đẹp nhất thì mở cho chiếc dùm anh nha.
+  M: bà xã muốn nấu món của chloe cho boys em coi món nào làm dễ nhất thì mở trang web cho mẹ nha.
+  S: Vợ sẵn muốn nấu món của Chloe Chủ Pois, em coi món nào làm rẻ nhất thì mở chi tiết giùm anh nha.
+  prev: Dạ, em đã đặt nhắc lúc tám giờ tối nay: gọi Sếp David confirm lịch meeting tuần sau. || [{'name': 'reminders.create', 'arguments': {'content': 'Gọi Sếp David confirm lịch meeting tuần sau', 'time': '2026-11-17T20:00:00+07:00'}}]
+  next: -
+#95 public_0566:history:0 [H] d=7/7
+  F: Không dám tới mấy đường của chính mẹ tới đâu rồi nha.
+  M: cậu vẫn chuẩn bị được một trên mẹ tới đâu rồi nha.
+  S: Coi giùm tôi mấy đơn bô trên mạng tới đâu rồi nha.
+  prev: -
+  next: Dạ có hai đơn: áo khoác gió nam CoolWear 499 nghìn đang giao, còn tai nghe Bluetooth Soundcore R50i giá 450 nghìn đã giao tới hôm 26 tháng 11 rồi ạ. || [{'name': 'ecommerce.order_status', 'arguments': {}}]
+#96 public_0567 [F] d=8/8
+  F: Chị em giúp em, chị em Phương toa mua gần trường em rồi lưu lại tên là cho em bài nghe.
+  M: Tìm giúp em, tìm phương thuốc mua gần trường em rồi lưu lại, tên lại cho in bài nha.
+  S: Tìm giúp em tiệm phun tô mô gần trường em, rồi lưu lại tên là cho anh bài nghe.
+  prev: -
+  next: -
+#97 public_0570 [F] d=2/1
+  F: Mấy món canh chua em vừa đọc, lưu dùm thôi. Mấy món nấu chưa tới bốn chục phút thôi nha.
+  M: Mấy món canh chua em vừa đọc, lưu dùm thôi. Mấy món nấu chưa tới bốn mươi phút thôi nha.
+  S: Mấy món canh chua em vừa đọc, lưu giùm tôi mấy món nấu chưa tới bốn chục phút thôi nha.
+  prev: Dạ mình đi Xe buýt số 11 Cái Răng - Ninh Kiều, lên ở Chợ Cái Răng xuống Bến Ninh Kiều, ba trạm, khoảng ba mươi phút, vé tám nghìn một lượt ạ. || [{'name': 'public_transit.find_routes', 'arguments': {'origin': 'chợ Cái Răng', 'destination': 'bến Ninh Kiều'}}]
+  next: -
+#98 public_0570:history:0 [H] d=4/6
+  F: Mẹ ơi, chị ấy giùm tôi mấy món canh chua cay, tối nay tôi nấu cho cả nhà.
+  M: tôi mang món canh chua cay tối nay tôi nấu cho cả nhà.
+  S: Em ơi kiếm giùm tôi mấy món canh chua coi, tối nay tôi nấu cho cả nhà.
+  prev: -
+  next: Dạ có bốn món: Canh chua tôm hai người ăn, nấu hai mươi lăm phút; Canh chua cá lóc bốn người, bốn mươi phút; Canh chua cá bông lau bốn người, bốn mươi || [{'name': 'recipes.search', 'arguments': {'query': 'canh chua'}}]
+#99 public_0571 [F] d=5/5
+  F: Trạng tiền thắng này mà dưới một triệu thì cày tự động trả dùm tôi, không thì thôi.
+  M: Càng tiện, thánh này mà dưới một triệu thì cài tự động trả dùm thôi, không thì thôi.
+  S: Đèn tháng này mà dưới một triệu thì cài tự động trả giùm tôi, không thì thôi.
+  prev: -
+  next: -
+#100 public_0572 [F] d=3/3
+  F: Lucas ở lại thêm hai đêm rồi, Huệ dùng tour vé của Lucas với bật đèn phòng khách luôn hỉ.
+  M: Lucas ở lại thêm hai đêm rồi. Huỷ dùng túi vé của Lucas với bật đèn phòng khách luôn huỷ.
+  S: Lucas ở lại thêm hai đêm rồi, huỷ giùm tui vé của Lucas với bật đèn phòng khách luôn hỉ.
+  prev: Dạ em đã đặt hai vé JetXanh ngày hai mươi ba, chuyến chín giờ sáng và chuyến bảy giờ tối, mỗi chuyến một vé ạ. || [{'name': 'flights.book', 'arguments': {'flight_id': 'fl_941', 'passengers': 1}}, {'name': 'flights.book', 'arguments': {'flight_id': 'fl_186', 'passe
+  next: -
+#101 public_0575 [F] d=0/0
+  F: Nhẫn vàng dưới hai trăm triệu một lượng thì thêm vô danh sách mua sắm, không thì đặt hai vé bên Ocean Pearl Theatre nghe.
+  M: Nhẫn vàng dưới hai trăm triệu một lượng thì thêm vô danh sách mua sắm, không thì đặt hai vé bên Ocean Pearl Theatre nghe.
+  S: Nhẫn vàng dưới hai trăm triệu một lượng thì thêm vô danh sách mua sắm, không thì đặt hai vé bên Ocean Pearl Theatre nghe.
+  prev: -
+  next: -
+#102 public_0576:history:4 [H] d=1/2
+  F: Hoan trả lời Nhi đã để em tính tiền cái.
+  M: Hoan trả lời Nhi đã để em tính chuyện khác.
+  S: Khoan, trả lời Nhi đã, để em tính tiền cái.
+  prev: Dạ Nhi rủ chị tối nay đi nghe Sophie Martin đánh piano, Nhi nói Nhi đi được và nhắn chị trả lời sớm ạ. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_909'}}]
+  next: Dạ vâng, em chưa trả lời Nhi ạ. || 
+#103 public_0581:history:4 [H] d=3/3
+  F: Ok, nạp theo năm chục nghìn cho hệ đi em.
+  M: ok làm theo năm chục nghìn giới thiệu đi em.
+  S: Ok, nạp thêm năm chục nghìn giá vé đi em.
+  prev: Dạ đi Metro số một từ ga Khu Công nghệ cao tới ga Thảo Điền là sáu trạm, khoảng mười tám phút, giá vé mười hai nghìn ạ. || [{'name': 'public_transit.find_routes', 'arguments': {'origin': 'Khu Công nghệ cao', 'destination': 'Thảo Điền'}}]
+  next: Dạ em đã nạp năm mươi nghìn, thẻ của anh giờ còn chín mươi tám nghìn ạ. || [{'name': 'public_transit.topup_card', 'arguments': {'amount': 50000}}]
+#104 public_0583 [F] d=8/7
+  F: Đủ rồi thì chọn luôn luôn, em giao về nhà dùng không cho được app voucher nhé em.
+  M: Đủ rồi thì chớ luôn luôn ám, giao về nhà cũng không cho được gặp bố chơi nhé.
+  S: Đủ rồi thì chớ đơn luôn em, giao về nhà đúng hôm chờ giữ cái voucher nhé.
+  prev: Dạ em đã thêm hai túi gạo ST25 túi năm ký, giỏ hiện ba trăm bảy mươi nghìn, đủ điều kiện voucher rồi ạ. || [{'name': 'grocery.search', 'arguments': {'query': 'gạo ST25'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_697', 'quantity': 2}
+  next: -
+#105 public_0583:history:0 [H] d=6/5
+  F: Em mở cái email vô trò đi chơi của Min-Max, đọc em nghe với.
+  M: Em mở cái email vô chơi đi chơi của Minh má đọc đến ngay với.
+  S: Em mở cái email voucher đi chợ của MinhMart, đọc anh nghe với.
+  prev: -
+  next: Dạ email MinhMart: voucher giảm năm mươi nghìn cho đơn đi chợ online từ ba trăm nghìn, chỉ áp dụng cho đơn giao lúc mười giờ sáng hoặc bốn giờ chiều C || [{'name': 'email.list', 'arguments': {}}, {'name': 'email.read', 'arguments': {'email_id': 'mail_3307'}}]
+#106 public_0583:history:2 [H] d=7/12
+  F: Thể cho N hai túi giao S T năm bao giò, xem đủ ba trăm nghìn chưa?
+  M: Thẻ cho em hai tuổi nhỏ em bé đang bơi do học xem được 300.000 chú.
+  S: Thế cho em hai túi giao SJC vào giỏ xem đủ ba trăm nghìn chưa.
+  prev: Dạ email MinhMart: voucher giảm năm mươi nghìn cho đơn đi chợ online từ ba trăm nghìn, chỉ áp dụng cho đơn giao lúc mười giờ sáng hoặc bốn giờ chiều C || [{'name': 'email.list', 'arguments': {}}, {'name': 'email.read', 'arguments': {'email_id': 'mail_3307'}}]
+  next: Dạ em đã thêm hai túi gạo ST25 túi năm ký, giỏ hiện ba trăm bảy mươi nghìn, đủ điều kiện voucher rồi ạ. || [{'name': 'grocery.search', 'arguments': {'query': 'gạo ST25'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_697', 'quantity': 2}
+#107 public_0584 [F] d=0/2
+  F: Lucas Bennett cũng đi nữa. Em đặt hai vé chuyến mười hai giờ trưa nha.
+  M: lucas bennett cũng đi nữa em đặt hai bé chín mười hai giờ trưa nha.
+  S: Lucas Bennett cũng đi nữa. Em đặt hai vé chuyến mười hai giờ trưa nha.
+  prev: Dạ thứ năm tuần sau có ba chuyến tàu: SE3 tám giờ sáng, sáu trăm tám mươi nghìn; SE1 mười hai giờ trưa, bảy trăm năm mươi nghìn; SE7 bảy giờ tối, chín || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'TP.HCM', 'destination': 'Nha Trang', 'date': '2026-12-03', 'type': 'train'}}]
+  next: -
+#108 public_0584:history:0 [H] d=1/1
+  F: Trên tàu Sài Gòn đi Nha Trang, thứ năm tuần sau.
+  M: Tiền tàu Sài Gòn đi Nha Trang thứ năm tuần sau.
+  S: Tìm tàu Sài Gòn đi Nha Trang thứ năm tuần sau.
+  prev: -
+  next: Dạ thứ năm tuần sau có ba chuyến tàu: SE3 tám giờ sáng, sáu trăm tám mươi nghìn; SE1 mười hai giờ trưa, bảy trăm năm mươi nghìn; SE7 bảy giờ tối, chín || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'TP.HCM', 'destination': 'Nha Trang', 'date': '2026-12-03', 'type': 'train'}}]
+#109 public_0585 [F] d=5/4
+  F: Trời nay, tôi ăn ở quận 7 rồi, hủy giùm tôi cái đơn đồ ăn giao về nhà nghe.
+  M: Hôm nay tôi ăn ở một shop rồi, hủy giùm tôi cái đơn đồ ăn giao về nhà nha.
+  S: Trưa nay tôi ăn ở workshop rồi, huỷ giùm tôi cái đơn đồ ăn giao về nhà nghen.
+  prev: -
+  next: -
+#110 public_0586:history:0 [H] d=2/3
+  F: Con coi chừng cô tháng này còn mấy cái hóa đơn chưa đóng nha.
+  M: Con coi, dụng cụ tháng này còn mấy cái hoa đơn chưa đóng nha.
+  S: Con coi giùm cô tháng này còn mấy cái hoá đơn chưa đóng nha.
+  prev: -
+  next: Dạ còn bốn hóa đơn: truyền hình S+ một trăm năm mươi nghìn hạn mười tám, internet Vitech Telecom hai trăm hai mươi lăm nghìn hạn mười lăm, tiền điện t || [{'name': 'bill_payment.list_bills', 'arguments': {}}]
+#111 public_0586:history:8 [H] d=0/1
+  F: Cái phim ngắn tối thứ ba đó còn nhiều vé không con?
+  M: cái phim ngắn tối thứ ba đó còn nhiều vé không ta.
+  S: Cái phim ngắn tối thứ Ba đó còn nhiều vé không con?
+  prev: Dạ bốn vé đêm nhạc Jazz là một triệu tám trăm nghìn, còn bốn vé stand-up là một triệu hai trăm nghìn ạ. || 
+  next: Dạ Liên hoan phim ngắn còn tám mươi vé lận cô. || 
+#112 public_0587:history:2 [H] d=13/14
+  F: Thứ bảy vừa rồi, Huế được khách mời mua hàng ở chỗ Lucas để biết tiếng ngoại.
+  M: Thứ ba, tôi ra ga Huế đưa khách rồi mới qua chỗ hàng lô cá để biết tiếng mua em.
+  S: Thứ bảy tui ra ga Huế, đưa khách rồi mới qua chỗ hẹn Lucas đi meeting mô em.
+  prev: Dạ có hai mail chưa đọc: StayHuế Booking báo khách Emily nhận phòng chiều thứ sáu, và Lucas Reed hẹn anh tám giờ sáng thứ bảy gặp nhau ở Greenhill Gol || [{'name': 'email.list', 'arguments': {'unread_only': True}}]
+  next: Dạ từ Ga Huế tới Greenhill Golf Club có hai tuyến: Tuyến 6 khoảng bốn mươi tám phút, vé mười hai nghìn; Tuyến 15 khoảng sáu mươi bốn phút, vé chín ngh || [{'name': 'public_transit.find_routes', 'arguments': {'origin': 'Ga Huế', 'destination': 'Greenhill Golf Club'}}]
+#113 public_0588 [F] d=9/12
+  F: em tìm trên mua đồ giúp anh ổ cắm chuyển đổi của nockwin travel gear dưới 160 ngàn cái hai.
+  M: em tìm trang mua đồ giúp anh ồ cám truyền đời của north wind travel gear dưới bốn trăm rưỡi nghìn tháng hai.
+  S: Em tìm trên mua đồ giúp anh cổ cám chuyển đổi của Northwind Travel Gear, ví bốn trăm rưỡi nghìn tháng hai.
+  prev: -
+  next: -
+#114 public_0591:history:0 [H] d=0/0
+  F: Em xem giúp chị, hôm nay có ai chuyển khoản vào tài khoản không?
+  M: Em xem giúp chị hôm nay có ai chuyển khoản vào tài khoản không?
+  S: Em xem giúp chị hôm nay có ai chuyển khoản vào tài khoản không?
+  prev: -
+  next: Hôm nay có bốn khoản vào chị ạ: chị Đỗ Thị Yến, chị Nguyễn Thu Nga và anh Lê Quang Huy mỗi người hai trăm năm mươi nghìn, ghi là tiền vé kịch; còn anh || [{'name': 'banking.list_transactions', 'arguments': {}}]
+#115 public_0592:history:0 [H] d=3/3
+  F: Con ơi, coi giùm cô sáng đi, có khỏe đơn mua sắp tới hạn không, rứa?
+  M: Con ơi, coi giùm cô sáng đi có hóa đơn mua sách tới hạn không nữa.
+  S: Con ơi coi giùm cô sáng ni có hoá đơn mô sắp tới hạn không rứa?
+  prev: -
+  next: Dạ cước điện thoại SaoTel hai trăm lẻ ba nghìn hạn mùng năm tháng mười hai ạ, còn tiền điện, nước với truyền hình thì hạn từ mùng mười trở đi. || [{'name': 'bill_payment.list_bills', 'arguments': {}}]
+#116 public_0594 [F] d=6/5
+  F: Dịch qua tiếng Anh dùm anh câu: "Tối mai, bạn ấy rưỡi gặp nhau ở West Gaymont." À thôi, khỏi, anh biết tiếng Việt mà.
+  M: Dịch qua tiếng Anh dùm anh câu 'tối mai bảy rưỡi gặp nhau ở Westminster' à thôi khỏi, ảnh biết tiếng Việt mà.
+  S: Dịch qua tiếng Anh giùm anh câu tối mai bảy rưỡi gặp nhau ở Westgate Mall, à thôi khỏi, ảnh biết tiếng Việt mà.
+  prev: -
+  next: -
+#117 public_0595:history:2 [H] d=1/2
+  F: Ok, chị Anh Long hai trăm nghìn tiền vé xem phim luôn nha.
+  M: Ok, chuyển hành long hai trăm nghìn tiền vé xem phim luôn nha.
+  S: Ok, chuyển anh Long hai trăm nghìn tiền vé xem phim luôn nha.
+  prev: Dạ ví của chị còn sáu trăm hai mươi nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+  next: Dạ em đã chuyển hai trăm nghìn cho anh Long rồi, ví của chị giờ còn bốn trăm hai mươi nghìn ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Long'}}, {'name': 'ewallet.transfer', 'arguments': {'contact_id': 'c_837', 'amount': 200000, 'not
+#118 public_0596:history:0 [H] d=1/1
+  F: Kiếm dùm anh mấy món ăn sáng làm cho nhanh nha.
+  M: Kiếm giùm anh mấy món ăn sáng làm cho nhanh nha.
+  S: Kiếm giùm anh mấy món ăn sáng làm cho nhanh nha.
+  prev: -
+  next: Dạ có bốn món ăn sáng: bánh pancake chuối hai mươi lăm phút, smoothie chuối yến mạch mười phút, bánh mì trứng ốp la mười lăm phút, và smoothie chuối b || [{'name': 'recipes.search', 'arguments': {'query': 'ăn sáng'}}]
+#119 public_0598 [F] d=14/13
+  F: Lễ tưởng niệm của bốn quân bào áo thoi ở số 54 Nguyễn Công Trứ đã tên là bốn bào Kevin Park ngày.
+  M: liền túi cuốn bún bò ao tho ở số năm mươi tư nguyễn công trứ đã tên là bún bò kevin park ngay.
+  S: Lưu giùm tui cái quán bún bò Arthur ở số năm mươi tư Nguyễn Công trứ, đặt tên là Bún bò Kevin Park nghe.
+  prev: -
+  next: -
+#120 public_0599:history:0 [H] d=3/2
+  F: Em có giùm anh máy vé máy bay, anh đặt cho khách với.
+  M: Em coi giùm anh mấy vé máy bay anh đặt cho khách với.
+  S: Em coi giùm anh mấy vé máy ba anh đặt cho khách với.
+  prev: -
+  next: Dạ có ba vé Huế đi Hà Nội ngày hai mốt: Daniel Lee bay JetXanh chín giờ sáng, Daniel Lim bay Sen Air hai giờ chiều, Andrew Scott hai người bay JetXanh || [{'name': 'flights.my_bookings', 'arguments': {}}]
+#121 public_0600 [F] d=2/4
+  F: Ờ, giỏ vậy là đủ rồi em. Ờ chúc đơn giùm anh. Còn giờ giao thì sớm hơn bữa tối với gia đình một tiếng nha.
+  M: Ờ, gió vậy là đủ rồi em. Ờ, chúc đơn vị may mắn. Còn giờ giao thì sớm hơn bữa tối với gia đình một tiếng nha.
+  S: Ờ giỏ vậy là đủ rồi em, chốt đơn giùm anh, còn giờ giao thì sớm hơn bữa tối với gia đình một tiếng nha.
+  prev: Dạ em thêm một túi Gạo ST25 5kg, một trăm tám mươi lăm nghìn. Giỏ giờ có ba hộp sữa với một túi gạo anh nha. || [{'name': 'grocery.search', 'arguments': {'query': 'gạo ST25'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_595', 'quantity': 1}
+  next: -
+#122 public_0606:history:2 [H] d=0/1
+  F: Lấy quán nhanh nhất, một tô bún bò giò nha.
+  M: Lấy khoản nhanh nhất, một tô bún bò giò nha.
+  S: Lấy quán nhanh nhất một tô bún bò giò nha.
+  prev: Có bốn quán nè: Pizza Nhà Làm giao khoảng bốn mươi phút, Bún bò Huế Cô Ba mười lăm phút, Cơm tấm Sài Gòn 168 hai mươi phút, Trà sữa Nhà Mèo hai mươi l || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}]
+  next: Xong rồi nha, đã đặt một Bún bò giò bốn mươi lăm nghìn ở Bún bò Huế Cô Ba, khoảng mười lăm phút nữa giao tới. || [{'name': 'food_delivery.get_menu', 'arguments': {'restaurant_id': 'rest_899'}}, {'name': 'food_delivery.place_order', 'arguments': {'restaurant_id': 
+#123 public_0608 [F] d=11/8
+  F: Làm một cơ vi rồi, gửi lên một bao và đạt chuyển làm một trăm mười nghìn bằng tài khoản thanh toán nhé.
+  M: Làn một cơ mới rồi, huy lên một bao mưa đặt, chuyển làn một trăm mười nghìn băng tài khoản trên toán nhé.
+  S: Lan bỏ cơm về rồi, ví để bún bò vừa đặt, chuyển Lan một trăm mười nghìn bằng tài khoản thanh toán nhé.
+  prev: Em đặt rồi anh, hai bún bò Huế đặc biệt ở Bún bò Huế Cô Ba, tổng một trăm mười nghìn, giao về 25 Láng Hạ, trả tiền mặt khi nhận. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}, {'name': 'food_delivery.get_menu', 'arguments': {'restaurant_id': 'rest_281'}}, {'name':
+  next: -
+#124 public_0613:history:2 [H] d=0/3
+  F: Thêm vô danh sách đi chợ một bó rau thơm giùm em.
+  M: Thêm vào danh sách đi chợ một bó rau thơm vừa lên.
+  S: Thêm vô danh sách đi chợ một bó rau thơm giùm em.
+  prev: Dạ thứ Năm em có hai lịch: mười giờ rưỡi sáng đi chơi công viên và ba giờ chiều hẹn cà phê với Minh. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-11-12', 'date_to': '2026-11-12'}}]
+  next: Dạ em đã thêm một bó rau thơm vào danh sách đi chợ. || [{'name': 'shopping_list.add', 'arguments': {'name': 'rau thơm', 'quantity': 1}}]
+#125 public_0615:history:0 [H] d=1/0
+  F: Này, tìm cho tôi mấy món nấu với trứng xem nào. Món trứng đi.
+  M: Này, tìm cho tôi mấy món nấu với trứng xem nào, món trứng đi.
+  S: Này, tìm cho tôi mấy món nấu với trứng xem nào, món trứng nhé.
+  prev: -
+  next: Dạ có ba món ạ: Bánh pancake chuối hai mươi lăm phút, Thịt kho trứng chín mươi phút, và Trứng chiên cà chua mười lăm phút ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'trứng'}}]
+#126 public_0616 [F] d=5/9
+  F: Coi như mẹ mấy giao dịch của các thế vừa chuyển cọc cho Liam Foster nha.
+  M: Có nhiều máy giao dịch của các thế vừa chuyển động.
+  S: Coi giùm anh mấy giao dịch của cái thẻ vừa chuyển cọc cho Leon Foster nha.
+  prev: Thẻ Đại Việt Bank không đủ hai triệu nên em chuyển hai triệu cho Liam Foster từ thẻ Thịnh Phát Bank rồi, thẻ đó còn bảy triệu tám trăm nghìn anh. || [{'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_5058', 'beneficiary_id': 
+  next: -
+#127 public_0618 [F] d=5/2
+  F: mã lộn nặng nhất đó đặt báo khi nó lên lại giá vốn rồi gọi em miss wonderful cho tôi nghe.
+  M: mã lỗ nặng nhất đó đặt báo khi nó lên lại giá vốn, rồi gọi miss wonderful cho tôi nghe.
+  S: Mã lỗ nặng nhất đó đặt báo khi nó lên lại giá vốn, rồi gọi Mrs. Watanabe cho tôi nghen.
+  prev: Dạ có hai cuộc: Mrs. Watanabe gọi lúc chín giờ mười lăm, mình có nghe; Mr. Watanabe gọi lúc mười một giờ bốn mươi, mình bị nhỡ. || [{'name': 'phone.recent_calls', 'arguments': {}}]
+  next: -
+#128 public_0622:history:0 [H] d=5/5
+  F: Có trên app đồ ăn của quán bê công Riverside Grill không? Tớ đang ngồi đó nè.
+  M: có trên app đồ ăn có quán bacon riverside hill không? tôi đang ngồi đó nè.
+  S: Coi trên app đồ ăn có quán Mekong Riverside Grill không, tôi đang ngồi đó nè.
+  prev: -
+  next: Dạ có quán Mekong Riverside Grill, bốn sao rưỡi ạ. Còn một quán tên gần giống là Mekong Riverside Café nữa ạ. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}]
+#129 public_0622:history:8 [H] d=1/1
+  F: loại thằng út cho tôi cái coi.
+  M: Gọi thằng út cho tôi cái coi.
+  S: Gọi thằng Út cho tôi cái coi.
+  prev: Dạ ví mình còn bảy trăm nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+  next: Dạ em đang gọi cho Thằng Út ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Thằng Út'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_576'}}]
+#130 public_0623:history:0 [H] d=1/3
+  F: Em ơi, chị đang theo mấy cái thói quen gì?
+  M: Em chỉ đang theo mấy cái thói quen vậy.
+  S: Em ơi, chị đang theo mấy cái thói quen vậy?
+  prev: -
+  next: Chị đang theo năm thói quen: học từ vựng tiếng Anh, không uống trà sữa, đi bộ 8 nghìn bước, đọc sách 30 phút và ngủ trước 11 giờ ạ. || [{'name': 'habit_tracker.list_habits', 'arguments': {}}]
+#131 public_0627:history:2 [H] d=6/0
+  F: Ờ, tháng này chị cho chuyển tiền xanh cho cháu anh à?
+  M: Ờ thật ra này chỉ cho chuyển tiền sang cho cháu Minh à.
+  S: Ơ, tháng này chị chưa chuyển tiền xăng cho cháu Minh à?
+  prev: Dạ tài khoản thanh toán có ba khoản: ngày năm tháng mười chuyển chủ nhà Phạm Hùng bốn triệu năm trăm nghìn tiền nhà; ngày hai lăm tháng chín chuyển Lê || [{'name': 'banking.get_balance', 'arguments': {}}, {'name': 'banking.list_transactions', 'arguments': {'account_id': 'acc_661'}}, {'name': 'banking.li
+  next: Dạ đúng ạ, tháng mười chị chưa chuyển khoản tiền xăng nào cho Lê Minh, lần gần nhất là sáu trăm nghìn hôm hai lăm tháng chín. || 
+#132 public_0629:history:0 [H] d=2/0
+  F: Tìm giùm em mấy món nấu với trứng nha, đói xỉu rồi.
+  M: tìm giùm em mấy món nấu với trứng nha, đói xỉu rồi.
+  S: Tìm giùm em mấy món nấu với trứng giao đó xỉu rồi.
+  prev: -
+  next: Có bốn món có trứng: Bánh pancake chuối hai mươi lăm phút, Cơm chiên trứng lạp xưởng hai mươi phút, Trứng chiên cà chua mười lăm phút, và Trứng hấp th || [{'name': 'recipes.search', 'arguments': {'query': 'trứng'}}]
+#133 public_0630 [F] d=11/0
+  F: Luật sư nhận phòng rồi, vợ đến nghe, nghe sơ khai báo thật đó với kết thúc riêng, gửi xe ở Đại Nội dùm anh.
+  M: Lucas tự nhận phần lời, vội đón nghe, nhận sơ khai báo thất đó với kết thúc việc đuổi xe ở đại nội Dâm Man.
+  S: Lucas tự nhận phòng rồi, vội đón nghe. Em xoá cái báo thức đó với kết thúc cho em gửi xe ở Đại Nội giùm anh.
+  prev: Dạ Huế giờ trời có mây, khoảng hai mươi chín độ, không có mưa anh nờ. || [{'name': 'weather.get_current', 'arguments': {}}]
+  next: -
+#134 public_0630:history:4 [H] d=1/1
+  F: Số của Emily là số màu em.
+  M: Số của Emily là số màu đen.
+  S: Số của Emily là số mô em?
+  prev: Dạ đã đặt báo thức mười giờ mười lăm tối nay, nhãn ra Đại Nội đón Lucas. || [{'name': 'alarm.create', 'arguments': {'time': '2026-12-13T22:15:00+07:00', 'label': 'ra Đại Nội đón Lucas'}}]
+  next: Dạ số của Emily là 09437681851. || [{'name': 'contacts.search', 'arguments': {'query': 'Emily'}}]
+#135 public_0635 [F] d=4/0
+  F: Mà con mấy quả trứng bữa sáng cũng bị thừa hàng xe, em trừ trong tủ bếp rồi hỉ, chưa trừ chưa thì trừ luôn cho mạnh nha.
+  M: Mà con mấy quả trứng vừa sáng của Peter Hansen em trừ trong tủ bếp rồi hỉ chưa thì trừ luôn dùm anh nha.
+  S: Mà con, mấy quạt trứng bữa sáng của Peter Hansen em trừ trong tủ bếp rồi hỉ, chưa thì trừ luôn giùm anh nghe.
+  prev: Dạ em trừ rồi anh: trứng gà còn bảy quả, sữa tươi còn bốn hộp. || [{'name': 'pantry.list_items', 'arguments': {}}, {'name': 'pantry.consume', 'arguments': {'item_id': 'pan_284', 'quantity': 4}}, {'name': 'pantry.cons
+  next: -
+#136 public_0636:history:2 [H] d=2/2
+  F: Và nhắc anh trước cái hẹn đầu mười lăm phút nha.
+  M: và nhé anh trước cái hẹn đầu mười lăm phút nghe.
+  S: Ờ, nhắc anh trước cái hẹn đầu mười lăm phút nghe.
+  prev: Dạ tối nay anh còn hai lịch: chín giờ bốn lăm đón Lucas ở ga Huế, và mười giờ rưỡi gọi Emily hỏi review ạ. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-12-02', 'date_to': '2026-12-02'}}]
+  next: Dạ em đặt nhắc lúc chín giờ ba mươi tối nay: đón Lucas ở ga Huế. || [{'name': 'reminders.create', 'arguments': {'content': 'Đón Lucas ở ga Huế', 'time': '2026-12-02T21:30:00+07:00'}}]
+#137 public_0639:history:2 [H] d=2/2
+  F: Tối bữa đó tôi có order đồ ăn nữa không?
+  M: Tối bữa đó tui có order đồ ăn nữa hông?
+  S: Tối buổi đó tôi có order đồ ăn nữa hông?
+  prev: Tuần này em học speaking với James Wong vào tối thứ Tư 18/11, từ bảy giờ tới tám giờ rưỡi ở phòng tự học KTX khu B. Còn buổi writing với James Wang là || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-11-16', 'date_to': '2026-11-22'}}]
+  next: Tối thứ Tư em đặt hai đơn: sáu giờ bốn mươi là một bún bò Huế đặc biệt với hai chả cua ở Bún bò Huế Cô Ba, chín giờ năm phút là hai ly trà sữa trân ch || [{'name': 'food_delivery.order_history', 'arguments': {}}]
+#138 public_0643:history:0 [H] d=8/8
+  F: Em thấy chị em cái này bài không đi Huế đi bữa chị bút mấy giờ bay vậy?
+  M: em thấy chị cánh em hai hôm đi huế chị búp mấy giờ bay vậy
+  S: Em check giùm chị cái máy bay hôm đi Huế, bữa chị book mấy giờ bay vậy?
+  prev: -
+  next: Dạ chị có một vé JetXanh từ Sài Gòn đi Huế ngày thứ bảy 5/12, cất cánh 9 giờ sáng, tới Huế 11 giờ 10 ạ. || [{'name': 'flights.my_bookings', 'arguments': {}}]
+#139 public_0644 [F] d=1/0
+  F: Còn hai mã NOA, WITFELL gửi trong tin nhắn, hôm nay mã mua tăng mạnh hơn em.
+  M: Còn hai mã Noah Whitfield gửi trong tin nhắn hôm nay, mã mô tăng mạnh hơn em.
+  S: Còn hai mã Noah Whitfield gửi trong tin nhắn, hôm ni mã mô tăng mạnh hơn em?
+  prev: Dạ anh đang giữ năm trăm cổ phiếu ZKN giá ba mươi tư nghìn một trăm năm mươi, và hai trăm cổ phiếu ZDH giá hai mươi sáu nghìn chín trăm. || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+  next: -
+#140 public_0644:history:0 [H] d=6/7
+  F: Em đọc về mai, mai chân răng mới sáng đi.
+  M: anh đọc điểm anh mấy kinh doanh mới sáng.
+  S: Em đọc giùm anh mấy tin nhắn mới sáng ni.
+  prev: -
+  next: Dạ có ba tin. Noah Whitfield nhắn hai mã hôm qua nói là ZTS với ZTP. Noah Whitford thấy ZDH với Vitech đang hay, mai check-out sớm. Chị Hà dặn trưa an || [{'name': 'sms.read_recent', 'arguments': {}}]
+#141 public_0648 [F] d=4/6
+  F: Đặt vé xe khách cho anh với chị John đi gặp Prepaid Consulting, chuyến nào tới kịp giờ thì ghé anh chọn nhé.
+  M: Đặt vé xe khách cho anh với chị John đi gặp Bright Path Consulting chứ nào tới kịp giờ thì ghé ăn trộm nha.
+  S: Đặt vé xe khách giúp anh với chị trần đi gặp Brightpath Consulting, chuyến nào tới kịp giờ thì ghé anh chọn nha.
+  prev: Dạ thứ Hai giờ lịch anh trống rồi. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-11-02', 'date_to': '2026-11-02'}}]
+  next: -
+#142 public_0650:history:2 [H] d=4/5
+  F: Cái gọi anh Sam Kim xóa đi, anh nghĩ là mơ ra rồi.
+  M: cái gọi anh xem phim xóa đi anh nghĩ là.
+  S: Cái gọi anh Sam Kim, xoá đi, ảnh nghĩ là mươi giá rồi.
+  prev: Ngày mai bạn có ba nhắc việc: chín giờ sáng gọi chị Sarah Kim hỏi về mã ZKN, mười giờ rưỡi gọi anh Sam Kim hỏi về mã ZMX, và hai giờ chiều nộp bài tập || [{'name': 'reminders.list', 'arguments': {'date': '2026-11-07'}}]
+  next: Mình đã xoá nhắc việc gọi anh Sam Kim hỏi về mã ZMX rồi nhé. || [{'name': 'reminders.delete', 'arguments': {'reminder_id': 'rem_417'}}]
+#143 public_0652:history:0 [H] d=0/2
+  F: Đi xe bốn chỗ từ homestay ra ga Huế bao nhiêu em?
+  M: Đi xe bốn chỗ từ Homestay Raga Huế bao nhiêu em?
+  S: Đi xe bốn chỗ từ homestay ra ga Huế bao nhiêu em?
+  prev: -
+  next: Dạ xe bốn chỗ khoảng tám mươi lăm nghìn, tài xế tới trong bảy phút ạ. || [{'name': 'ride_hailing.get_quotes', 'arguments': {'pickup': 'Homestay Garden House, 9 Nguyễn Sinh Cung, Huế', 'dropoff': 'Ga Huế', 'vehicle': 'car4'}
+#144 public_0652:history:4 [H] d=2/0
+  F: Gọi dùm anh số không chín không năm một hai ba bốn năm sáu bảy, vừa anh đó.
+  M: Gọi dùm anh số 09051234567 vừa anh đó.
+  S: Gọi giùm anh số không chín không năm, một hai ba, bốn năm sáu bảy, vợ anh đó.
+  prev: Dạ em đã đặt xe bốn chỗ từ homestay ra ga Huế, thanh toán bằng ví rồi anh. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': 'Homestay Garden House, 9 Nguyễn Sinh Cung, Huế', 'dropoff': 'Ga Huế', 'vehicle': 'car4', 'paym
+  next: Dạ em đang gọi số 09051234567 cho anh ạ. || [{'name': 'phone.call', 'arguments': {'phone_number': '09051234567'}}]
+#145 public_0652:history:6 [H] d=1/3
+  F: Trưa rồi, quán cô Ba có những món gì em?
+  M: Trưa rồi, Vancouver có những món gì em?
+  S: Trưa rồi, quán Cô Ba có những món chi em?
+  prev: Dạ em đang gọi số 09051234567 cho anh ạ. || [{'name': 'phone.call', 'arguments': {'phone_number': '09051234567'}}]
+  next: Dạ Bún bò Huế Cô Ba có Bún bò Huế đặc biệt năm mươi lăm nghìn, Bún bò giò bốn mươi lăm nghìn và Chả cua mười lăm nghìn ạ. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}, {'name': 'food_delivery.get_menu', 'arguments': {'restaurant_id': 'rest_588'}}]
+#146 public_0652:history:14 [H] d=7/8
+  F: Tem này new full list, ngày hôm trước buổi tối luôn.
+  M: Thêm vài ni vô lít, nghe chưa buổi tối luôn.
+  S: Thêm bài ni vô list Nhạc chill buổi tối luôn.
+  prev: Dạ em đã chỉnh âm lượng xuống mức ba rồi anh. || [{'name': 'music.control', 'arguments': {'action': 'volume', 'volume': 3}}]
+  next: Dạ em đã thêm Nơi này có anh vào playlist Nhạc chill buổi tối ạ. || [{'name': 'music.add_to_playlist', 'arguments': {'track_id': 'trk_317', 'playlist_id': 'pl_743'}}]
+#147 public_0652:history:16 [H] d=4/3
+  F: Chiều nay, Huế mưa lăm răm, khách Tây như mát quá trời.
+  M: Chiều nay, Huế mưa lâm râm, khách tây nhi mát quá trời.
+  S: Chiều ni Huế mưa lâm râm, khách Tây nghe mát quá trời.
+  prev: Dạ em đã thêm Nơi này có anh vào playlist Nhạc chill buổi tối ạ. || [{'name': 'music.add_to_playlist', 'arguments': {'track_id': 'trk_317', 'playlist_id': 'pl_743'}}]
+  next: Dạ mưa nhẹ chiều Huế dễ chịu thiệt, khách được bữa đi dạo sông Hương thì đẹp lắm anh. || 
+#148 public_0653:history:8 [H] d=3/0
+  F: Mít ra tè na kè nhèng gia lô chi đó em.
+  M: Mr. Tanaka nhắn cho Lucy và em.
+  S: Mr. Tanaka nhắn Zalo chi rồi em?
+  prev: Dạ em đã trừ một hộp cà phê G7 trong tủ rồi chị. || [{'name': 'pantry.list_items', 'arguments': {}}, {'name': 'pantry.consume', 'arguments': {'item_id': 'pan_890', 'quantity': 1}}]
+  next: Dạ lúc sáu giờ bốn mươi Mr. Tanaka nhắn nhờ chị xác nhận ngày xuất hàng cho lô mười hai ạ. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_488'}}]
+#149 public_0653:history:18 [H] d=6/3
+  F: Sáng nay, đèn đánh bắt cá đi làm xuống thiệt.
+  M: Sáng đi đèn đánh mắc cơ đi làm xuống thiệt.
+  S: Sáng ni Đà Nẵng mát ghê, đi làm sướng thiệt.
+  prev: Dạ em đang gọi Zalo cho anh Tuấn ạ. || [{'name': 'chat_ott.call', 'arguments': {'chat_id': 'chat_490'}}]
+  next: Dạ trời mát đi làm dễ chịu thiệt, chúc chị một ngày làm việc suôn sẻ ạ. || 
+#150 public_0655 [F] d=7/11
+  F: anh ra cửa đóng khách lại, dần nhỏ lẻ và tắt đèn phòng khách luôn, hoặc cứ để đó.
+  M: Anh ra cửa đón khách đây, giọng nhòe nhẹ với tác điệu không khách luôn, quật cứ để rứa.
+  S: Anh ra cửa đón khách đây, dần nhạc lại với tắt đèn phòng khách luôn, quạt cứ để rứa.
+  prev: Dạ em đã tắt đèn phòng làm việc. || [{'name': 'smart_home.get_status', 'arguments': {'room': 'phòng làm việc'}}, {'name': 'smart_home.light_set', 'arguments': {'device_id': 'light_office
+  next: -
+#151 public_0655:history:8 [H] d=2/3
+  F: Dịch cao cho tôi xem thực đơn sau tiếng Hàn giùm anh.
+  M: dịch cao cho tôi xem thực đơn sau tiếng hò gì mà anh.
+  S: Dịch cao cho tôi xem tập đơn sang tiếng Hàn giùm anh.
+  prev: Dạ số anh Bình là không chín tám một bảy sáu sáu bảy năm sáu lăm. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Bình'}}]
+  next: Dạ tiếng Hàn là: 메뉴판 좀 보여주세요. || [{'name': 'translator.translate', 'arguments': {'text': 'Cho tôi xem thực đơn', 'to_lang': 'ko'}}]
+#152 public_0655:history:10 [H] d=0/0
+  F: Bật đèn phòng khách lên.
+  M: Bật đèn phòng khách lên.
+  S: Bật đèn phòng khách lên.
+  prev: Dạ tiếng Hàn là: 메뉴판 좀 보여주세요. || [{'name': 'translator.translate', 'arguments': {'text': 'Cho tôi xem thực đơn', 'to_lang': 'ko'}}]
+  next: Dạ em đã bật đèn phòng khách. || [{'name': 'smart_home.get_status', 'arguments': {'room': 'phòng khách'}}, {'name': 'smart_home.light_set', 'arguments': {'device_id': 'light_living', 
+#153 public_0656:history:6 [H] d=6/5
+  F: Thời sáng nay, cả quán mua giò bún bò không còn.
+  M: Thôi sáng đi có quán mua dao bún bò không con.
+  S: Thôi, sáng ni có quán mô giao bún bò không con?
+  prev: Dạ táo Envy New Zealand một trăm hai mươi chín nghìn một ký, còn táo Fuji Nhật chín mươi chín nghìn một ký cô. || [{'name': 'grocery.search', 'arguments': {'query': 'táo'}}]
+  next: Dạ có Bún bò Huế Cô Ba, bốn chấm năm sao, còn mấy quán kia là trà sữa, pizza với cơm tấm cô. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}]
+#154 public_0657:history:2 [H] d=2/0
+  F: Vừa rồi đặt cho cô hai tô bún bò Huế, đặc biệt quên cô ba ngàn.
+  M: Trưa rồi, đặt cho cô hai tô bún bò Huế đặc biệt bên cô bé nghe.
+  S: Trưa rồi, đặt cho cô hai tô bún bò Huế đặc biệt bên Cô Ba nghen.
+  prev: Dạ sáng nay Julia Moreno chuyển năm triệu tiền phòng tháng mười hai, còn hôm qua Julia Romero chuyển ba triệu rưỡi ạ. || [{'name': 'banking.list_transactions', 'arguments': {}}]
+  next: Dạ em đã đặt hai tô Bún bò Huế đặc biệt bên Bún bò Huế Cô Ba, tổng một trăm mười nghìn ạ. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}, {'name': 'food_delivery.place_order', 'arguments': {'restaurant_id': 'rest_106', 'items'
+#155 public_0657:history:10 [H] d=0/0
+  F: Chiều rồi, cô đang có mấy cái báo thức rứa con.
+  M: Chiều rồi cô đang có mấy cái báo thức rứa con?
+  S: Chiều rồi, cô đang có mấy cái báo thức rứa con?
+  prev: Dạ ngày ba mươi có bốn chuyến đi Huế: sáu giờ sáng Rồng Việt Air, chín giờ và bảy giờ tối JetXanh, hai giờ chiều Sen Air; rẻ nhất là chuyến bảy giờ tố || [{'name': 'flights.search', 'arguments': {'origin': 'Đà Nẵng', 'destination': 'Huế', 'date': '2026-11-30'}}]
+  next: Dạ cô có ba báo thức: sáu rưỡi đi tập gym các ngày trong tuần, bảy giờ đưa con đi học và tám giờ đi làm hằng ngày ạ. || [{'name': 'alarm.list', 'arguments': {}}]
+#156 public_0659 [F] d=5/3
+  F: Em coi dùm trong máy ví mấy bay chị đặt chuyến nào bay sớm nhất thì chị in luôn chuyến đó cho chị nha.
+  M: em coi dùm trong mấy ví máy bay chị đặt chuyến nào bay sớm nhất thì check-in luôn chuyến đó cho chị nha.
+  S: Em coi giùm trong mấy ví máy bay chị đặt chuyến nào bay sớm nhất thì check-in luôn chuyến đó cho chị nghe.
+  prev: Dạ em đã nạp năm mươi nghìn, thẻ của chị giờ còn sáu mươi lăm nghìn ạ. || [{'name': 'public_transit.topup_card', 'arguments': {'amount': 50000}}]
+  next: -
+#157 public_0659:history:6 [H] d=3/1
+  F: Cái hộp xóm giờ lên sáu giờ đúng nha em.
+  M: Cái hộp xóm dời lên sáu giờ đúng nha em.
+  S: Cái họp sớm dời lên sáu giờ đúng nha em.
+  prev: Dạ mai chị có ba báo thức: sáu giờ mười lăm đi làm, sáu rưỡi họp sớm và tám giờ uống thuốc ạ. || [{'name': 'alarm.list', 'arguments': {}}]
+  next: Dạ em đã dời báo thức họp sớm sang sáu giờ sáng mai ạ. || [{'name': 'alarm.update', 'arguments': {'alarm_id': 'alm_649', 'time': '2026-11-05T06:00:00+07:00'}}]
+#158 public_0659:history:8 [H] d=3/2
+  F: Cần trưa rồi, có ăn mua giao cơm trưa không em?
+  M: Cần trưa rồi có quán mua dao cơm trưa không em?
+  S: Gần trưa rồi, có quán mô giao cơm trưa không em?
+  prev: Dạ em đã dời báo thức họp sớm sang sáu giờ sáng mai ạ. || [{'name': 'alarm.update', 'arguments': {'alarm_id': 'alm_649', 'time': '2026-11-05T06:00:00+07:00'}}]
+  next: Dạ có Trà sữa Nhà Mèo, Cơm tấm Sài Gòn 168, Pizza Nhà Làm và Bún bò Huế Cô Ba, đều bốn chấm năm sao ạ. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}]
+#159 public_0660:history:12 [H] d=0/2
+  F: thêm lịch đi thư viện hai giờ chiều mai nghe.
+  M: Thêm lịch thi thư viện hay giờ chiều mai nghe.
+  S: Thêm lịch đi thư viện hai giờ chiều mai nghe.
+  prev: Dạ mai có cà phê với Nhi chín rưỡi sáng, họp nhóm thuyết trình ba rưỡi chiều và ăn tối với gia đình sáu rưỡi tối ạ. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-12-01', 'date_to': '2026-12-01'}}]
+  next: Dạ em đã thêm lịch đi thư viện lúc hai giờ chiều mai ạ. || [{'name': 'calendar.create_event', 'arguments': {'title': 'Đi thư viện', 'start': '2026-12-01T14:00:00+07:00'}}]
+#160 public_0661:history:4 [H] d=0/0
+  F: Sáng mai có xe nào đi Hải Phòng sớm không em?
+  M: Sáng mai có xe nào đi Hải Phòng sớm không em?
+  S: Sáng mai có xe nào đi Hải Phòng sớm không em?
+  prev: Dạ em đặt thêm báo thức năm giờ bốn lăm sáng mai rồi ạ. || [{'name': 'alarm.create', 'arguments': {'time': '2026-10-23T05:45:00+07:00'}}]
+  next: Dạ sáng mai có xe Hoàng Vân sáu giờ, hai trăm năm mươi nghìn, còn hai chỗ, và xe Thành Lộc tám giờ, bốn trăm nghìn ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Hải Phòng', 'date': '2026-10-23', 'type': 'bus'}}]
+#161 public_0661:history:12 [H] d=3/3
+  F: Trả lời láo xác nhận, trực ngày lễ nhé.
+  M: Trả lời ánh sáng nhanh, trực ngày lễ nhé.
+  S: Trả lời hai sáng nhật, trực ngày lễ nhé.
+  prev: Dạ Phòng Nhân sự thông báo lịch nghỉ lễ, bộ phận trực vui lòng xác nhận trước thứ sáu ạ. || [{'name': 'email.read', 'arguments': {'email_id': 'mail_27'}}]
+  next: Dạ em đã trả lời Phòng Nhân sự: anh xác nhận trực ngày lễ ạ. || [{'name': 'email.reply', 'arguments': {'email_id': 'mail_27', 'body': 'Anh xác nhận trực ngày lễ.'}}]
+#162 public_0662:history:8 [H] d=0/0
+  F: Lấy hai túi, đặt giao về nhà luôn nha.
+  M: Lấy hai túi đặt giao về nhà luôn nha.
+  S: Lấy hai túi, đặt giao về nhà luôn nha.
+  prev: Dạ có Gạo ST25 túi năm ký, giá một trăm tám mươi lăm nghìn, còn hàng ạ. || [{'name': 'grocery.search', 'arguments': {'query': 'gạo ST25'}}]
+  next: Dạ em đặt hai túi Gạo ST25 rồi, tổng ba trăm bảy mươi nghìn đồng ạ. || [{'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_9304', 'quantity': 2}}, {'name': 'grocery.checkout', 'arguments': {}}]
+#163 public_0662:history:18 [H] d=1/1
+  F: Vẫn tiếng lớn lên ba chục giùm.
+  M: vẫn tiếng lớn lên ba chục dùm.
+  S: Vặn tiếng lớn lên ba chục giùm.
+  prev: Dạ em mở VTV1 rồi ạ. || [{'name': 'tv.tune', 'arguments': {'channel': 'VTV1'}}]
+  next: Dạ âm lượng tivi giờ là ba mươi rồi ạ. || [{'name': 'tv.control', 'arguments': {'action': 'volume', 'volume': 30}}]
+#164 public_0663:history:0 [H] d=3/2
+  F: Sáng nay tôi lên Ninh Kiều để chở cái răng đi xe buýt, thế nào em?
+  M: Sáng nay tôi lên Ninh Kiều từ chợ Cái Răng đi xe buýt thế nào em?
+  S: Sáng nay tôi lên Ninh Kiều, từ chỗ cái răng đi xe buýt tiếng nào em?
+  prev: -
+  next: Dạ đón Tuyến 09 ở chợ Cái Răng, đi hai trạm là tới bến Ninh Kiều, chừng ba mươi sáu phút, vé bảy nghìn, mười lăm phút có một chuyến ạ. || [{'name': 'public_transit.find_routes', 'arguments': {'origin': 'Chợ Cái Răng', 'destination': 'Bến Ninh Kiều'}}]
+#165 public_0663:history:4 [H] d=3/1
+  F: Số mời yêu em.
+  M: Số mười yêu em.
+  S: Sáu mươi nhiêu em?
+  prev: Dạ em nạp năm mươi nghìn vô thẻ xe buýt rồi ạ. || [{'name': 'public_transit.topup_card', 'arguments': {'amount': 50000}}]
+  next: Dạ số Anh Mười là không chín chín tám một một hai chín tám không bảy ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Mười'}}]
+#166 public_0664:history:16 [H] d=4/3
+  F: lưu con viết đỏ lại lớp chị nhé.
+  M: Lôi con vật đó lại lớp chị nhé.
+  S: Lưu công thức đó lại giúp chị nhé.
+  prev: Dạ món gà xào sả ớt cho ba người, nấu ba mươi phút: năm trăm gam đùi gà, ba cây sả, hai quả ớt, ba tép tỏi chị ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt'}}]
+  next: Em đã lưu công thức gà xào sả ớt rồi chị. || [{'name': 'recipes.save', 'arguments': {'recipe_id': 'rcp_461'}}]
+#167 public_0665:history:2 [H] d=2/2
+  F: Chưa rồi, bài nhẫn hôm nay bao nhiêu con?
+  M: chưa rồi và nhẫn hôm nay bao nhiêu có.
+  S: Trưa rồi, vàng nhẫn hôm nay bao nhiêu con?
+  prev: Dạ em đã đặt xe máy đón ở tiệm, 203 Lê Văn Sỹ, đi chợ Bến Thành rồi ạ. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '203 Lê Văn Sỹ, Quận 3, TP.HCM', 'dropoff': 'Chợ Bến Thành', 'vehicle': 'bike'}}]
+  next: Dạ vàng nhẫn hôm nay mua vào một trăm hai mốt triệu bốn, bán ra một trăm hai ba triệu bốn một lượng ạ. || [{'name': 'gold_price.get_price', 'arguments': {'type': 'ring'}}]
+#168 public_0666:history:2 [H] d=1/1
+  F: Ok, đặt luôn cho tớ xe bốn chỗ đón ở trường lúc mười một rưỡi nha ạ.
+  M: Ok đặt luôn cho tớ xe bốn chỗ đón ở trường lúc mười một rưỡi nha.
+  S: Ok, đặt luôn cho tớ xe bốn chỗ đón ở trường lúc mười một rưỡi nha.
+  prev: Dạ xe ô tô bốn chỗ từ trường về KTX Mỹ Đình khoảng tám mươi lăm nghìn ạ. || [{'name': 'ride_hailing.get_quotes', 'arguments': {'pickup': 'Đại học Ngoại thương, 91 Chùa Láng, Hà Nội', 'dropoff': 'KTX Mỹ Đình, Nam Từ Liêm, Hà Nộ
+  next: Dạ em đã hẹn xe bốn chỗ đón ở Đại học Ngoại thương lúc mười một rưỡi trưa nay về KTX Mỹ Đình rồi ạ. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': 'Đại học Ngoại thương, 91 Chùa Láng, Hà Nội', 'dropoff': 'KTX Mỹ Đình, Nam Từ Liêm, Hà Nội', 'v
+#169 public_0667:history:0 [H] d=7/5
+  F: Sao rồi, mọi bạn em này có ăn hay không?
+  M: Rồi nói bạn em này có anh như cô.
+  S: Sáng rồi, mở bài Ngày này có anh nghe coi.
+  prev: -
+  next: Dạ đang phát bài Nơi này có anh của Sơn Tùng M-TP rồi anh. || [{'name': 'music.list_tracks', 'arguments': {}}, {'name': 'music.play', 'arguments': {'track_id': 'trk_6886'}}]
+#170 public_0667:history:4 [H] d=2/3
+  F: Sáu anh Sáu chủ xe như đọc lẹ coi.
+  M: sáu anh sáu chủ sen như độc lệ coi.
+  S: Sáu anh sáu, trụ xe nhiêu, đọc lẹ coi.
+  prev: Dạ em chỉnh âm lượng lên tám rồi anh. || [{'name': 'music.control', 'arguments': {'action': 'volume', 'volume': 8}}]
+  next: Dạ số Anh Sáu là không chín chín năm ba năm bảy hai tám chín bảy anh. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Sáu'}}]
+#171 public_0667:history:8 [H] d=4/1
+  F: Ờ, nay bữa Tết có số hàng nào không?
+  M: Ờ, nay bữa tới có số hàng nào không?
+  S: Ờ, mấy bữa tới có số hai nào hông?
+  prev: Dạ vàng nhẫn hôm nay mua vô mười một triệu bốn trăm rưỡi, bán ra mười một triệu sáu trăm rưỡi một chỉ anh. || [{'name': 'gold_price.get_price', 'arguments': {'type': 'ring'}}]
+  next: Dạ có Stand-up comedy Sài Gòn Cười bảy rưỡi tối thứ ba mùng một tháng mười hai ở Nhà hát Thành phố, ba trăm nghìn một vé, còn mười hai vé anh. || [{'name': 'event_tickets.search', 'arguments': {'query': 'hài kịch'}}]
+#172 public_0668 [F] d=4/7
+  F: Tôi ra Bluebird Cafe đón khách, check-in đây. Em bật chế độ ra khỏi nhà rồi, đặt xe trong máy chờ tôi qua đón nghe.
+  M: tôi ra bluebird cà phê đón khách chết in đây, em bật chế độ ra khỏi nhà rồi đặt xe trong mấy giờ tối qua đó nghe.
+  S: Tui ra Bluebird Café đón khách check-in đây, em bật chế độ ra khỏi nhà rồi đặt xe trong máy chờ tui qua đó nghe.
+  prev: Dạ anh đi cẩn thận nghe. || 
+  next: -
+#173 public_0668:history:0 [H] d=0/0
+  F: Từ homestay ra ga Huế chạy xe mất bao lâu em?
+  M: từ homestay ra ga Huế chạy xe mất bao lâu em?
+  S: Từ homestay ra ga Huế chạy xe mất bao lâu em?
+  prev: -
+  next: Dạ từ homestay ra Ga Huế khoảng bốn cây rưỡi, đi xe máy chừng mười phút anh. || [{'name': 'maps.get_route', 'arguments': {'origin': 'Homestay Garden House, 9 Nguyễn Sinh Cung, Huế', 'destination': 'Ga Huế', 'mode': 'motorbike'}}]
+#174 public_0668:history:6 [H] d=1/1
+  F: Ờ, trong kho bếp còn những chị em.
+  M: Ờ, trong kho bếp còn những chi em.
+  S: Ờ, trong kho bếp còn những chi em?
+  prev: Dạ em đã thêm mười ổ bánh mì vào danh sách đi chợ rồi anh. || [{'name': 'shopping_list.add', 'arguments': {'name': 'bánh mì', 'quantity': 10}}]
+  next: Dạ trong kho còn chín gói mì tôm, mười một quả trứng gà, một chai dầu ăn, một gói đường, hai gói bột mì và một hộp sữa tươi anh. || [{'name': 'pantry.list_items', 'arguments': {}}]
+#175 public_0668:history:10 [H] d=0/0
+  F: với hộp sữa tươi cuối cùng luôn.
+  M: với hộp sữa tươi cuối cùng luôn.
+  S: Với hộp sữa tươi cuối cùng luôn.
+  prev: Dạ em trừ sáu quả trứng rồi, còn năm quả anh. || [{'name': 'pantry.consume', 'arguments': {'item_id': 'pan_153', 'quantity': 6}}]
+  next: Dạ em trừ hộp sữa tươi rồi, sữa tươi hết rồi anh. || [{'name': 'pantry.consume', 'arguments': {'item_id': 'pan_8258', 'quantity': 1}}]
+#176 public_0669:history:6 [H] d=0/1
+  F: À, ví anh còn bao nhiêu tiền rứa em?
+  M: À, ví anh còn bao nhiêu tiền rưỡi em?
+  S: À ví anh còn bao nhiêu tiền rứa em?
+  prev: Dạ mai anh có đi chơi công viên lúc hai giờ chiều ở Công viên Thương Bạc và ăn tối với gia đình lúc bảy rưỡi tối ở nhà mẹ, Phú Hội ạ. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-11-23', 'date_to': '2026-11-23'}}]
+  next: Dạ ví của anh còn ba triệu bốn trăm nghìn đồng ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+#177 public_0670:history:0 [H] d=3/2
+  F: Sáng sớm hôm qua, dùng cô tài khoản thanh toán còn bao nhiêu tiền?
+  M: Sáng sớm, một con dùng cô tài khoản thanh toán còn bao nhiêu tiền.
+  S: Sáng sớm con coi giùm cô tài khoản thanh toán còn bao nhiêu tiền?
+  prev: -
+  next: Dạ tài khoản thanh toán của cô còn tám triệu chín trăm nghìn ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+#178 public_0671:history:2 [H] d=0/1
+  F: Thế mai có mưa không?
+  M: thế mày có mưa không?
+  S: Thế mai có mưa không?
+  prev: Dạ Hà Nội đang có mưa rào, khoảng hai mươi lăm độ, bạn nhớ mang áo mưa nha. || [{'name': 'weather.get_current', 'arguments': {'location': 'Hà Nội'}}]
+  next: Dạ mai Hà Nội vẫn mưa rào, nhiệt độ từ hai mươi hai đến hai mươi tám độ ạ. || [{'name': 'weather.get_forecast', 'arguments': {'location': 'Hà Nội', 'date': '2026-10-17'}}]
+#179 public_0671:history:8 [H] d=1/1
+  F: Từ ký túc xá đi xe máy qua đây mất bao lâu?
+  M: từ ký túc xá đi xe máy qua đấy mất bao lâu?
+  S: Từ ký túc xá đi xe máy qua đấy mất bao lâu?
+  prev: Dạ có Cao Nguyên Coffee Láng Hạ ở số 88 Láng Hạ, Đống Đa ạ. || [{'name': 'maps.search_place', 'arguments': {'query': 'Cao Nguyên Coffee'}}]
+  next: Dạ đi xe máy từ ký túc xá Mỹ Đình qua đó khoảng mười hai cây số, mất chừng hai mươi bảy phút ạ. || [{'name': 'maps.get_route', 'arguments': {'origin': 'KTX Mỹ Đình, Nam Từ Liêm, Hà Nội', 'destination': '88 Láng Hạ, Đống Đa, Hà Nội', 'mode': 'motorbi
+#180 public_0671:history:14 [H] d=0/0
+  F: Còn món gà xào sả ớt mất bao lâu?
+  M: còn món gà xào sả ớt mất bao lâu.
+  S: Còn món gà xào sả ớt mất bao lâu?
+  prev: Dạ em đã lưu công thức Trứng chiên cà chua rồi ạ. || [{'name': 'recipes.save', 'arguments': {'recipe_id': 'rcp_282'}}]
+  next: Dạ Gà xào sả ớt mất khoảng ba mươi phút, cho ba người ăn ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt'}}]
+#181 public_0672:history:12 [H] d=3/1
+  F: Rồi giật anh lấy rồi, đánh dấu xong dùng.
+  M: Rồi giật anh lấy rồi đánh dấu xong giùm.
+  S: Đồ giặt anh lấy rồi, đánh dấu xong giùm.
+  prev: Dạ em đã thêm nhắc gọi Má lúc tám giờ tối nay ạ. || [{'name': 'reminders.create', 'arguments': {'content': 'Gọi Má', 'time': '2026-11-08T20:00:00+07:00'}}]
+  next: Dạ em đã đánh dấu xong nhắc Lấy đồ giặt rồi anh. || [{'name': 'reminders.complete', 'arguments': {'reminder_id': 'rem_219'}}]
+#182 public_0673:history:2 [H] d=3/2
+  F: Về cái Khánh, thằng qua thứ năm cùng giờ.
+  M: về cái khả năng qua thứ năm cùng giờ
+  S: Dời cái khám răng qua thứ năm, cùng giờ.
+  prev: Ngày mai anh có họp team và ăn tối với gia đình cùng lúc tám giờ rưỡi sáng, khám răng sáu giờ chiều và họp phụ huynh bảy giờ rưỡi tối. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-10-21', 'date_to': '2026-10-21'}}]
+  next: Dạ em dời lịch khám răng sang sáu giờ chiều thứ Năm hai mươi hai tháng mười rồi. || [{'name': 'calendar.update_event', 'arguments': {'event_id': 'evt_55', 'start': '2026-10-22T18:00:00+07:00', 'end': '2026-10-22T19:00:00+07:00'}}]
+#183 public_0673:history:12 [H] d=4/3
+  F: Anh mới đổi số sửa lại, không chín tám bốn, gần hai trăm linh một, hai không một sáu.
+  M: Anh mới đổi số sửa lại không chín tám bốn gần hai gần mười một hai không mười sáu.
+  S: Anh mới đổi số sửa lại, không chín tám bốn năm hai năm nghìn một, hai không bốn sáu.
+  prev: Số anh Sáu chủ xe là 09259254376 anh. || [{'name': 'contacts.search', 'arguments': {'query': 'Sáu'}}]
+  next: Dạ em đã sửa số anh Sáu thành 09845512076 rồi. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_529', 'phone': '09845512076'}}]
+#184 public_0673:history:16 [H] d=0/1
+  F: chạy xe cả ngày mỏi lưng quá trời
+  M: Chạy xe cả ngày mới lưng quá trời.
+  S: Chạy xe cả ngày, mỏi lưng quá trời.
+  prev: Số cô giáo Mai là 09305586253 anh. || [{'name': 'contacts.search', 'arguments': {'query': 'Mai'}}]
+  next: Dạ anh vất vả rồi, tối nay nghỉ sớm cho lại sức nha. || 
+#185 public_0674:history:4 [H] d=3/2
+  F: Chị lại xe rồi, kết thúc phiên, người xe rời giúp chị.
+  M: Chị lấy xe rồi kết thúc phiên, người xe ra giúp chị.
+  S: Chị lấy xe rồi, kết thúc phiên gửi xe ra giúp chị.
+  prev: Dạ em đã đặt chỗ ở Bãi đỗ Kim Cương từ bảy rưỡi đến mười rưỡi sáng nay, tổng một trăm lẻ năm nghìn ạ. || [{'name': 'parking.reserve', 'arguments': {'lot_id': 'lot_7059', 'from_time': '2026-11-26T07:30:00+07:00', 'hours': 3}}]
+  next: Dạ em đã kết thúc phiên gửi xe ở Bãi đỗ Kim Cương rồi ạ. || [{'name': 'parking.end_session', 'arguments': {'session_id': 'park_01'}}]
+#186 public_0674:history:18 [H] d=2/1
+  F: Trưa nay mệt quá, chẳng biết ăn gì cho nhanh nữa.
+  M: Chưa nay mệt quá, chẳng biết ăn gì cho nhanh nữa.
+  S: Trưa nay mệt quá, chấm bít ăn gì cho nhanh nữa.
+  prev: Dạ chưa có tin nhắn mới nào gửi đến chị, chỉ có hai tin chị vừa gửi cho Minh và Anh Thành thôi ạ. || [{'name': 'sms.read_recent', 'arguments': {}}]
+  next: Dạ trời hanh thế này chị ăn một bát bún chả hay phở gà cho nhẹ bụng là vừa ạ. || 
+#187 public_0674:history:20 [H] d=4/3
+  F: Ừ thôi, anh uống trà về, cảm ơn em.
+  M: Ừ, thôi ăn uống cho khỏe, cảm ơn em.
+  S: Ừ, thôi ăn bún chả vậy, cảm ơn em.
+  prev: Dạ trời hanh thế này chị ăn một bát bún chả hay phở gà cho nhẹ bụng là vừa ạ. || 
+  next: Dạ chị ăn ngon miệng nhé. || 
+#188 public_0677:history:2 [H] d=5/6
+  F: Tụi này chỉ định nấu thịt kho trứng, để xem giúp dì cần những gì nhé.
+  M: Tối nay chị Đình nấu thịt kho trứng, em xem giúp chị cần những gì nhé.
+  S: Tối nay chị định nấu thịt kho trứng, xem giúp chị cần những gì nhé.
+  prev: Dạ số của Cô Mai, cô giáo của con chị, là không chín một tám tám không bốn hai sáu tám sáu ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Cô Mai'}}]
+  next: Dạ món thịt kho trứng cho bốn người cần sáu trăm gam thịt ba chỉ, sáu quả trứng vịt, năm trăm mi li nước dừa và ba thìa nước mắm, nấu khoảng chín mươi || [{'name': 'recipes.search', 'arguments': {'query': 'thịt kho trứng'}}]
+#189 public_0677:history:4 [H] d=0/0
+  F: Lưu công thức đó lại giúp chị nhé.
+  M: Lưu công thức đó lại giúp chị nhé.
+  S: Lưu công thức đó lại giúp chị nhé.
+  prev: Dạ món thịt kho trứng cho bốn người cần sáu trăm gam thịt ba chỉ, sáu quả trứng vịt, năm trăm mi li nước dừa và ba thìa nước mắm, nấu khoảng chín mươi || [{'name': 'recipes.search', 'arguments': {'query': 'thịt kho trứng'}}]
+  next: Dạ em đã lưu công thức Thịt kho trứng vào mục đã lưu rồi ạ. || [{'name': 'recipes.save', 'arguments': {'recipe_id': 'rcp_773'}}]
+#190 public_0677:history:18 [H] d=2/0
+  F: Trưa rồi mà chị vẫn chưa ăn gì, mệt ghê mà.
+  M: Trưa rồi mà chị vẫn chưa ăn gì, mệt ghê mà.
+  S: Trưa rồi mà chị vẫn chưa ăn gì, mệt ghê em ạ.
+  prev: Dạ em đang gọi cho Anh Hùng, số không chín một tám một chín bốn bốn sáu bốn sáu ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Hùng'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_259'}}]
+  next: Dạ chị nghỉ tay ăn trưa chút cho có sức nhé, buổi chiều còn nhiều việc mà chị. || 
+#191 public_0678:history:0 [H] d=6/4
+  F: Em về, chồng chị cô cảm ơn bạn rất nhiều, Saphia nhé.
+  M: em nhìn chồng chị cô cảm ơn bạn rất nhiều sao khi anh nhé.
+  S: Em dời giùm chị câu cảm ơn bạn rất nhiều, xa phi anh nhé.
+  prev: -
+  next: Dạ câu đó tiếng Anh là Thank you very much ạ. || [{'name': 'translator.translate', 'arguments': {'text': 'Cảm ơn bạn rất nhiều', 'to_lang': 'en'}}]
+#192 public_0678:history:4 [H] d=3/3
+  F: Thế con sẽ khác thì sao em?
+  M: Thế còn xe khách thì sao em?
+  S: Thế còn xe khách thì sao em?
+  prev: Dạ thứ hai ba mươi có hai chuyến tàu SE3 đi Vinh: tám giờ sáng đến một giờ chiều và một giờ chiều đến mười một rưỡi đêm, đều chín trăm hai mươi nghìn  || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Vinh', 'date': '2026-11-30', 'type': 'train'}}]
+  next: Dạ có xe Thành Lộc tám giờ sáng giá bốn trăm nghìn, và xe Hải Vân bảy giờ tối giá hai trăm năm mươi nghìn, chỉ còn hai ghế ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Vinh', 'date': '2026-11-30', 'type': 'bus'}}]
+#193 public_0678:history:14 [H] d=0/4
+  F: Sáng nay Hà Nội lạnh thật đấy em nhỉ?
+  M: chẳng ai hà nội lại thật thế em nhỉ
+  S: Sáng nay Hà Nội lạnh thật đấy em nhỉ.
+  prev: Dạ em đã lưu Nhà thuốc Phúc Khang Thái Hà với tên nhà thuốc quen rồi ạ. || [{'name': 'maps.save_place', 'arguments': {'place_id': 'place_602', 'label': 'nhà thuốc quen'}}]
+  next: Dạ vâng, chị ra ngoài nhớ mặc ấm và quàng khăn nhé. || 
+#194 public_0678:history:16 [H] d=0/0
+  F: Ừ, cảm ơn em nhé.
+  M: Ừ cảm ơn em nhé.
+  S: Ừ, cảm ơn em nhé.
+  prev: Dạ vâng, chị ra ngoài nhớ mặc ấm và quàng khăn nhé. || 
+  next: Dạ không có gì ạ, chị cần gì cứ gọi em nhé. || 
+#195 public_0679:history:18 [H] d=0/0
+  F: Ok, cảm ơn nha.
+  M: Ok, cảm ơn nha.
+  S: Ok cảm ơn nha.
+  prev: Dạ anh ráng chút nữa rồi nghỉ sớm nha, nhớ uống nước với ăn gì nhẹ nhẹ ạ. || 
+  next: Dạ không có gì, cần gì anh cứ gọi em nha. || 
+#196 public_0680 [F] d=7/7
+  F: Chiều nay mình không nghe máy, có người bên đây số ra gọi, mở thông tin đầy đủ của người đó coi.
+  M: chiều nay mình không nghe máy có người bên venezuela gọi mở thông tin tìm được có người nói coi.
+  S: Chiều ni mình không nghe máy, có người bên Nexora gọi, mở thông tin tài liệu của người nớ coi.
+  prev: Dạ không có chi, chị ăn ngon miệng nha. || 
+  next: -
+#197 public_0680:history:4 [H] d=1/2
+  F: họp phụ huynh trải qua mười một giờ tới mười hai giờ
+  M: học phụ huynh giải qua mười một giờ tới mười hai giờ
+  S: Họp phụ huynh dời qua mười một giờ tới mười hai giờ.
+  prev: Dạ mai chị có ăn tối với gia đình lúc tám rưỡi sáng ở Văn phòng và họp phụ huynh lúc mười rưỡi ở Sân bóng Mini ạ. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-10-19', 'date_to': '2026-10-19'}}]
+  next: Dạ em đã dời họp phụ huynh sang mười một giờ đến mười hai giờ trưa mai ạ. || [{'name': 'calendar.update_event', 'arguments': {'event_id': 'evt_427', 'start': '2026-10-19T11:00:00+07:00', 'end': '2026-10-19T12:00:00+07:00'}}]
+#198 public_0680:history:14 [H] d=2/2
+  F: kính phát hôm nay bao nhiêu.
+  M: Cạnh phết hôm nay bao nhiêu?
+  S: Tiện phát hôm ni bao nhiêu?
+  prev: Dạ chị có hai trăm Đại Việt giá chín mươi nghìn một, hai trăm Kim Ngân ba mươi bốn nghìn ba, và năm trăm Sữa Mộc Xanh sáu mươi mốt nghìn một, cả ba mã || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+  next: Dạ Ngân hàng Thịnh Phát đang hai mươi bốn nghìn tám, tăng hai phẩy năm phần trăm ạ. || [{'name': 'stocks.get_quote', 'arguments': {'symbol': 'ZTP'}}]
+#199 public_0682 [F] d=5/5
+  F: Mai của chị ăn có 2 cuốn sách trên đó, em đặt cuốn để hơn giao lên công ty cho chị nha.
+  M: Michael Chen có hai cuốn sách trên đó, em đặt cuốn rẻ hơn giao lên công ty cho chị nha.
+  S: Mai cuộc chia anh có hai cuốn sách trên đó, em đặt cuốn rẻ hơn nha lên công ty cho chị nha.
+  prev: Dạ không có chi, chị ăn trưa ngon miệng nha. || 
+  next: -
+#200 public_0682:history:0 [H] d=1/0
+  F: Sáng nay chị có việc gì tới hẹn không em?
+  M: Sáng nay chị có việc gì tới hẹn không em?
+  S: Sáng nay chị có việc gì tới hạn không em?
+  prev: -
+  next: Dạ trưa nay mười hai giờ rưỡi chị có hai việc tới hạn: chuẩn bị slide họp quý, ưu tiên cao, và dọn kho đồ cũ. || [{'name': 'tasks.list', 'arguments': {'status': 'open'}}]
+#201 public_0682:history:4 [H] d=1/1
+  F: À, có vé đi Đà Nẵng ngày ba mươi tháng này, chuyến buổi sáng nha.
+  M: À, coi vé đi Đà Nẵng ngày ba mươi tháng này chuyến buổi sáng nha.
+  S: À coi vé đi Đà Nẵng ngày ba mươi tháng này, chuyến buổi sáng nha.
+  prev: Dạ em đang gọi cho Mẹ. || [{'name': 'contacts.search', 'arguments': {'query': 'Mẹ'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_572'}}]
+  next: Dạ ngày ba mươi buổi sáng có hai chuyến: Rồng Việt Air sáu giờ, một triệu tám trăm năm mươi nghìn, và JetXanh chín giờ, một triệu một trăm chín mươi n || [{'name': 'flights.search', 'arguments': {'origin': 'SGN', 'destination': 'DAD', 'date': '2026-11-30'}}]
+#202 public_0683 [F] d=7/6
+  F: Dì, xe quán cà phê rủ đi mà em lười quá, ngoài trời chỗ em trừ rằm, mở tivi kênh VTV ba cho em luôn.
+  M: Di share quán cà phê rủ đi mà em lười quá, ngoài trời chỗ em trừ răng mở tivi kênh V T V ba cho em luôn.
+  S: Nhi share quán cà phê rủ đi, mà em lừa quá. Ngoài trời chỗ em, chừ răng, mở tivi kênh VTV3 cho em luôn.
+  prev: Dạ bạn nghỉ ngơi chút, uống miếng nước cho khoẻ nghe. || 
+  next: -
+#203 public_0683:history:0 [H] d=3/3
+  F: Mày có nghe có mưa không rứa?
+  M: Mai Huế có mưa không, Rứa?
+  S: Mai Huế có mưa không rứa?
+  prev: -
+  next: Dạ mai Huế có mưa rào, nhiệt độ từ hai mươi bốn đến ba mươi ba độ, bạn nhớ mang áo mưa nghe. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-12-15'}}]
+#204 public_0683:history:2 [H] d=0/0
+  F: Sáng mai em chạy xe ra chợ Đông Ba, đặt chỗ gửi xe lúc tám giờ hai tiếng.
+  M: Sáng mai, em chạy xe ra chợ Đông Ba đặt chỗ gửi xe lúc tám giờ hai tiếng.
+  S: Sáng mai em chạy xe ra chợ Đông Ba, đặt chỗ gửi xe lúc tám giờ, hai tiếng.
+  prev: Dạ mai Huế có mưa rào, nhiệt độ từ hai mươi bốn đến ba mươi ba độ, bạn nhớ mang áo mưa nghe. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-12-15'}}]
+  next: Dạ em đã đặt chỗ ở bãi giữ xe chợ Đông Ba từ tám giờ sáng mai trong hai tiếng, hết mười nghìn. || [{'name': 'parking.find', 'arguments': {'near': 'Đông Ba'}}, {'name': 'parking.reserve', 'arguments': {'lot_id': 'lot_725', 'from_time': '2026-12-15T0
+#205 public_0683:history:4 [H] d=2/3
+  F: Trừ đặt xe máy, thử quyền nhà lên trường giùm em.
+  M: Trừ đặt xe máy từ nhà lên trường dùm em.
+  S: Trừ đặt xe máy từ nhà lên trường giùm em.
+  prev: Dạ em đã đặt chỗ ở bãi giữ xe chợ Đông Ba từ tám giờ sáng mai trong hai tiếng, hết mười nghìn. || [{'name': 'parking.find', 'arguments': {'near': 'Đông Ba'}}, {'name': 'parking.reserve', 'arguments': {'lot_id': 'lot_725', 'from_time': '2026-12-15T0
+  next: Dạ em đã đặt xe máy từ mười bảy Nguyễn Huệ lên trường Đại học Sư phạm Huế rồi. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '17 Nguyễn Huệ, Phú Nhuận, Huế', 'dropoff': 'Đại học Sư phạm Huế, 34 Lê Lợi', 'vehicle': 'bike'
+#206 public_0683:history:6 [H] d=1/1
+  F: Xe tới chưa ạ?
+  M: Xe tới chưa?
+  S: Xe tới chưa?
+  prev: Dạ em đã đặt xe máy từ mười bảy Nguyễn Huệ lên trường Đại học Sư phạm Huế rồi. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '17 Nguyễn Huệ, Phú Nhuận, Huế', 'dropoff': 'Đại học Sư phạm Huế, 34 Lê Lợi', 'vehicle': 'bike'
+  next: Dạ chuyến xe máy của bạn đã được nhận, tài xế đang tới đón ở nhà. || [{'name': 'ride_hailing.get_ride', 'arguments': {}}]
+#207 public_0683:history:8 [H] d=1/0
+  F: Chưa rồi, có email mới không?
+  M: Chưa rồi, có email mới không?
+  S: Trưa rồi, có email mới không?
+  prev: Dạ chuyến xe máy của bạn đã được nhận, tài xế đang tới đón ở nhà. || [{'name': 'ride_hailing.get_ride', 'arguments': {}}]
+  next: Dạ có hai email chưa đọc: chị Thu nhờ gửi lại báo cáo tháng chín, và anh Dũng hẹn cà phê bàn dự án. || [{'name': 'email.list', 'arguments': {'unread_only': True}}]
+#208 public_0683:history:10 [H] d=0/0
+  F: Đọc email anh Dũng coi.
+  M: Đọc email anh Dũng coi.
+  S: Đọc email anh Dũng coi.
+  prev: Dạ có hai email chưa đọc: chị Thu nhờ gửi lại báo cáo tháng chín, và anh Dũng hẹn cà phê bàn dự án. || [{'name': 'email.list', 'arguments': {'unread_only': True}}]
+  next: Dạ anh Dũng hỏi tuần ni bạn rảnh hôm mô thì ngồi cà phê bàn dự án mới, anh rảnh chiều thứ Năm. || [{'name': 'email.read', 'arguments': {'email_id': 'mail_9864'}}]
+#209 public_0683:history:12 [H] d=1/2
+  F: Trả lời anh Dũng, chị thứ Năm em rảnh, hẹn ba giờ nghe.
+  M: Trả lời anh Dũng, chị cứ nằm em rảnh hẹn ba giờ nghe.
+  S: Trả lời anh Dũng chiều thứ Năm em rảnh, hẹn ba giờ nghe.
+  prev: Dạ anh Dũng hỏi tuần ni bạn rảnh hôm mô thì ngồi cà phê bàn dự án mới, anh rảnh chiều thứ Năm. || [{'name': 'email.read', 'arguments': {'email_id': 'mail_9864'}}]
+  next: Dạ em đã trả lời anh Dũng là chiều thứ Năm bạn rảnh, hẹn ba giờ. || [{'name': 'email.reply', 'arguments': {'email_id': 'mail_9864', 'body': 'Chiều thứ Năm em rảnh, mình hẹn ba giờ nhé anh.'}}]
+#210 public_0683:history:14 [H] d=5/6
+  F: Tạo image cho thẻ lưu trữ đi.
+  M: 把 image 图贴录制点。
+  S: Còn email chị Thu thì lưu trữ đi.
+  prev: Dạ em đã trả lời anh Dũng là chiều thứ Năm bạn rảnh, hẹn ba giờ. || [{'name': 'email.reply', 'arguments': {'email_id': 'mail_9864', 'body': 'Chiều thứ Năm em rảnh, mình hẹn ba giờ nhé anh.'}}]
+  next: Dạ em đã lưu trữ email của chị Thu rồi. || [{'name': 'email.archive', 'arguments': {'email_id': 'mail_2109', 'action': 'archive'}}]
+#211 public_0683:history:16 [H] d=1/0
+  F: Học trái ngày mệt quá trời.
+  M: Học trái ngày mệt quá trời.
+  S: Học tối ngày mệt quá trời.
+  prev: Dạ em đã lưu trữ email của chị Thu rồi. || [{'name': 'email.archive', 'arguments': {'email_id': 'mail_2109', 'action': 'archive'}}]
+  next: Dạ bạn nghỉ ngơi chút, uống miếng nước cho khoẻ nghe. || 
+#212 public_0684 [F] d=6/5
+  F: Mai chị đi xe anh Hùng tới workshop, hay nên xỏ đít sai, xe chạy dầu, em xem giá dầu, nhà anh ấy là chị đi cùng nhé.
+  M: Mai chị đi xe anh hùng tới cửa shop, nên số đề sai, xe chạy dầu, em xem giá dầu nhắn anh ấy là chị đi cùng nhé.
+  S: Mai chị đi xe anh Hùng tới workshop Peninsula Design, xe chạy dầu, em xem giá dầu, nhắn anh ấy là chị đi cùng nhé.
+  prev: Dạ không có gì ạ, chị cần gì cứ gọi em nhé. || 
+  next: -
+#213 public_0684:history:0 [H] d=4/3
+  F: Sáng nay giá xăng RON chín lăm bao nhiêu anh dĩa?
+  M: sáng nay giá xăng ron chín mươi lăm bao nhiêu em nhỉ
+  S: Sáng nay giá xăng RON95 bao nhiêu em nhỉ?
+  prev: -
+  next: Dạ hôm nay xăng RON 95 giá hai mươi hai nghìn bốn trăm đồng một lít chị ạ. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'ron95'}}]
+#214 public_0684:history:2 [H] d=3/6
+  F: À, em tìm giúp chị cái website của Financial Decider ấy.
+  M: em tìm giúp chị của shop của khi lên sờ
+  S: À em tìm giúp chị cái workshop của Financial Design với.
+  prev: Dạ hôm nay xăng RON 95 giá hai mươi hai nghìn bốn trăm đồng một lít chị ạ. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'ron95'}}]
+  next: Dạ có hai workshop: Báo cáo tài chính trực quan của Pinnacle Design tám rưỡi sáng mai ở Khu nghỉ dưỡng Đồi Thông, Ba Vì, giá ba trăm năm mươi nghìn, v || [{'name': 'event_tickets.search', 'arguments': {'query': 'Pinnacle Design'}}]
+#215 public_0684:history:4 [H] d=4/4
+  F: Đã giúp chị hai bé cái sảnh này ghê.
+  M: Đã giúp chị hai bé cái sáng nay.
+  S: Đặt giúp chị hai vé, cái sáng mai nhé.
+  prev: Dạ có hai workshop: Báo cáo tài chính trực quan của Pinnacle Design tám rưỡi sáng mai ở Khu nghỉ dưỡng Đồi Thông, Ba Vì, giá ba trăm năm mươi nghìn, v || [{'name': 'event_tickets.search', 'arguments': {'query': 'Pinnacle Design'}}]
+  next: Dạ em đã đặt hai vé Workshop Báo cáo tài chính trực quan của Pinnacle Design sáng mai, tổng bảy trăm nghìn ạ. || [{'name': 'event_tickets.book', 'arguments': {'event_id': 'event_5170', 'quantity': 2}}]
+#216 public_0684:history:6 [H] d=8/7
+  F: Tại vì á, thì Minh sẽ bắt đầu ý nghĩ.
+  M: bạn vì các bạn thấy bây giờ bắt đầu ý nhỉ
+  S: Ba Vì cơ ạ, thế mấy giờ bắt đầu ấy nhỉ?
+  prev: Dạ em đã đặt hai vé Workshop Báo cáo tài chính trực quan của Pinnacle Design sáng mai, tổng bảy trăm nghìn ạ. || [{'name': 'event_tickets.book', 'arguments': {'event_id': 'event_5170', 'quantity': 2}}]
+  next: Dạ workshop bắt đầu lúc tám rưỡi sáng mai ở Khu nghỉ dưỡng Đồi Thông, Ba Vì chị ạ. || 
+#217 public_0684:history:8 [H] d=1/0
+  F: Cho anh Minh đồng nghiệp chị là số nào em?
+  M: cho anh minh đồng nghiệp chị là số nào em.
+  S: Số anh Minh đồng nghiệp chị là số nào em?
+  prev: Dạ workshop bắt đầu lúc tám rưỡi sáng mai ở Khu nghỉ dưỡng Đồi Thông, Ba Vì chị ạ. || 
+  next: Dạ số của Minh là không chín tám bốn chín sáu không sáu không chín một ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Minh'}}]
+#218 public_0684:history:10 [H] d=1/2
+  F: Anh ấy vừa đổi số, xin giúp chị thành không chín tám bốn chín sáu không sáu chín một sáu nhé.
+  M: Anh ấy vừa đổi số, sự giúp chị thành chín tám bốn chín sáu không sáu chín một sáu nhé.
+  S: Anh ấy vừa đổi số, sửa giúp chị thành không chín tám bốn chín sáu không sáu chín một sáu nhé.
+  prev: Dạ số của Minh là không chín tám bốn chín sáu không sáu không chín một ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Minh'}}]
+  next: Dạ em đã sửa số của Minh thành không chín tám bốn chín sáu không sáu chín một sáu rồi ạ. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_5199', 'phone': '09849606916'}}]
+#219 public_0684:history:12 [H] d=7/6
+  F: Thế sao em làm không đề bài nhiều?
+  M: Thấy sang em anh không đẹp bao nhiêu.
+  S: Thế xăng E5 hôm nay bao nhiêu?
+  prev: Dạ em đã sửa số của Minh thành không chín tám bốn chín sáu không sáu chín một sáu rồi ạ. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_5199', 'phone': '09849606916'}}]
+  next: Dạ xăng E5 hôm nay hai mươi mốt nghìn hai trăm đồng một lít ạ. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'e5'}}]
+#220 public_0684:history:14 [H] d=3/6
+  F: Đổ bốn mươi lít E năm đi ba Việt thì hết bao nhiêu em?
+  M: đỏ bốn mươi lít e năm đi ba về chỉ hết ba.
+  S: Đổ bốn mươi lít E5 đi Ba Vì thì hết bao nhiêu em?
+  prev: Dạ xăng E5 hôm nay hai mươi mốt nghìn hai trăm đồng một lít ạ. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'e5'}}]
+  next: Dạ bốn mươi lít E5 hết tám trăm bốn mươi tám nghìn đồng chị ạ. || 
+#221 public_0684:history:16 [H] d=6/6
+  F: Tránh vấy đòn chín lăm ba nghìn một lít.
+  M: Tranh với Ron chín năm bao nhiêu một lít?
+  S: Trên vé RON95 bao nhiêu một lít?
+  prev: Dạ bốn mươi lít E5 hết tám trăm bốn mươi tám nghìn đồng chị ạ. || 
+  next: Dạ E5 rẻ hơn RON 95 một nghìn hai trăm đồng một lít ạ. || 
+#222 public_0684:history:18 [H] d=1/2
+  F: Thêm giúp chị việc đổ xăng, hẹn sáu giờ sáng mai nhé.
+  M: thêm giúp chị việc đỗ xăng hạn sáu giờ sáng mai nhé.
+  S: Thêm giúp chị việc đổ xăng, hạn sáu giờ sáng mai nhé.
+  prev: Dạ E5 rẻ hơn RON 95 một nghìn hai trăm đồng một lít ạ. || 
+  next: Dạ em đã thêm việc Đổ xăng, hạn sáu giờ sáng mai ạ. || [{'name': 'tasks.add', 'arguments': {'title': 'Đổ xăng', 'due': '2026-12-06T06:00:00+07:00'}}]
+#223 public_0684:history:20 [H] d=3/3
+  F: Chỗ này trời đẹp quá, em nghĩ.
+  M: Chưa nay trời đẹp quá em nhỉ?
+  S: Trưa nay trời đẹp quá em nhỉ.
+  prev: Dạ em đã thêm việc Đổ xăng, hạn sáu giờ sáng mai ạ. || [{'name': 'tasks.add', 'arguments': {'title': 'Đổ xăng', 'due': '2026-12-06T06:00:00+07:00'}}]
+  next: Dạ Hà Nội đầu đông nắng nhẹ, chị đi đâu chơi cũng dễ chịu ạ. || 
+#224 public_0684:history:22 [H] d=0/1
+  F: Ừ, cảm ơn em nhé.
+  M: Cảm ơn em nhé.
+  S: Ừ, cảm ơn em nhé.
+  prev: Dạ Hà Nội đầu đông nắng nhẹ, chị đi đâu chơi cũng dễ chịu ạ. || 
+  next: Dạ không có gì ạ, chị cần gì cứ gọi em nhé. || 
+#225 public_0685 [F] d=1/0
+  F: Mai anh lái ô tô đi học review em tìm bãi đỗ gần công ty rồi giữ chỗ từ tám rưỡi sáng ba tiếng nhé.
+  M: Mai anh lái ô tô đi học, review em tìm bãi đỗ gần công ty rồi giữ chỗ từ tám rưỡi sáng, ba tiếng nhé.
+  S: Mai anh lái ô tô đi họp review, em tìm bãi đỗ gần công ty rồi giữ chỗ từ tám rưỡi sáng ba tiếng nhé.
+  prev: Dạ anh làm việc vui nhé, cần gì cứ gọi em. || 
+  next: -
+#226 public_0685:history:0 [H] d=0/0
+  F: Thứ hai tuần sau còn vé tàu lên Lào Cai không em?
+  M: Thứ hai tuần sau còn vé tàu lên Lào Cai không em?
+  S: Thứ Hai tuần sau còn vé tàu lên Lào Cai không em?
+  prev: -
+  next: Dạ thứ hai mười sáu còn hai chuyến tàu lên Lào Cai: SE3 sáu giờ sáng giá sáu trăm tám mươi nghìn còn hai chỗ, SE7 tám giờ sáng giá chín trăm hai mươi  || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Lào Cai', 'date': '2026-11-16', 'type': 'train'}}]
+#227 public_0685:history:2 [H] d=0/0
+  F: Ừ, để tính sau thêm việc chín giờ sáng mai họp review thiết kế ở công ty.
+  M: Ừ, để tính sau thêm việc chín giờ sáng mai họp review thiết kế ở công ty.
+  S: Ừ, để tính sau thêm việc chín giờ sáng mai họp review thiết kế ở công ty.
+  prev: Dạ thứ hai mười sáu còn hai chuyến tàu lên Lào Cai: SE3 sáu giờ sáng giá sáu trăm tám mươi nghìn còn hai chỗ, SE7 tám giờ sáng giá chín trăm hai mươi  || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Lào Cai', 'date': '2026-11-16', 'type': 'train'}}]
+  next: Dạ em đã thêm việc Họp review thiết kế ở công ty lúc chín giờ sáng mai rồi anh. || [{'name': 'tasks.add', 'arguments': {'title': 'Họp review thiết kế ở công ty', 'due': '2026-11-13T09:00:00+07:00'}}]
+#228 public_0685:history:4 [H] d=1/0
+  F: Chưa rồi, gọi cho vợ anh cái.
+  M: Chưa rồi, gọi cho vợ anh cái.
+  S: Trưa rồi, gọi cho vợ anh cái.
+  prev: Dạ em đã thêm việc Họp review thiết kế ở công ty lúc chín giờ sáng mai rồi anh. || [{'name': 'tasks.add', 'arguments': {'title': 'Họp review thiết kế ở công ty', 'due': '2026-11-13T09:00:00+07:00'}}]
+  next: Dạ em đang gọi cho chị Lan đây ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'vợ'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_131'}}]
+#229 public_0685:history:6 [H] d=0/2
+  F: Gọi luôn cho sếp Dũng giúp anh.
+  M: Họ luôn cho phép Dũng giúp anh.
+  S: Gọi luôn cho Sếp Dũng giúp anh.
+  prev: Dạ em đang gọi cho chị Lan đây ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'vợ'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_131'}}]
+  next: Dạ em đang gọi cho Sếp Dũng ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Sếp Dũng'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_424'}}]
+#230 public_0685:history:8 [H] d=1/1
+  F: À, đôi ba lô laptop của anh giờ đến đâu rồi?
+  M: À, đôi bao lô laptop của anh giờ đến đâu rồi?
+  S: À đơn ba lô laptop của anh giờ đến đâu rồi?
+  prev: Dạ em đang gọi cho Sếp Dũng ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Sếp Dũng'}}, {'name': 'phone.call', 'arguments': {'contact_id': 'c_424'}}]
+  next: Dạ balo laptop Mikkor sáu trăm năm mươi nghìn đang được giao ạ; còn áo khoác gió CoolWear đã giao hôm mùng chín rồi. || [{'name': 'ecommerce.order_status', 'arguments': {}}]
+#231 public_0685:history:10 [H] d=0/0
+  F: tìm giúp anh cốc giữ nhiệt dưới ba trăm nghìn.
+  M: Tìm giúp anh cốc giữ nhiệt dưới ba trăm nghìn.
+  S: Tìm giúp anh cốc giữ nhiệt dưới ba trăm nghìn.
+  prev: Dạ balo laptop Mikkor sáu trăm năm mươi nghìn đang được giao ạ; còn áo khoác gió CoolWear đã giao hôm mùng chín rồi. || [{'name': 'ecommerce.order_status', 'arguments': {}}]
+  next: Dạ có Cốc giữ nhiệt Lam Sơn 500ml giá hai trăm mười chín nghìn, đánh giá bốn phẩy tám sao ạ. || [{'name': 'ecommerce.search', 'arguments': {'query': 'cốc giữ nhiệt', 'max_price': 300000}}]
+#232 public_0685:history:12 [H] d=2/5
+  F: cho hai cái bao rổ.
+  M: 将鞋给漏咗。
+  S: Cho hai cái vào giỏ.
+  prev: Dạ có Cốc giữ nhiệt Lam Sơn 500ml giá hai trăm mười chín nghìn, đánh giá bốn phẩy tám sao ạ. || [{'name': 'ecommerce.search', 'arguments': {'query': 'cốc giữ nhiệt', 'max_price': 300000}}]
+  next: Dạ em đã cho hai cốc giữ nhiệt Lam Sơn vào giỏ, tổng bốn trăm ba mươi tám nghìn ạ. || [{'name': 'ecommerce.add_to_cart', 'arguments': {'product_id': 'prod_867', 'quantity': 2}}]
+#233 public_0685:history:14 [H] d=0/0
+  F: Đặt luôn giao về nhà trả tiền mặt nhé.
+  M: Đặt luôn giao về nhà trả tiền mặt nhé.
+  S: Đặt luôn giao về nhà trả tiền mặt nhé.
+  prev: Dạ em đã cho hai cốc giữ nhiệt Lam Sơn vào giỏ, tổng bốn trăm ba mươi tám nghìn ạ. || [{'name': 'ecommerce.add_to_cart', 'arguments': {'product_id': 'prod_867', 'quantity': 2}}]
+  next: Dạ em đã đặt đơn hai cốc giữ nhiệt, bốn trăm ba mươi tám nghìn, giao về 25 Láng Hạ, trả tiền mặt khi nhận ạ. || [{'name': 'ecommerce.checkout', 'arguments': {'address': '25 Láng Hạ, Đống Đa, Hà Nội', 'payment': 'cod'}}]
+#234 public_0685:history:16 [H] d=0/0
+  F: Chiều nay buồn ngủ ghê em kể chuyện cười đi.
+  M: Chiều nay buồn ngủ ghê em kể chuyện cười đi.
+  S: Chiều nay buồn ngủ ghê em, kể chuyện cười đi.
+  prev: Dạ em đã đặt đơn hai cốc giữ nhiệt, bốn trăm ba mươi tám nghìn, giao về 25 Láng Hạ, trả tiền mặt khi nhận ạ. || [{'name': 'ecommerce.checkout', 'arguments': {'address': '25 Láng Hạ, Đống Đa, Hà Nội', 'payment': 'cod'}}]
+  next: Dạ có anh kia đi phỏng vấn, bị hỏi điểm yếu lớn nhất là gì, anh bảo là trung thực quá. Người ta bảo cái đó đâu phải điểm yếu, anh đáp: tôi cũng chẳng  || 
+#235 public_0685:history:18 [H] d=2/2
+  F: Hai hai được đấy, thôi làm tiếp đây.
+  M: Haha được đấy thôi làm tiếp đây.
+  S: Haha được đấy, thôi làm tiếp đây.
+  prev: Dạ có anh kia đi phỏng vấn, bị hỏi điểm yếu lớn nhất là gì, anh bảo là trung thực quá. Người ta bảo cái đó đâu phải điểm yếu, anh đáp: tôi cũng chẳng  || 
+  next: Dạ anh làm việc vui nhé, cần gì cứ gọi em. || 
+#236 public_0686 [F] d=12/10
+  F: Mình là Lan, giám khoản chi hàng là con, thì dùng cô cái giấy máy bay qua bệnh nha.
+  M: Bên này là anh giám quản cửa hàng nè con, hủy dùm cô cái vé máy bay ba bệnh nha.
+  S: Bên Đài Loan vắng khoản chuyến Hàn à con. Hủy giùm cô cái nhóm MB qua bệnh nha.
+  prev: Dạ cô cứ thong thả uống cà phê, cần gì cô kêu con ạ. || 
+  next: -
+#237 public_0686:history:0 [H] d=8/5
+  F: Sáng sớm, con dùng con máy bay của Đạt cười nha con.
+  M: sáng sớm cần dùng con bé giấy máy bay của đặc quyền nha con.
+  S: Sáng sớm coi giùm cô mấy vé máy bay cô đặt rồi nha con.
+  prev: -
+  next: Dạ cô có hai vé: Sài Gòn đi Taipei chiều nay một giờ rưỡi của JetXanh, và Sài Gòn đi Kaohsiung ngày mười tám tháng mười hai lúc mười giờ mười lăm của  || [{'name': 'flights.my_bookings', 'arguments': {}}]
+#238 public_0686:history:2 [H] d=4/6
+  F: JetXanh chiều nay làm thủ tục online giùm cô ạ.
+  M: Yes, hai mươi chiều nay làm thủ tục online giống như cô.
+  S: Jet Taipei chiều nay làm thủ tục online luôn giùm cô.
+  prev: Dạ cô có hai vé: Sài Gòn đi Taipei chiều nay một giờ rưỡi của JetXanh, và Sài Gòn đi Kaohsiung ngày mười tám tháng mười hai lúc mười giờ mười lăm của  || [{'name': 'flights.my_bookings', 'arguments': {}}]
+  next: Dạ con làm thủ tục online xong cho vé đi Taipei một giờ rưỡi chiều nay rồi cô. || [{'name': 'flights.check_in', 'arguments': {'booking_id': 'bk_317'}}]
+#239 public_0686:history:4 [H] d=3/2
+  F: Thưa, tôi nẹt có xe khách nào đi Phan Thiết không con?
+  M: thưa tụi nè có xe khách nào đi phan thiết không con.
+  S: Thứ tư này có xe khách nào đi Phan Thiết không con?
+  prev: Dạ con làm thủ tục online xong cho vé đi Taipei một giờ rưỡi chiều nay rồi cô. || [{'name': 'flights.check_in', 'arguments': {'booking_id': 'bk_317'}}]
+  next: Dạ thứ tư có hai chuyến xe khách Hoàng Vân đi Phan Thiết: một giờ chiều giá hai trăm năm chục ngàn còn hai chỗ, và chín giờ tối giá bốn trăm ngàn ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'TP.HCM', 'destination': 'Phan Thiết', 'date': '2026-12-09', 'type': 'bus'}}]
+#240 public_0686:history:6 [H] d=4/4
+  F: Dạ, sang luôn chính là bữa nay, như con.
+  M: Da xanh luôn dính làm bữa nay như con.
+  S: Giá xăng RON95 bữa nay nhiêu con?
+  prev: Dạ thứ tư có hai chuyến xe khách Hoàng Vân đi Phan Thiết: một giờ chiều giá hai trăm năm chục ngàn còn hai chỗ, và chín giờ tối giá bốn trăm ngàn ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'TP.HCM', 'destination': 'Phan Thiết', 'date': '2026-12-09', 'type': 'bus'}}]
+  next: Dạ xăng RON 95 hôm nay hai mươi hai ngàn một trăm đồng một lít ạ. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'ron95'}}]
+#241 public_0686:history:8 [H] d=3/1
+  F: Còn cháu đi xe thì sao?
+  M: Còn chỗ đi xe thì sao?
+  S: Còn giá diesel thì sao?
+  prev: Dạ xăng RON 95 hôm nay hai mươi hai ngàn một trăm đồng một lít ạ. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'ron95'}}]
+  next: Dạ dầu diesel mười chín ngàn năm trăm đồng một lít cô. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'diesel'}}]
+#242 public_0686:history:10 [H] d=1/1
+  F: Số anh nộp giao hàng là số mấy con?
+  M: Số anh nộp vào hàng là số mấy con?
+  S: Số Anh Lộc giao hàng là số mấy con?
+  prev: Dạ dầu diesel mười chín ngàn năm trăm đồng một lít cô. || [{'name': 'fuel_price.get_price', 'arguments': {'type': 'diesel'}}]
+  next: Dạ số Anh Lộc là 09274560238 ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Lộc'}}]
+#243 public_0686:history:12 [H] d=6/1
+  F: Xe bốn chỗ thì nhà là sân bay trong sân rất giá nhiều.
+  M: Xe bốn chỗ thời nhà là sân bay trong sân rất giá nhiều.
+  S: Xe bốn chỗ từ nhà ra sân bay Tân Sơn Nhất giá nhiêu?
+  prev: Dạ số Anh Lộc là 09274560238 ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Lộc'}}]
+  next: Dạ xe bốn chỗ giá tám mươi lăm ngàn, khoảng bảy phút là có xe tới đón ạ. || [{'name': 'ride_hailing.get_quotes', 'arguments': {'pickup': '203 Lê Văn Sỹ, Quận 3, TP.HCM', 'dropoff': 'Sân bay Tân Sơn Nhất', 'vehicle': 'car4'}}]
+#244 public_0686:history:14 [H] d=2/3
+  F: Ừ, đặt xe nó đón của mười giờ rưỡi nha.
+  M: Ừ đặt xe nói đón cô lúc mười giờ rưỡi nha.
+  S: Ừ, đặt xe đó đón cô, mười giờ rưỡi nha.
+  prev: Dạ xe bốn chỗ giá tám mươi lăm ngàn, khoảng bảy phút là có xe tới đón ạ. || [{'name': 'ride_hailing.get_quotes', 'arguments': {'pickup': '203 Lê Văn Sỹ, Quận 3, TP.HCM', 'dropoff': 'Sân bay Tân Sơn Nhất', 'vehicle': 'car4'}}]
+  next: Dạ con đặt xe bốn chỗ đón cô ở nhà lúc mười giờ rưỡi sáng nay ra sân bay Tân Sơn Nhất rồi ạ. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '203 Lê Văn Sỹ, Quận 3, TP.HCM', 'dropoff': 'Sân bay Tân Sơn Nhất', 'vehicle': 'car4', 'schedul
+#245 public_0686:history:16 [H] d=2/2
+  F: Đã xong chưa con? Quay lại giùm cô.
+  M: đã xong cho con quay lại dùm cô.
+  S: Đặt xong chưa con, coi lại giùm cô.
+  prev: Dạ con đặt xe bốn chỗ đón cô ở nhà lúc mười giờ rưỡi sáng nay ra sân bay Tân Sơn Nhất rồi ạ. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '203 Lê Văn Sỹ, Quận 3, TP.HCM', 'dropoff': 'Sân bay Tân Sơn Nhất', 'vehicle': 'car4', 'schedul
+  next: Dạ chuyến xe bốn chỗ ra sân bay Tân Sơn Nhất đón lúc mười giờ rưỡi đã đặt xong rồi cô. || [{'name': 'ride_hailing.get_ride', 'arguments': {}}]
+#246 public_0686:history:18 [H] d=2/1
+  F: Trời, sáng chủ nhật mà nó vô quá trời luôn.
+  M: trời sáng chủ nhật mà nó mưa quá trời luôn.
+  S: Trời, sáng chủ nhật mà lũ bố quá trời luôn.
+  prev: Dạ chuyến xe bốn chỗ ra sân bay Tân Sơn Nhất đón lúc mười giờ rưỡi đã đặt xong rồi cô. || [{'name': 'ride_hailing.get_ride', 'arguments': {}}]
+  next: Dạ cô ráng chút, việc nào gấp con lo trước cho cô nha. || 
+#247 public_0686:history:20 [H] d=2/1
+  F: Hồi nãy cô đi pha ly cà phê đã.
+  M: Hồi nãy con đi pha ly cà phê đã.
+  S: Thôi để cô đi pha ly cà phê đã.
+  prev: Dạ cô ráng chút, việc nào gấp con lo trước cho cô nha. || 
+  next: Dạ cô cứ thong thả uống cà phê, cần gì cô kêu con ạ. || 
+#248 public_0687 [F] d=1/0
+  F: tối thứ ba tuần sau chị rảnh, em coi có sự kiện chi hay rồi đặt dùm chị hai vé nghe.
+  M: tối thứ ba tuần sau chị rảnh, em coi có sự kiện chi hay rồi đặt dùm chị hai vé nghe.
+  S: Tối thứ ba tuần sau chị rảnh, em coi có sự kiện chi hay rồi đặt giùm chị hai vé nghe.
+  prev: Dạ chị vất vả rồi, tối về nghỉ ngơi thư giãn chút cho khỏe nghe chị. || 
+  next: -
+#249 public_0687:history:0 [H] d=2/4
+  F: Xin ni, chị có ghi chi trong sổ tay mà quên mất? Đọc tiêu đề dùm chị với.
+  M: sinh ni chỉ có ghi chi trong sổ tay mà quên mất, đọc tiêu đề dòng chữ với.
+  S: Sáng ni chị có ghi chi trong sổ tay mà quên mất, đọc tiêu đề giùm chị với.
+  prev: -
+  next: Dạ chị có năm ghi chú: Mật khẩu wifi nhà ngoại, Đi chợ cuối tuần, Quà sinh nhật mẹ, Công thức canh chua và Ý tưởng du lịch Tết ạ. || [{'name': 'notes.list', 'arguments': {}}]
+#250 public_0687:history:2 [H] d=2/2
+  F: Thêm vô ghi chú đi chợ cuối tuần một ký tôm sống nghen.
+  M: Thêm vô ghi chú để chợ cuối tuần một ký tôm số nghen.
+  S: Thêm vô ghi chú Đi chợ cuối tuần một ký tôm sú nghe.
+  prev: Dạ chị có năm ghi chú: Mật khẩu wifi nhà ngoại, Đi chợ cuối tuần, Quà sinh nhật mẹ, Công thức canh chua và Ý tưởng du lịch Tết ạ. || [{'name': 'notes.list', 'arguments': {}}]
+  next: Dạ em đã thêm một ký tôm sú vào ghi chú Đi chợ cuối tuần rồi chị. || [{'name': 'notes.append', 'arguments': {'note_id': 'note_907', 'content': 'Một ký tôm sú'}}]
+#251 public_0687:history:4 [H] d=2/1
+  F: À, chuyển cho Nguyễn Thị Lan năm trăm nghìn tiền gốc về lấy tài khoản thanh toán.
+  M: À, chuyển cho Nguyễn Thị Lan năm trăm nghìn tiền gốc và lấy tài khoản thanh toán.
+  S: À chuyển cho Nguyễn Thị Lan năm trăm nghìn tiền góp quà, lấy tài khoản thanh toán.
+  prev: Dạ em đã thêm một ký tôm sú vào ghi chú Đi chợ cuối tuần rồi chị. || [{'name': 'notes.append', 'arguments': {'note_id': 'note_907', 'content': 'Một ký tôm sú'}}]
+  next: Dạ em đã chuyển năm trăm nghìn từ tài khoản thanh toán cho Nguyễn Thị Lan ở Đại Việt Bank, nội dung tiền góp quà ạ. || [{'name': 'banking.get_balance', 'arguments': {}}, {'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': 
+#252 public_0687:history:6 [H] d=2/2
+  F: Chữa rồi, đặt xe máy từ nhà lên công ty dùm chị.
+  M: trễ rồi, đặt xe máy từ nhà lên công ty giùm chị.
+  S: Trễ rồi, đặt xe máy từ nhà lên công ty giùm chị.
+  prev: Dạ em đã chuyển năm trăm nghìn từ tài khoản thanh toán cho Nguyễn Thị Lan ở Đại Việt Bank, nội dung tiền góp quà ạ. || [{'name': 'banking.get_balance', 'arguments': {}}, {'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': 
+  next: Dạ em đã đặt xe máy đón chị ở nhà, 15 Trần Phú, đi lên công ty BlueOrbit Logistics rồi ạ. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '15 Trần Phú, Hải Châu, Đà Nẵng', 'dropoff': 'Công ty BlueOrbit Logistics, 120 Nguyễn Văn Linh,
+#253 public_0687:history:8 [H] d=3/3
+  F: Chưa rồi hè, sáng giờ có ai gọi điện cho chị không em?
+  M: chưa rồi hề, sáng giờ có ai gọi nhớ chị không em?
+  S: Trưa rồi hè, sáng giờ có ai gọi nhỡ chị không em?
+  prev: Dạ em đã đặt xe máy đón chị ở nhà, 15 Trần Phú, đi lên công ty BlueOrbit Logistics rồi ạ. || [{'name': 'ride_hailing.book', 'arguments': {'pickup': '15 Trần Phú, Hải Châu, Đà Nẵng', 'dropoff': 'Công ty BlueOrbit Logistics, 120 Nguyễn Văn Linh,
+  next: Dạ có ba cuộc gọi nhỡ: Mr. Tanaka lúc chín giờ mười lăm, Anh Kha lúc mười giờ bốn mươi, và một số lạ 09058812347 lúc mười một giờ năm phút ạ. || [{'name': 'phone.recent_calls', 'arguments': {'missed_only': True}}]
+#254 public_0687:history:10 [H] d=2/2
+  F: Gọi lại cho Mr. Tanaka cho đi.
+  M: Gọi lại cho Mr Tanaka trước đêm.
+  S: Gọi lại cho Mr. Tanaka trước đi em.
+  prev: Dạ có ba cuộc gọi nhỡ: Mr. Tanaka lúc chín giờ mười lăm, Anh Kha lúc mười giờ bốn mươi, và một số lạ 09058812347 lúc mười một giờ năm phút ạ. || [{'name': 'phone.recent_calls', 'arguments': {'missed_only': True}}]
+  next: Dạ em đang gọi cho Mr. Tanaka ạ. || [{'name': 'phone.call', 'arguments': {'contact_id': 'c_452'}}]
+#255 public_0687:history:12 [H] d=1/1
+  F: Xong rồi, giờ gọi anh Khang.
+  M: Xong rồi giờ gọi anh Khe.
+  S: Xong rồi, giờ gọi Anh Kha.
+  prev: Dạ em đang gọi cho Mr. Tanaka ạ. || [{'name': 'phone.call', 'arguments': {'contact_id': 'c_452'}}]
+  next: Dạ em đang gọi cho Anh Kha ạ. || [{'name': 'phone.call', 'arguments': {'contact_id': 'c_215'}}]
+#256 public_0687:history:14 [H] d=1/0
+  F: Còn cái số lẻ đó có trong danh bạ không em?
+  M: còn cái số lẻ đó có trong danh bạ không em?
+  S: Còn cái số lạ đó có trong danh bạ không em?
+  prev: Dạ em đang gọi cho Anh Kha ạ. || [{'name': 'phone.call', 'arguments': {'contact_id': 'c_215'}}]
+  next: Dạ số 09058812347 không có trong danh bạ của chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': '09058812347'}}]
+#257 public_0687:history:16 [H] d=5/5
+  F: Ừ, có lẽ sau đó có ai đó.
+  M: ừ còn lại số đó coi ai rước.
+  S: Ừ, gọi lại số đó coi ai rước.
+  prev: Dạ số 09058812347 không có trong danh bạ của chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': '09058812347'}}]
+  next: Dạ em đang gọi số 09058812347 ạ. || [{'name': 'phone.call', 'arguments': {'phone_number': '09058812347'}}]
+#258 public_0687:history:18 [H] d=4/4
+  F: Mẹ kêu em, cả ngày toàn inbox với email của khách.
+  M: Mẹ ghi âm, cảnh ngày toàn invoice với email của khách.
+  S: Mệt ghê em, cả ngày tuần invoice với email của khách.
+  prev: Dạ em đang gọi số 09058812347 ạ. || [{'name': 'phone.call', 'arguments': {'phone_number': '09058812347'}}]
+  next: Dạ chị vất vả rồi, tối về nghỉ ngơi thư giãn chút cho khỏe nghe chị. || 
+#259 public_0688 [F] d=7/4
+  F: Vận tivi nhỏ xuống mười lăm rồi chuyển hai triệu từ tài khoản thanh toán cho Tokyo Garden vì nó cả công tiền nhà.
+  M: Vận tivi nhỏ xuống mười lăm rồi chuyển hai triệu từ tài khoản thanh toán cho Tokyo Garden, ghi nốt các công việc nhà.
+  S: Vặn tivi nhỏ xuống mười lăm, rồi chuyển hai triệu từ tài khoản thanh toán cho Tokyo Garden, ghi nói đặt cộng tiệc nha.
+  prev: Dạ hôm nay tài khoản thanh toán có hai giao dịch: tám triệu cho chủ nhà và năm trăm nghìn cho Trần Văn Tuấn. || [{'name': 'banking.list_transactions', 'arguments': {'account_id': 'acc_9129'}}]
+  next: -
+#260 public_0688:history:0 [H] d=2/2
+  F: Ừ mai có tàu nào Hà Nội đi Lào Cai không em?
+  M: Mày có tàu nào Hà Nội đi Lào Cai không em?
+  S: Mai có tàu nào Hà Nội đi đào cai không em?
+  prev: -
+  next: Dạ mai có hai chuyến tàu: SE9 tám giờ sáng và SE1 chín giờ tối, cùng giá bốn trăm năm mươi nghìn một vé chị ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Lào Cai', 'date': '2026-11-09', 'type': 'train'}}]
+#261 public_0688:history:2 [H] d=3/5
+  F: Đặt chị hai vé xe một tối nay.
+  M: Là chị hai với em một tuổi này.
+  S: Đặt chị hai vé SE1 tối mai.
+  prev: Dạ mai có hai chuyến tàu: SE9 tám giờ sáng và SE1 chín giờ tối, cùng giá bốn trăm năm mươi nghìn một vé chị ạ. || [{'name': 'train_bus_tickets.search', 'arguments': {'origin': 'Hà Nội', 'destination': 'Lào Cai', 'date': '2026-11-09', 'type': 'train'}}]
+  next: Dạ em đã đặt hai vé tàu SE1 Hà Nội đi Lào Cai, chín giờ tối mai rồi chị. || [{'name': 'train_bus_tickets.book', 'arguments': {'trip_id': 'trip_843', 'seats': 2}}]
+#262 public_0688:history:4 [H] d=2/1
+  F: danh mục cổ phiếu của chị như thế nào.
+  M: danh mục cổ phiếu của chị giới thế nào.
+  S: Ờ, danh mục cổ phiếu của chị giờ thế nào?
+  prev: Dạ em đã đặt hai vé tàu SE1 Hà Nội đi Lào Cai, chín giờ tối mai rồi chị. || [{'name': 'train_bus_tickets.book', 'arguments': {'trip_id': 'trip_843', 'seats': 2}}]
+  next: Dạ chị đang có ba mã: Vitech năm trăm cổ giá một trăm ba mươi mốt nghìn bảy, ZTS một trăm cổ và ZKN năm trăm cổ. || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+#263 public_0688:history:6 [H] d=0/3
+  F: Ờ đặt cảnh báo khi Vitech xuống dưới một trăm hai mươi lăm nghìn giúp chị.
+  M: Ờ đặt cảnh báo khi Vtech xuống dưới một trăm hai mươi lăm nghìn đồng.
+  S: Ờ đặt cảnh báo khi Vitech xuống dưới một trăm hai mươi lăm nghìn giúp chị.
+  prev: Dạ chị đang có ba mã: Vitech năm trăm cổ giá một trăm ba mươi mốt nghìn bảy, ZTS một trăm cổ và ZKN năm trăm cổ. || [{'name': 'stocks.get_portfolio', 'arguments': {}}]
+  next: Dạ em đã đặt cảnh báo khi Vitech xuống dưới một trăm hai mươi lăm nghìn rồi ạ. || [{'name': 'stocks.set_price_alert', 'arguments': {'symbol': 'Vitech', 'price': 125000, 'direction': 'below'}}]
+#264 public_0688:history:8 [H] d=1/1
+  F: Ừm chiều rồi, tài khoản ngân hàng của chị còn bao nhiêu?
+  M: Chiều rồi, tài khoản ngân hàng của chị còn bao nhiêu?
+  S: Chiều rồi, tài khoản ngân hàng của chị còn bao nhiêu?
+  prev: Dạ em đã đặt cảnh báo khi Vitech xuống dưới một trăm hai mươi lăm nghìn rồi ạ. || [{'name': 'stocks.set_price_alert', 'arguments': {'symbol': 'Vitech', 'price': 125000, 'direction': 'below'}}]
+  next: Dạ tài khoản thanh toán còn mười hai triệu rưỡi, tài khoản tiết kiệm năm mươi triệu chị ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+#265 public_0688:history:10 [H] d=2/4
+  F: chương trình nhà tháng này cho chủ nhà tám triệu từ tài khoản thanh toán nha.
+  M: Chuyển tiền ngày tháng nay cho chủ nhà tám triệu từ tài khoản thanh toán nha.
+  S: Chuyển tiền nhà tháng này cho chủ nhà tám triệu từ tài khoản thanh toán nha.
+  prev: Dạ tài khoản thanh toán còn mười hai triệu rưỡi, tài khoản tiết kiệm năm mươi triệu chị ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+  next: Dạ em đã chuyển tám triệu cho Chủ nhà - Phạm Hùng, tài khoản thanh toán còn bốn triệu rưỡi ạ. || [{'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_9129', 'beneficiary_id': 
+#266 public_0688:history:12 [H] d=3/6
+  F: Ừm, thêm năm trăm nghìn cho chồng anh Tuấn nữa.
+  M: thêm năng trong nền cho chồng anh phấn
+  S: Ừ, thêm năm trăm nghìn cho Trần Văn Tuấn nữa.
+  prev: Dạ em đã chuyển tám triệu cho Chủ nhà - Phạm Hùng, tài khoản thanh toán còn bốn triệu rưỡi ạ. || [{'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_9129', 'beneficiary_id': 
+  next: Dạ em chuyển năm trăm nghìn cho Trần Văn Tuấn rồi, tài khoản thanh toán còn bốn triệu chị ạ. || [{'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_9129', 'beneficiary_id': 'ben_2084', 'amount': 500000}}]
+#267 public_0688:history:14 [H] d=2/5
+  F: Lý hai mươi triệu bên tài khoản tiết kiệm ở sổ sáu tháng.
+  M: Lý Ham cho chuyển mình tài khoản tiết kiệm mở sổ sáu tháng.
+  S: Lấy hai mươi triệu bên tài khoản tiết kiệm mở sổ sáu tháng.
+  prev: Dạ em chuyển năm trăm nghìn cho Trần Văn Tuấn rồi, tài khoản thanh toán còn bốn triệu chị ạ. || [{'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_9129', 'beneficiary_id': 'ben_2084', 'amount': 500000}}]
+  next: Dạ em đã mở sổ tiết kiệm hai mươi triệu kỳ hạn sáu tháng, tài khoản tiết kiệm còn ba mươi triệu ạ. || [{'name': 'banking.open_savings', 'arguments': {'from_account_id': 'acc_611', 'amount': 20000000, 'term_months': 6}}]
+#268 public_0688:history:16 [H] d=0/2
+  F: xem lại mấy giao dịch tài khoản thanh toán hôm nay.
+  M: Xem lại mấy giao dịch tài khoản thân quen hôm nay.
+  S: Xem lại mấy giao dịch tài khoản thanh toán hôm nay.
+  prev: Dạ em đã mở sổ tiết kiệm hai mươi triệu kỳ hạn sáu tháng, tài khoản tiết kiệm còn ba mươi triệu ạ. || [{'name': 'banking.open_savings', 'arguments': {'from_account_id': 'acc_611', 'amount': 20000000, 'term_months': 6}}]
+  next: Dạ hôm nay tài khoản thanh toán có hai giao dịch: tám triệu cho chủ nhà và năm trăm nghìn cho Trần Văn Tuấn. || [{'name': 'banking.list_transactions', 'arguments': {'account_id': 'acc_9129'}}]
+#269 public_0689 [F] d=8/2
+  F: Thói quen luyện luyện nói tiếng Anh với Lumina Studio, giữ được mấy ngày rồi em. Đánh dấu hôm nay anh ừm xong luôn nha.
+  M: Thói quen luyện luyện nói tiếng Anh với Lumina Studio giữ được mấy ngày rồi em đánh dấu hôm nay anh định xong nha.
+  S: Thói quên luyện đó chuyến anh với Lumina Studio giữ được mấy ngày rồi em, đánh dấu hôm nay anh nịnh không nghe.
+  prev: Dạ không có chi anh, cần gì anh cứ gọi em. || 
+  next: -
+#270 public_0689:history:0 [H] d=2/0
+  F: Đặt báo thức 5 giờ rưỡi sáng mai, vì đã đưa khách ra gan.
+  M: Đặt báo thức năm giờ rưỡi sáng mai vì đã đưa khách ra ga.
+  S: Đặt báo thức năm giờ rưỡi sáng mai, ghi là đưa khách ra ga.
+  prev: -
+  next: Dạ em đặt báo thức năm giờ rưỡi sáng mai, nhãn đưa khách ra ga rồi anh. || [{'name': 'alarm.create', 'arguments': {'time': '2026-12-05T05:30:00+07:00', 'label': 'đưa khách ra ga'}}]
+#271 public_0689:history:2 [H] d=4/2
+  F: Thêm cái mười giờ sáng nay, nhất thách chất cao nữa.
+  M: Thêm cái mười giờ sáng nay, nhắc hết chất cao nữa.
+  S: Thêm cái mười giờ sáng nay nhắc khách check-out nữa.
+  prev: Dạ em đặt báo thức năm giờ rưỡi sáng mai, nhãn đưa khách ra ga rồi anh. || [{'name': 'alarm.create', 'arguments': {'time': '2026-12-05T05:30:00+07:00', 'label': 'đưa khách ra ga'}}]
+  next: Dạ có thêm báo thức mười giờ sáng nay, nhãn nhắc khách check-out rồi anh. || [{'name': 'alarm.create', 'arguments': {'time': '2026-12-04T10:00:00+07:00', 'label': 'nhắc khách check-out'}}]
+#272 public_0689:history:4 [H] d=4/7
+  F: Chắc có mấy hộp sữa tươi rồi anh.
+  M: Chắc cậu ấy học thứ tư đó em.
+  S: Sắp còn mấy hộp sữa tươi rứa em?
+  prev: Dạ có thêm báo thức mười giờ sáng nay, nhãn nhắc khách check-out rồi anh. || [{'name': 'alarm.create', 'arguments': {'time': '2026-12-04T10:00:00+07:00', 'label': 'nhắc khách check-out'}}]
+  next: Dạ trong tủ bếp còn sáu hộp sữa tươi, với mười một quả trứng gà anh nờ. || [{'name': 'pantry.list_items', 'arguments': {}}]
+#273 public_0689:history:6 [H] d=3/5
+  F: Bữa nay chắc khách hết hai hộp, trừ giùm anh.
+  M: Vừa pha cho khách hết hai hộp, tự dưng anh.
+  S: Vừa pha cho khách hết hai hộp, trừ giùm anh.
+  prev: Dạ trong tủ bếp còn sáu hộp sữa tươi, với mười một quả trứng gà anh nờ. || [{'name': 'pantry.list_items', 'arguments': {}}]
+  next: Dạ em trừ hai hộp, sữa tươi còn bốn hộp anh. || [{'name': 'pantry.consume', 'arguments': {'item_id': 'pan_496', 'quantity': 2}}]
+#274 public_0689:history:8 [H] d=3/3
+  F: Anh chỉ làm offline hết bốn quả rồi.
+  M: Làm opera hết bốn quả rồi.
+  S: Trứng thì làm offline hết bốn quả.
+  prev: Dạ em trừ hai hộp, sữa tươi còn bốn hộp anh. || [{'name': 'pantry.consume', 'arguments': {'item_id': 'pan_496', 'quantity': 2}}]
+  next: Dạ trứng gà còn bảy quả anh nghe. || [{'name': 'pantry.consume', 'arguments': {'item_id': 'pan_4254', 'quantity': 4}}]
+#275 public_0689:history:10 [H] d=5/5
+  F: Hôm nay của anh à, hôm nay lịch của anh có chi không?
+  M: À, hôm nay lịch của anh có chơi không?
+  S: Hôm nay lịch của anh có chi không?
+  prev: Dạ trứng gà còn bảy quả anh nghe. || [{'name': 'pantry.consume', 'arguments': {'item_id': 'pan_4254', 'quantity': 4}}]
+  next: Dạ hôm nay anh có lịch đón khách Emily ở sân bay Phú Bài lúc hai giờ chiều. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-12-04', 'date_to': '2026-12-04'}}]
+#276 public_0689:history:12 [H] d=4/4
+  F: Giờ có ba giờ chiều rồi mà anh, chuyến bay trễ.
+  M: Giờ qua ba giờ chiều, dù manh chuyến bay trễ.
+  S: Dời qua ba giờ chiều giùm anh, chuyến bay trễ.
+  prev: Dạ hôm nay anh có lịch đón khách Emily ở sân bay Phú Bài lúc hai giờ chiều. || [{'name': 'calendar.list_events', 'arguments': {'date_from': '2026-12-04', 'date_to': '2026-12-04'}}]
+  next: Dạ em dời lịch đón Emily sang ba giờ đến bốn giờ chiều nay rồi anh. || [{'name': 'calendar.update_event', 'arguments': {'event_id': 'evt_842', 'start': '2026-12-04T15:00:00+07:00', 'end': '2026-12-04T16:00:00+07:00'}}]
+#277 public_0689:history:14 [H] d=2/1
+  F: Anh đã chiều mai hai giờ dẫn khách đi Đại Nội.
+  M: Anh lịch chiều mai hai giờ dẫn khách đi Đại Nội.
+  S: Thêm lịch chiều mai hai giờ dẫn khách đi Đại Nội.
+  prev: Dạ em dời lịch đón Emily sang ba giờ đến bốn giờ chiều nay rồi anh. || [{'name': 'calendar.update_event', 'arguments': {'event_id': 'evt_842', 'start': '2026-12-04T15:00:00+07:00', 'end': '2026-12-04T16:00:00+07:00'}}]
+  next: Dạ em thêm lịch dẫn khách đi Đại Nội hai giờ chiều mai rồi anh. || [{'name': 'calendar.create_event', 'arguments': {'title': 'dẫn khách đi Đại Nội', 'start': '2026-12-05T14:00:00+07:00', 'location': 'Đại Nội Huế'}}]
+#278 public_0689:history:16 [H] d=8/7
+  F: Mấy mươi dặm kẻ tuần khách Tây cứ hỏi ranh mươi hoài không hề.
+  M: Với mười dặm cả tuần, khách Tây cứ hỏi Ryan mười hoài.
+  S: Mới mưa giùm cả tuần, khách Tây cứ hỏi răng mưa hoài anh hè.
+  prev: Dạ em thêm lịch dẫn khách đi Đại Nội hai giờ chiều mai rồi anh. || [{'name': 'calendar.create_event', 'arguments': {'title': 'dẫn khách đi Đại Nội', 'start': '2026-12-05T14:00:00+07:00', 'location': 'Đại Nội Huế'}}]
+  next: Dạ mùa này Huế mưa dầm là đặc sản đó anh, anh cứ giới thiệu khách món chè nóng với áo mưa cho vui. || 
+#279 public_0689:history:18 [H] d=2/2
+  F: Hehe, được đó, cảm ơn anh.
+  M: Được đó, cảm ơn.
+  S: Ha, được đó, cảm ơn anh nghe.
+  prev: Dạ mùa này Huế mưa dầm là đặc sản đó anh, anh cứ giới thiệu khách món chè nóng với áo mưa cho vui. || 
+  next: Dạ không có chi anh, cần gì anh cứ gọi em. || 
+#280 public_0690 [F] d=6/0
+  F: Bài "Buổi sáng có nó lộn" của Sophie Martin, chứ không phải là Martin, thêm bài đó vô playlist đó rồi gọi anh Lộc giùm cô.
+  M: bài "bài ngoài sáng cô nói lộn" của sophie martins chứ không phải là martins thêm bài đó vô playlist đó rồi gọi anh lộc dùm cô.
+  S: Bài Hồi sáng cô nói lộn của Sophie Martin, chứ không phải là Martin, thêm bài đó vô playlist đó, rồi gọi anh đọc giùm cô.
+  prev: Dạ đầu tuần đắt hàng là mừng rồi cô, cô nhớ ăn sáng cho có sức nha. || 
+  next: -
+#281 public_0690:history:0 [H] d=1/1
+  F: Con ơi, thêm bài Morning Light của Sophie Martin vô playlist nhạc chill buổi tối nha.
+  M: Con ơi, thêm bài Morning Light của Sophie Martin vô playlist nhạc chill buổi tối nha.
+  S: Con ơi, thêm bài Morning light của Sophie Martin vô playlist nhạc chill buổi tối nha.
+  prev: -
+  next: Dạ con đã thêm Morning Light của Sophie Martins vào playlist Nhạc chill buổi tối rồi cô. || [{'name': 'music.list_tracks', 'arguments': {}}, {'name': 'music.add_to_playlist', 'arguments': {'track_id': 'trk_4402', 'playlist_id': 'pl_761'}}]
+#282 public_0690:history:2 [H] d=0/0
+  F: Sáng nay quán nào giao đồ ăn được con?
+  M: Sáng nay quán nào giao đồ ăn được con?
+  S: Sáng nay quán nào giao đồ ăn được con?
+  prev: Dạ con đã thêm Morning Light của Sophie Martins vào playlist Nhạc chill buổi tối rồi cô. || [{'name': 'music.list_tracks', 'arguments': {}}, {'name': 'music.add_to_playlist', 'arguments': {'track_id': 'trk_4402', 'playlist_id': 'pl_761'}}]
+  next: Dạ có bốn quán: Cơm tấm Sài Gòn 168, Pizza Nhà Làm, Bún bò Huế Cô Ba và Trà sữa Nhà Mèo, quán nào cũng bốn chấm năm sao ạ. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}]
+#283 public_0690:history:4 [H] d=2/5
+  F: Cơm tấm có món gì với sò con?
+  M: Cầm đấm có mống gì, vết sau con.
+  S: Cơm tấm có món gì, giá sao con?
+  prev: Dạ có bốn quán: Cơm tấm Sài Gòn 168, Pizza Nhà Làm, Bún bò Huế Cô Ba và Trà sữa Nhà Mèo, quán nào cũng bốn chấm năm sao ạ. || [{'name': 'food_delivery.list_restaurants', 'arguments': {}}]
+  next: Dạ Cơm tấm Sài Gòn 168 có cơm tấm sườn bì chả năm mươi nghìn, cơm tấm sườn bốn mươi nghìn và canh khổ qua mười lăm nghìn ạ. || [{'name': 'food_delivery.get_menu', 'arguments': {'restaurant_id': 'rest_595'}}]
+#284 public_0690:history:6 [H] d=0/3
+  F: Đặt cô hai phần sườn bì chả nha con.
+  M: Đặt cô hai phần sừng bị trả nha con.
+  S: Đặt cô hai phần sườn bì chả nha con.
+  prev: Dạ Cơm tấm Sài Gòn 168 có cơm tấm sườn bì chả năm mươi nghìn, cơm tấm sườn bốn mươi nghìn và canh khổ qua mười lăm nghìn ạ. || [{'name': 'food_delivery.get_menu', 'arguments': {'restaurant_id': 'rest_595'}}]
+  next: Dạ con đã đặt hai phần cơm tấm sườn bì chả ở Cơm tấm Sài Gòn 168, tổng một trăm nghìn ạ. || [{'name': 'food_delivery.place_order', 'arguments': {'restaurant_id': 'rest_595', 'items': [{'item_id': 'rest_02_m1', 'quantity': 2}]}}]
+#285 public_0690:history:8 [H] d=0/0
+  F: À, số anh Lộc giao hàng là số mấy con?
+  M: À, số anh Lộc giao hàng là số mấy con?
+  S: À, số Anh Lộc giao hàng là số mấy con?
+  prev: Dạ con đã đặt hai phần cơm tấm sườn bì chả ở Cơm tấm Sài Gòn 168, tổng một trăm nghìn ạ. || [{'name': 'food_delivery.place_order', 'arguments': {'restaurant_id': 'rest_595', 'items': [{'item_id': 'rest_02_m1', 'quantity': 2}]}}]
+  next: Dạ số của Anh Lộc là không chín tám chín một sáu năm một năm năm chín ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Lộc'}}]
+#286 public_0690:history:10 [H] d=0/0
+  F: Ảnh mới đổi số rồi, sửa thành không chín tám chín một sáu năm một năm tám tám nha.
+  M: Ảnh mới đổi số rồi, sửa thành không chín tám chín một sáu năm một năm tám tám nha.
+  S: Ảnh mới đổi số rồi, sửa thành không chín tám chín một sáu năm một năm tám tám nha.
+  prev: Dạ số của Anh Lộc là không chín tám chín một sáu năm một năm năm chín ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Lộc'}}]
+  next: Dạ con đã sửa số Anh Lộc thành không chín tám chín một sáu năm một năm tám tám rồi cô. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_375', 'phone': '09891651588'}}]
+#287 public_0690:history:12 [H] d=2/2
+  F: Còn số bên na lu là số nào?
+  M: Còn số bên nào luôn là số nào?
+  S: Còn số Bé Na Lưu là số nào?
+  prev: Dạ con đã sửa số Anh Lộc thành không chín tám chín một sáu năm một năm tám tám rồi cô. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_375', 'phone': '09891651588'}}]
+  next: Dạ số của Bé Na là không chín tám sáu sáu bảy bốn một năm ba chín ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Bé Na'}}]
+#288 public_0690:history:14 [H] d=0/0
+  F: Ờ, coi luôn số của giáo viên dùng cô.
+  M: Ờ coi luôn số cô giáo Mai giùm cô.
+  S: Ờ coi luôn số cô giáo Mai giùm cô.
+  prev: Dạ số của Bé Na là không chín tám sáu sáu bảy bốn một năm ba chín ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Bé Na'}}]
+  next: Dạ số của Cô giáo Mai là không chín bảy sáu một chín bốn năm không một hai ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Cô giáo Mai'}}]
+#289 public_0690:history:16 [H] d=2/0
+  F: Số chú năm đúng không chín chín chín sáu ba hai không bốn bốn sáu không còn.
+  M: Số chú năm đúng không chín chín chín sáu ba hai không bốn bốn sáu không còn.
+  S: Số Chú Năm đúng không chín chín chín sáu ba hai không bốn bốn sáu hông con?
+  prev: Dạ số của Cô giáo Mai là không chín bảy sáu một chín bốn năm không một hai ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Cô giáo Mai'}}]
+  next: Dạ đúng rồi cô, số của Chú Năm là không chín chín chín sáu ba hai không bốn bốn sáu ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Chú Năm'}}]
+#290 public_0690:history:18 [H] d=1/0
+  F: Thứ hai đầu tuần mà khách đông dữ thần luôn con ơi.
+  M: Thứ hai đầu tuần mà khách đông dữ thần luôn con ơi.
+  S: Thứ hai đầu tuần mà khách đông dữ thật luôn con ơi.
+  prev: Dạ đúng rồi cô, số của Chú Năm là không chín chín chín sáu ba hai không bốn bốn sáu ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Chú Năm'}}]
+  next: Dạ đầu tuần đắt hàng là mừng rồi cô, cô nhớ ăn sáng cho có sức nha. || 
+#291 public_0691 [F] d=1/0
+  F: Câu deadline báo cáo trưa nay em dịch rồi nhỉ? Thôi, khỏi dịch lại, nhắc chị tám giờ sáng thì sáu nộp báo cáo nhé.
+  M: Câu deadline báo cáo trưa nay em dịch rồi nhỉ? Thôi khỏi dịch lại, nhắc chị tám giờ sáng thì sáu nộp báo cáo nhé.
+  S: Câu deadline báo cáo trưa nay em dịch rồi nhỉ, thôi khỏi dịch lại, nhắc chị tám giờ sáng thứ sáu nộp báo cáo nhé.
+  prev: Dạ chị vất vả quá, chị nhớ nghỉ tay uống cốc nước cho đỡ mệt nhé. || 
+  next: -
+#292 public_0691:history:0 [H] d=1/0
+  F: Sáng nay trời Hà Nội thế nào, anh nhỉ?
+  M: Sáng nay trời Hà Nội thế nào anh nhỉ?
+  S: Sáng nay trời Hà Nội thế nào em nhỉ?
+  prev: -
+  next: Dạ hiện Hà Nội ba mươi ba độ, trời nhiều mây chị ạ. || [{'name': 'weather.get_current', 'arguments': {}}]
+#293 public_0691:history:2 [H] d=0/1
+  F: Nhắc chị sáu giờ tối nay, ghé mua sữa cho con nhé.
+  M: Nhất chị sáu giờ tối nay ghé mua sữa cho con nhé.
+  S: Nhắc chị sáu giờ tối nay ghé mua sữa cho con nhé.
+  prev: Dạ hiện Hà Nội ba mươi ba độ, trời nhiều mây chị ạ. || [{'name': 'weather.get_current', 'arguments': {}}]
+  next: Dạ em đã đặt nhắc chị mua sữa cho con lúc sáu giờ tối nay rồi ạ. || [{'name': 'reminders.create', 'arguments': {'content': 'Mua sữa cho con', 'time': '2026-12-07T18:00:00+07:00'}}]
+#294 public_0691:history:4 [H] d=0/0
+  F: À, nhắn Zalo cho anh Hùng là chiều nay anh đón con giúp em nhé.
+  M: À, nhắn Zalo cho anh Hùng là chiều nay anh đón con giúp em nhé.
+  S: À nhắn Zalo cho anh Hùng là chiều nay anh đón con giúp em nhé.
+  prev: Dạ em đã đặt nhắc chị mua sữa cho con lúc sáu giờ tối nay rồi ạ. || [{'name': 'reminders.create', 'arguments': {'content': 'Mua sữa cho con', 'time': '2026-12-07T18:00:00+07:00'}}]
+  next: Dạ em đã nhắn anh Hùng: Chiều nay anh đón con giúp em nhé. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_9094', 'content': 'Chiều nay anh đ
+#295 public_0691:history:6 [H] d=3/4
+  F: Gọi luôn cho anh này, qua giao lôi giúp chị.
+  M: Gọi luôn cho anh ấy qua Zalo, rất chị.
+  S: Gọi luôn cho anh ấy qua Zalo giúp chị.
+  prev: Dạ em đã nhắn anh Hùng: Chiều nay anh đón con giúp em nhé. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_9094', 'content': 'Chiều nay anh đ
+  next: Dạ em đang gọi Zalo cho anh Hùng ạ. || [{'name': 'chat_ott.call', 'arguments': {'chat_id': 'chat_9094'}}]
+#296 public_0691:history:8 [H] d=5/3
+  F: Chưa rồi, anh Việt chúc chị câu hạt chót nộp báo cáo quý là thứ sáu này sang tiếng anh nhé.
+  M: Chưa rồi, ăn dịch giúp chị câu hạt chót nộp báo cáo quý là thứ sáu này sang tiếng Anh nhé.
+  S: Trưa rồi, em dịch giúp chị câu hạn chót nộp báo cáo quý là thứ sáu này sang tiếng Anh nhé.
+  prev: Dạ em đang gọi Zalo cho anh Hùng ạ. || [{'name': 'chat_ott.call', 'arguments': {'chat_id': 'chat_9094'}}]
+  next: Dạ câu đó dịch sang tiếng Anh là: The deadline for the quarterly report is this Friday. || [{'name': 'translator.translate', 'arguments': {'text': 'Hạn chót nộp báo cáo quý là thứ Sáu này', 'to_lang': 'en'}}]
+#297 public_0691:history:10 [H] d=0/0
+  F: Số của cô Mai, cô giáo con là bao nhiêu em?
+  M: Số của cô Mai, cô giáo con là bao nhiêu em?
+  S: Số của cô Mai, cô giáo con, là bao nhiêu em?
+  prev: Dạ câu đó dịch sang tiếng Anh là: The deadline for the quarterly report is this Friday. || [{'name': 'translator.translate', 'arguments': {'text': 'Hạn chót nộp báo cáo quý là thứ Sáu này', 'to_lang': 'en'}}]
+  next: Dạ số Cô Mai là 09243368106 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Cô Mai'}}]
+#298 public_0691:history:12 [H] d=2/0
+  F: Gương bạn chị đổi số rồi, em sửa thành không chín tám bốn hai ba một năm sáu bảy tám nhé.
+  M: gương bạn chị đổi số rồi em sửa thành không chín tám bốn hai ba một năm sáu bảy tám nhé.
+  S: Hương bạn chị đổi số rồi, em sửa thành không chín sám bốn hai ba một năm sáu bảy tám nhé.
+  prev: Dạ số Cô Mai là 09243368106 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Cô Mai'}}]
+  next: Dạ em đã sửa số của Hương thành 09842315678 rồi ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Hương'}}, {'name': 'contacts.update', 'arguments': {'contact_id': 'c_585', 'phone': '09842315678'
+#299 public_0691:history:14 [H] d=3/1
+  F: Thẻ số sách Dũng nuôi bao nhiêu nhỉ?
+  M: Thế số sách Dũng nuôi bao nhiêu nhỉ?
+  S: Thế số Sếp Dũng đuôi bao nhiêu nhỉ?
+  prev: Dạ em đã sửa số của Hương thành 09842315678 rồi ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Hương'}}, {'name': 'contacts.update', 'arguments': {'contact_id': 'c_585', 'phone': '09842315678'
+  next: Dạ số Sếp Dũng đuôi một một bảy, đầy đủ là 09842084117 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Sếp Dũng'}}]
+#300 public_0691:history:16 [H] d=1/0
+  F: Bác Ba hàng xóm có trong danh bạ cho em.
+  M: Bác Ba hàng xóm có trong danh bạ cho em.
+  S: Bác Ba hàng xóm có trong danh bạ chưa em?
+  prev: Dạ số Sếp Dũng đuôi một một bảy, đầy đủ là 09842084117 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Sếp Dũng'}}]
+  next: Dạ có rồi chị, số Bác Ba là 09221483830 ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Bác Ba'}}]
+#301 public_0691:history:18 [H] d=0/0
+  F: Em xem giúp chị số mẹ chồng là số nào nhé.
+  M: Em xem giúp chị số mẹ chồng là số nào nhé.
+  S: Em xem giúp chị số mẹ chồng là số nào nhé.
+  prev: Dạ có rồi chị, số Bác Ba là 09221483830 ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Bác Ba'}}]
+  next: Dạ số Mẹ chồng là 09290615361 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'mẹ chồng'}}]
+#302 public_0691:history:20 [H] d=3/4
+  F: Họ là số anh Tuấn, anh trai chị, là em.
+  M: Hòn số anh Tuấn, anh trai chỉ nữa em.
+  S: Còn số Anh Tuấn anh trai chị nữa em?
+  prev: Dạ số Mẹ chồng là 09290615361 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'mẹ chồng'}}]
+  next: Dạ số anh Tuấn là 09157161943 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Tuấn'}}]
+#303 public_0691:history:22 [H] d=3/1
+  F: Mẹ cuối năm sổ sách ngập đầu, mệt quá anh ạ.
+  M: Cuối năm, sổ sách ngập đầu, mệt quá, anh ạ.
+  S: Cuối năm sổ sách nộp đầu, mệt quá em ạ.
+  prev: Dạ số anh Tuấn là 09157161943 chị ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Tuấn'}}]
+  next: Dạ chị vất vả quá, chị nhớ nghỉ tay uống cốc nước cho đỡ mệt nhé. || 
+#304 public_0694 [F] d=0/0
+  F: Xem tàu điện kế tiếp ở chỗ chị Yến hẹn đón mấy giờ, sau 9 giờ thì nhắn chị Yến là chị tới muộn nhé.
+  M: xem tàu điện kế tiếp ở chỗ chị yến hẹn đón mấy giờ? sau 9 giờ thì nhắn chị yến là chị tới muộn nhé.
+  S: Xem tàu điện kế tiếp ở chỗ chị Yến, hẹn đón mấy giờ, sau chín giờ thì nhắn chị Yến là chị tới muộn nhé.
+  prev: Dạ chị đi cẩn thận nhé. || 
+  next: -
+#305 public_0694:history:0 [H] d=0/0
+  F: Sáng nay tài khoản thanh toán của chị còn bao nhiêu em?
+  M: Sáng nay tài khoản thanh toán của chị còn bao nhiêu em?
+  S: Sáng nay tài khoản thanh toán của chị còn bao nhiêu em?
+  prev: -
+  next: Dạ tài khoản thanh toán của chị còn tám triệu chín trăm nghìn đồng ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+#306 public_0694:history:2 [H] d=0/0
+  F: Chuyển cho chủ nhà Phạm Hùng ba triệu rưỡi, ghi tiền nhà tháng mười hai nhé.
+  M: chuyển cho chủ nhà phạm hùng ba triệu rưỡi ghi tiền nhà tháng mười hai nhé.
+  S: Chuyển cho chủ nhà Phạm Hùng ba triệu rưỡi, ghi tiền nhà tháng mười hai nhé.
+  prev: Dạ tài khoản thanh toán của chị còn tám triệu chín trăm nghìn đồng ạ. || [{'name': 'banking.get_balance', 'arguments': {}}]
+  next: Dạ em đã chuyển ba triệu rưỡi cho Chủ nhà - Phạm Hùng với nội dung tiền nhà tháng mười hai, tài khoản còn năm triệu bốn trăm nghìn ạ. || [{'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_4585', 'beneficiary_id': 
+#307 public_0694:history:4 [H] d=1/1
+  F: À, tìm giúp chị quán phở nào ở Hoàng Kim với.
+  M: à tìm giúp chị quán phở nào ở hoàng kiếm với.
+  S: À, tìm giúp chị quán phở nào ở Hoàng Kiếm với.
+  prev: Dạ em đã chuyển ba triệu rưỡi cho Chủ nhà - Phạm Hùng với nội dung tiền nhà tháng mười hai, tài khoản còn năm triệu bốn trăm nghìn ạ. || [{'name': 'banking.list_beneficiaries', 'arguments': {}}, {'name': 'banking.transfer', 'arguments': {'from_account_id': 'acc_4585', 'beneficiary_id': 
+  next: Dạ ở Hoàn Kiếm có Phở Thắng Bờ Hồ, số 61 Đinh Tiên Hoàng ạ. || [{'name': 'maps.search_place', 'arguments': {'query': 'phở', 'near': 'Hoàn Kiếm'}}]
+#308 public_0694:history:6 [H] d=3/0
+  F: Chị ý có nhắn Zalo gì cho chị không em?
+  M: chị yến có bán gia lô gì cho chị không em?
+  S: Chị Yến có nhắn Zalo gì cho chị không em?
+  prev: Dạ ở Hoàn Kiếm có Phở Thắng Bờ Hồ, số 61 Đinh Tiên Hoàng ạ. || [{'name': 'maps.search_place', 'arguments': {'query': 'phở', 'near': 'Hoàn Kiếm'}}]
+  next: Dạ chị Yến nhắn lúc bảy giờ bốn mươi: chín rưỡi sáng nay tổ họp ở trường THCS Dịch Vọng, chị đi tàu điện xuống ga Cầu Giấy thì chị Yến ra đón ạ. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_5129'}}]
+#309 public_0694:history:8 [H] d=0/0
+  F: Nhắn lại chị Yến là chị sẽ đến đúng giờ nhé.
+  M: nhắn lại chị yến là chị sẽ đến đúng giờ nhé.
+  S: Nhắn lại chị Yến là chị sẽ đến đúng giờ nhé.
+  prev: Dạ chị Yến nhắn lúc bảy giờ bốn mươi: chín rưỡi sáng nay tổ họp ở trường THCS Dịch Vọng, chị đi tàu điện xuống ga Cầu Giấy thì chị Yến ra đón ạ. || [{'name': 'chat_ott.list_chats', 'arguments': {}}, {'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_5129'}}]
+  next: Dạ em đã nhắn chị Yến là chị sẽ đến đúng giờ ạ. || [{'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_5129', 'content': 'Vâng chị, em sẽ đến đúng giờ ạ.'}}]
+#310 public_0694:history:10 [H] d=1/1
+  F: Cậu thằng Minh có nhắn gì không?
+  M: Còn thằng Minh có nhắn gì không?
+  S: Còn thằng Minh có nhắn gì không?
+  prev: Dạ em đã nhắn chị Yến là chị sẽ đến đúng giờ ạ. || [{'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_5129', 'content': 'Vâng chị, em sẽ đến đúng giờ ạ.'}}]
+  next: Dạ Minh nhắn lúc bảy giờ mười lăm là bạn ấy để quên áo khoác ở nhà ạ. || [{'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_30'}}]
+#311 public_0694:history:12 [H] d=0/1
+  F: Nhắn Minh là trưa mẹ mang qua cho, đừng lo.
+  M: Nhắn Minh là trưa mẹ em mang qua cho, đừng lo.
+  S: Nhắn Minh là trưa mẹ mang qua cho, đừng lo.
+  prev: Dạ Minh nhắn lúc bảy giờ mười lăm là bạn ấy để quên áo khoác ở nhà ạ. || [{'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_30'}}]
+  next: Dạ em đã nhắn Minh là trưa mẹ mang áo qua, đừng lo ạ. || [{'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_30', 'content': 'Trưa mẹ mang áo khoác qua cho, con đừng lo nhé.'}}]
+#312 public_0694:history:14 [H] d=1/1
+  F: những gia đình thì sao em?
+  M: nhấn gia đình thì sao em?
+  S: Nhắn Gia đình thì sao em?
+  prev: Dạ em đã nhắn Minh là trưa mẹ mang áo qua, đừng lo ạ. || [{'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_30', 'content': 'Trưa mẹ mang áo khoác qua cho, con đừng lo nhé.'}}]
+  next: Dạ trong nhóm Gia đình, bố nhắn tối nay cả nhà qua ông bà ăn cơm ạ. || [{'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_687'}}]
+#313 public_0694:history:16 [H] d=2/0
+  F: Gửi vào nhóm là tối nay chị về muộn, khoảng 7 giờ mới qua.
+  M: gửi vào nhóm là tối nay chị về muộn, khoảng bảy giờ mới qua.
+  S: Gọi vào nhóm là tối nay chị dậy muộn, khoảng bảy giờ mới qua.
+  prev: Dạ trong nhóm Gia đình, bố nhắn tối nay cả nhà qua ông bà ăn cơm ạ. || [{'name': 'chat_ott.read_chat', 'arguments': {'chat_id': 'chat_687'}}]
+  next: Dạ em đã gửi vào nhóm Gia đình là tối nay chị về muộn, khoảng bảy giờ mới qua ạ. || [{'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_687', 'content': 'Tối nay con về muộn, khoảng bảy giờ mới qua được ạ.'}}]
+#314 public_0694:history:18 [H] d=0/0
+  F: Sáng nay trời lạnh thật đấy em nhỉ?
+  M: sáng nay trời lạnh thật đấy em nhỉ.
+  S: Sáng nay trời lạnh thật đấy em nhỉ.
+  prev: Dạ em đã gửi vào nhóm Gia đình là tối nay chị về muộn, khoảng bảy giờ mới qua ạ. || [{'name': 'chat_ott.send_message', 'arguments': {'chat_id': 'chat_687', 'content': 'Tối nay con về muộn, khoảng bảy giờ mới qua được ạ.'}}]
+  next: Dạ mùa này sáng sớm Hà Nội lạnh lắm, chị nhớ mặc ấm khi ra ngoài nhé. || 
+#315 public_0694:history:20 [H] d=0/0
+  F: Ừ, cảm ơn em. Chị chuẩn bị đi đây.
+  M: ừ cảm ơn em chị chuẩn bị đi đây.
+  S: Ừ, cảm ơn em, chị chuẩn bị đi đây.
+  prev: Dạ mùa này sáng sớm Hà Nội lạnh lắm, chị nhớ mặc ấm khi ra ngoài nhé. || 
+  next: Dạ chị đi cẩn thận nhé. || 
+#316 public_0695 [F] d=10/8
+  F: Kết quả cho Sarah mua túi, mua rau, gạch, sỏi, sơn, xích, đi, trả, giùm nha.
+  M: Kết quả cho xa mua tôi mua rồi gạch khỏi danh sách đi chợ dùm nha.
+  S: Cái quà cho Sarah là tui mua rồi, đặt khỏi danh sách đi chợ giùm nha.
+  prev: Dạ không có chi, cần gì cứ kêu em. || 
+  next: -
+#317 public_0695:history:0 [H] d=5/8
+  F: Sao mày chưa được xin cái số của Huy Lẹ cả?
+  M: Sáng nay chị cho tôi xin cái số của Hy Lẻ cái.
+  S: Sáng nay cho tôi xin cái số của Huy lẹ cái.
+  prev: -
+  next: Dạ số của Huy là 09306438991 nha. || [{'name': 'contacts.search', 'arguments': {'query': 'Huy'}}]
+#318 public_0695:history:2 [H] d=5/3
+  F: Nhớ tụi nam trẻ chiều nay đi lấy áo đồng phục nha.
+  M: Nhắc tui Nam chạy chiều nay đi lấy áo đồng phục nha.
+  S: Nhắc tôi năm giờ chạy chiều nay đi lấy áo đồng phục nha.
+  prev: Dạ số của Huy là 09306438991 nha. || [{'name': 'contacts.search', 'arguments': {'query': 'Huy'}}]
+  next: Dạ em đặt lời nhắc năm giờ chiều nay đi lấy áo đồng phục rồi nha. || [{'name': 'reminders.create', 'arguments': {'content': 'đi lấy áo đồng phục', 'time': '2026-11-26T17:00:00+07:00'}}]
+#319 public_0695:history:4 [H] d=6/6
+  F: À mà tôi có mấy cái album khác kìa.
+  M: Mà tôi có mắc.
+  S: À, mai tôi có makeup báo thức vậy?
+  prev: Dạ em đặt lời nhắc năm giờ chiều nay đi lấy áo đồng phục rồi nha. || [{'name': 'reminders.create', 'arguments': {'content': 'đi lấy áo đồng phục', 'time': '2026-11-26T17:00:00+07:00'}}]
+  next: Dạ mai có ba báo thức: năm rưỡi đi làm thêm, sáu giờ chạy bộ với sáu giờ mười lăm học tiết một. || [{'name': 'alarm.list', 'arguments': {}}]
+#320 public_0695:history:6 [H] d=4/3
+  F: Tao có chạy bộ sáu giờ đi mà tụi lười xỉu.
+  M: Tắt cái chạy bộ sáu giờ đi mà tôi lười xỉu.
+  S: Tắt cái chạy bộ sáu giờ đi, mai tôi lười xỉu.
+  prev: Dạ mai có ba báo thức: năm rưỡi đi làm thêm, sáu giờ chạy bộ với sáu giờ mười lăm học tiết một. || [{'name': 'alarm.list', 'arguments': {}}]
+  next: Dạ em tắt báo thức chạy bộ sáu giờ rồi, hai cái kia vẫn giữ nha. || [{'name': 'alarm.update', 'arguments': {'alarm_id': 'alm_460', 'enabled': False}}]
+#321 public_0695:history:8 [H] d=9/9
+  F: Chưa rồi, có chuyện ác bị trả thù có hậu không?
+  M: Chưa bao giờ có trường hợp bị trả lại các gói hàng nào.
+  S: Trưa rồi, coi trên app đi chợ có hội hông?
+  prev: Dạ em tắt báo thức chạy bộ sáu giờ rồi, hai cái kia vẫn giữ nha. || [{'name': 'alarm.update', 'arguments': {'alarm_id': 'alm_460', 'enabled': False}}]
+  next: Dạ có Cá hồi phi lê 300g, một trăm sáu mươi lăm nghìn một khay, còn hàng nha. || [{'name': 'grocery.search', 'arguments': {'query': 'cá hồi'}}]
+#322 public_0695:history:10 [H] d=3/4
+  F: Mở một giỏ một khay đi.
+  M: Mà cô giáo một hai đi.
+  S: Bỏ vô giỏ một hai đi.
+  prev: Dạ có Cá hồi phi lê 300g, một trăm sáu mươi lăm nghìn một khay, còn hàng nha. || [{'name': 'grocery.search', 'arguments': {'query': 'cá hồi'}}]
+  next: Dạ em thêm một khay cá hồi phi lê vô giỏ rồi. || [{'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_226', 'quantity': 1}}]
+#323 public_0695:history:12 [H] d=0/5
+  F: Thêm hai ký cà chua Đà Lạt nữa.
+  M: Em hay ký kết chuỗi đà lạt nè.
+  S: Thêm hai ký cà chua Đà Lạt nữa.
+  prev: Dạ em thêm một khay cá hồi phi lê vô giỏ rồi. || [{'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_226', 'quantity': 1}}]
+  next: Dạ em thêm hai ký Cà chua Đà Lạt, ba mươi hai nghìn một ký, vô giỏ rồi. || [{'name': 'grocery.search', 'arguments': {'query': 'cà chua Đà Lạt'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_343', 'quantit
+#324 public_0695:history:14 [H] d=3/3
+  F: OK, check đồng hồ.
+  M: Ok, chắc đông luôn.
+  S: Ok, chắc đông luôn.
+  prev: Dạ em thêm hai ký Cà chua Đà Lạt, ba mươi hai nghìn một ký, vô giỏ rồi. || [{'name': 'grocery.search', 'arguments': {'query': 'cà chua Đà Lạt'}}, {'name': 'grocery.add_to_cart', 'arguments': {'product_id': 'gro_343', 'quantit
+  next: Dạ đơn đã đặt xong, tổng hai trăm hai mươi chín nghìn nha. || [{'name': 'grocery.checkout', 'arguments': {}}]
+#325 public_0695:history:16 [H] d=5/0
+  F: Chị này mười xỉu luôn á, ướt hết trơn à?
+  M: Chị này mười xỉu luôn á, ướt hết trơn à?
+  S: Chiều nay mưa xỉu luôn á, ướt hết trời.
+  prev: Dạ đơn đã đặt xong, tổng hai trăm hai mươi chín nghìn nha. || [{'name': 'grocery.checkout', 'arguments': {}}]
+  next: Dạ mưa vậy anh nhớ thay đồ khô kẻo cảm nha. || 
+#326 public_0695:history:18 [H] d=0/0
+  F: Ok, cảm ơn nha.
+  M: Ok, cảm ơn nha.
+  S: Ok cảm ơn nha.
+  prev: Dạ mưa vậy anh nhớ thay đồ khô kẻo cảm nha. || 
+  next: Dạ không có chi, cần gì cứ kêu em. || 
+#327 public_0699 [F] d=3/4
+  F: Em lưu dùm anh cây xăng trên đường nhà anh vô bản đồ, đặt tên là "Chỗ Lỗ xăng quen nha".
+  M: Em luôn dùng anh cây xăng trên đường nhà anh vô bản đồ, đặt tên là chỗ lối sang quen nha.
+  S: Em lưu giùm anh cây xăng trên đường nhà anh vô bản đồ, đặt tên là chỗ đổ xăng nguyên nha.
+  prev: Dạ không có chi, chúc anh hôm nay chạy được nhiều cuốc ạ. || 
+  next: -
+#328 public_0699:history:0 [H] d=0/4
+  F: Sáng nay Sài Gòn có mưa không em?
+  M: Sách này phải còn có mưa không em?
+  S: Sáng nay Sài Gòn có mưa không em?
+  prev: -
+  next: Dạ hôm nay Sài Gòn có mưa rào, nhiệt độ từ hai mươi mốt tới ba mươi độ, anh nhớ mang áo mưa ạ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-12-17'}}]
+#329 public_0699:history:2 [H] d=3/3
+  F: Tối nay anh nấu cơm, kiếm con món gà xào sả ớt.
+  M: Tối nay anh nấu cơm, kiếm con mống gà xào xéo.
+  S: Tối nay anh nấu cơm, kiếm cái món gà xào sữa.
+  prev: Dạ hôm nay Sài Gòn có mưa rào, nhiệt độ từ hai mươi mốt tới ba mươi độ, anh nhớ mang áo mưa ạ. || [{'name': 'weather.get_forecast', 'arguments': {'date': '2026-12-17'}}]
+  next: Dạ có món Gà xào sả ớt cho ba người, nấu ba mươi phút: năm trăm gam đùi gà, ba cây sả, hai quả ớt và ba tép tỏi ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt'}}]
+#330 public_0699:history:4 [H] d=2/1
+  F: Lắp cho năm người thì cần bao nhiêu gà?
+  M: Làm cho năm người thì cần bao nhiêu gà?
+  S: Làm cho năm người thì còn bao nhiêu gà?
+  prev: Dạ có món Gà xào sả ớt cho ba người, nấu ba mươi phút: năm trăm gam đùi gà, ba cây sả, hai quả ớt và ba tép tỏi ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt'}}]
+  next: Dạ cho năm người thì cần khoảng tám trăm ba mươi gam đùi gà, năm cây sả, hơn ba quả ớt và năm tép tỏi ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt', 'servings': 5}}]
+#331 public_0699:history:6 [H] d=4/2
+  F: Ờ, luôn món đó là gì, Minh?
+  M: Ờ luôn món nó là gì mình?
+  S: Ờ lưu món đó lại giùm anh.
+  prev: Dạ cho năm người thì cần khoảng tám trăm ba mươi gam đùi gà, năm cây sả, hơn ba quả ớt và năm tép tỏi ạ. || [{'name': 'recipes.search', 'arguments': {'query': 'gà xào sả ớt', 'servings': 5}}]
+  next: Dạ em đã lưu công thức Gà xào sả ớt rồi ạ. || [{'name': 'recipes.save', 'arguments': {'recipe_id': 'rcp_9580'}}]
+#332 public_0699:history:8 [H] d=4/3
+  F: Số đằng sau chữ C là số mấy em?
+  M: Số đằng sau chủ xe là số máy em.
+  S: Số anh Sáu chủ xe là số mấy em?
+  prev: Dạ em đã lưu công thức Gà xào sả ớt rồi ạ. || [{'name': 'recipes.save', 'arguments': {'recipe_id': 'rcp_9580'}}]
+  next: Dạ số của Anh Sáu là không chín năm ba sáu ba năm hai sáu năm bốn ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Sáu'}}]
+#333 public_0699:history:10 [H] d=1/3
+  F: Anh mới đổi số, sửa thành không chín năm ba sáu ba năm hai chín chín chín.
+  M: Ảnh với độ số sửa thành không chín năm ba sáu ba năm hai chín chín chín.
+  S: Ảnh mới đổi số, sửa thành không chín năm ba sáu ba năm hai chín chín chín.
+  prev: Dạ số của Anh Sáu là không chín năm ba sáu ba năm hai sáu năm bốn ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Anh Sáu'}}]
+  next: Dạ em đã sửa số Anh Sáu thành không chín năm ba sáu ba năm hai chín chín chín rồi ạ. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_71', 'phone': '09536352999'}}]
+#334 public_0699:history:12 [H] d=1/1
+  F: Ví anh có bao nhiêu tiền?
+  M: Ví anh còn bao nhiêu tiền?
+  S: Ví anh còn bao nhiêu tiền?
+  prev: Dạ em đã sửa số Anh Sáu thành không chín năm ba sáu ba năm hai chín chín chín rồi ạ. || [{'name': 'contacts.update', 'arguments': {'contact_id': 'c_71', 'phone': '09536352999'}}]
+  next: Dạ ví của anh còn một triệu hai trăm năm mươi nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+#335 public_0699:history:14 [H] d=0/1
+  F: Chuyện anh sáu năm trăm nghìn tiền thuê xe tuần này.
+  M: Chuyển ngân sáu năm trăm nghìn tiền thuê xe tuần này.
+  S: Chuyển Anh Sáu năm trăm nghìn tiền thuê xe tuần này.
+  prev: Dạ ví của anh còn một triệu hai trăm năm mươi nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+  next: Dạ em đã chuyển năm trăm nghìn cho Anh Sáu, nội dung tiền thuê xe tuần này ạ. || [{'name': 'ewallet.transfer', 'arguments': {'contact_id': 'c_71', 'amount': 500000, 'note': 'Tiền thuê xe tuần này'}}]
+#336 public_0699:history:16 [H] d=0/0
+  F: Nạp cho vợ anh một trăm nghìn tiền điện thoại luôn.
+  M: Nạp cho vợ anh một trăm nghìn tiền điện thoại luôn.
+  S: Nạp cho vợ anh một trăm nghìn tiền điện thoại luôn.
+  prev: Dạ em đã chuyển năm trăm nghìn cho Anh Sáu, nội dung tiền thuê xe tuần này ạ. || [{'name': 'ewallet.transfer', 'arguments': {'contact_id': 'c_71', 'amount': 500000, 'note': 'Tiền thuê xe tuần này'}}]
+  next: Dạ em đã nạp một trăm nghìn vào số của Vợ, không chín năm không tám ba năm một tám sáu năm ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Vợ'}}, {'name': 'ewallet.topup_mobile', 'arguments': {'phone': '09508351865', 'amount': 100000}}]
+#337 public_0699:history:18 [H] d=2/0
+  F: Giờ biết còn bao nhiêu?
+  M: Giờ biết còn bao nhiêu.
+  S: Lượng ví còn bao nhiêu?
+  prev: Dạ em đã nạp một trăm nghìn vào số của Vợ, không chín năm không tám ba năm một tám sáu năm ạ. || [{'name': 'contacts.search', 'arguments': {'query': 'Vợ'}}, {'name': 'ewallet.topup_mobile', 'arguments': {'phone': '09508351865', 'amount': 100000}}]
+  next: Dạ ví giờ còn sáu trăm năm mươi nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+#338 public_0699:history:20 [H] d=1/0
+  F: Cuối năm chạy xe mệt mà khách đông, cũng vui em.
+  M: Cuối năm chạy xe mệt mà khách đông cũng vui em.
+  S: Cuối năm chạy xe mệt mà khách đông, cuộc vui em.
+  prev: Dạ ví giờ còn sáu trăm năm mươi nghìn ạ. || [{'name': 'ewallet.get_balance', 'arguments': {}}]
+  next: Dạ đông khách là có thu nhập rồi, anh nhớ ăn sáng đầy đủ rồi hẵng chạy nha. || 
+#339 public_0699:history:22 [H] d=0/0
+  F: Ừ, cảm ơn em.
+  M: Ừ, cảm ơn em.
+  S: Ừ, cảm ơn em.
+  prev: Dạ đông khách là có thu nhập rồi, anh nhớ ăn sáng đầy đủ rồi hẵng chạy nha. || 
+  next: Dạ không có chi, chúc anh hôm nay chạy được nhiều cuốc ạ. || 
