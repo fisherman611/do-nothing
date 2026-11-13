@@ -13,6 +13,7 @@ import argparse
 import json
 import os
 import random
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -20,6 +21,13 @@ from agent.clef import fmt as F            # noqa: E402
 from agent.clef.core import GoldOracle, SkipStep, run_step  # noqa: E402
 
 TOKENIZER = ("Qwen/Qwen3.5-4B", "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a")
+
+
+def strip_punct(s):
+    """FC v4: bỏ dấu câu như nhãn ASR v4 (giữ gạch nối trong từ)."""
+    s = re.sub(r"[.,;:!?…\"“”‘’()\[\]]+", " ", s or "")
+    s = re.sub(r"(?<!\w)-(?!\w)", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def history_items(item):
@@ -82,6 +90,10 @@ def main():
                          "Với --history: lượt history bị phiên âm cũng thành mẫu phụ (bỏ mẫu phụ trùng y hệt bản gốc)")
     ap.add_argument("--synth", action="append", default=[],
                     help="jsonl dữ liệu tổng hợp (synth/train_alias.jsonl, synth/train_iface.jsonl)")
+    ap.add_argument("--extra", action="append", default=[],
+                    help="jsonl mẫu ĐỘC LẬP (không gắn id train, có catalog_overlay), vd data/fc_pub/fc_pub_items.jsonl (FC v4)")
+    ap.add_argument("--strip-punct-p", type=float, default=0.0,
+                    help="FC v4: xác suất bỏ dấu câu ở mọi lượt user của một mẫu (làm SAU nhiễu ASR), khớp ASR v4 không dấu câu")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--style", default="v1", choices=list(F.STYLES))
     ap.add_argument("--q2", default="all", choices=F.Q2_MODES, help="all: hỏi Q2 mọi tham số; discrete: chỉ ref/enum/bool, "
@@ -166,6 +178,15 @@ def main():
                             n_hist += 1
         if paths:
             print(f"{kind}: +{n_main} mẫu, +{n_hist} mẫu phụ từ history ({paths})")
+    for path in a.extra:
+        n_main = n_hist = 0
+        for l in open(path, encoding="utf-8"):
+            p = json.loads(l)
+            items.append(p); n_main += 1
+            if a.history:
+                hs = [h for h in history_items(p) if hist_ok(h)]
+                items += hs; n_hist += len(hs)
+        print(f"extra: +{n_main} mẫu, +{n_hist} mẫu phụ từ history ({path})")
     si, sn = map(int, a.shard.split("/"))
     if sn > 1:
         items = items[si::sn]
@@ -180,11 +201,17 @@ def main():
         frng = random.Random(a.shuffle_seed + 1)
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     n, skip, kinds = 0, 0, {}
+    prng, n_strip = random.Random(a.shuffle_seed + 3), 0
     t1_sizes, n_inst_sum, n_fullcat = [], 0, 0
     with open(a.out, "w", encoding="utf-8") as f:
         for it in items:
             if noise is not None:
                 it = noise.apply(it)
+            if a.strip_punct_p and prng.random() < a.strip_punct_p:
+                it = dict(it, audio_text=strip_punct(it.get("audio_text", "")),
+                          history=[dict(h, audio_text=strip_punct(h.get("audio_text", ""))) if h["role"] == "user" else h
+                                   for h in it["history"]])
+                n_strip += 1
             t1 = None
             if pack is not None and frng.random() < a.full_catalog_p:
                 n_fullcat += 1
@@ -203,6 +230,7 @@ def main():
                 f.write(json.dumps(e, ensure_ascii=False) + "\n")
                 n += 1
     meta = {**F.fmt_opts(), "split": a.split_name, "history": a.history, "phonetic": a.phonetic, "synth": a.synth,
+            "extra": a.extra, "strip_punct_p": a.strip_punct_p, "n_items_strip_punct": n_strip,
             "app_filter": a.app_filter, "decoy_apps": a.decoy_apps if a.app_filter else None,
             "tier1_avg": round(sum(t1_sizes) / len(t1_sizes), 2) if t1_sizes else None,
             "full_catalog_p": a.full_catalog_p if a.app_filter else None, "n_items_full_catalog": n_fullcat,
