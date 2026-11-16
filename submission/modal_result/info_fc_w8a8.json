@@ -1,0 +1,7 @@
+{
+ "fc": "fc_w8a8",
+ "gpu": "NVIDIA L40S, 46068 MiB, 620.70.06",
+ "returncode": 0,
+ "wall_s": 317.1,
+ "log": "split=public_test: 40 mẫu\n[load] vLLM 164.1s, tổng nạp model 171.5s\nload model: 171504 ms\n  20/40  trung bình 2929 ms/mẫu, max 5045 ms\n  40/40  trung bình 3556 ms/mẫu, max 7574 ms\npredict: 40 mẫu, 142851 ms, trung bình 3556 ms/mẫu, max 7574 ms, quá 30s: 0\noutput: /result_fc_w8a8/submission.jsonl  (tổng 316s)\n"
+}

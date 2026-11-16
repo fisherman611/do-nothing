@@ -1,0 +1,7 @@
+{
+ "fc": "fc",
+ "gpu": "NVIDIA L40S, 46068 MiB, 620.70.06",
+ "returncode": 0,
+ "wall_s": 352.0,
+ "log": "split=public_test: 40 mẫu\n[load] vLLM 186.2s, tổng nạp model 198.9s\nload model: 198945 ms\n  20/40  trung bình 3108 ms/mẫu, max 5283 ms\n  40/40  trung bình 3689 ms/mẫu, max 8013 ms\npredict: 40 mẫu, 148147 ms, trung bình 3689 ms/mẫu, max 8013 ms, quá 30s: 0\noutput: /result_fc/submission.jsonl  (tổng 351s)\n"
+}

@@ -137,7 +137,7 @@ def _vllm_ready():
 def start_vllm(log_path="/tmp/vllm.log", timeout=900):
     if _vllm_ready():
         return None
-    cmd = [VLLM_BIN, "serve", str(MODELS / "fc"), "--served-model-name", "llm", "--host", "127.0.0.1", "--port", str(PORT),
+    cmd = [VLLM_BIN, "serve", str(MODELS / os.environ.get("FC_DIRNAME", "fc")), "--served-model-name", "llm", "--host", "127.0.0.1", "--port", str(PORT),
            "--max-model-len", "16384", "--gpu-memory-utilization", str(CFG["gpu_util"]), "--seed", "0",
            "--enable-prefix-caching", "--max-num-seqs", "8", "--max-logprobs", "64",
            "--logprobs-mode", "processed_logprobs", "--api-key", KEY]
