@@ -1,0 +1,216 @@
+{
+ "style": "v1",
+ "q2": "all",
+ "q1_desc": "short",
+ "sys": "compact",
+ "rules": "short",
+ "split": "train,val_ood",
+ "history": true,
+ "phonetic": [
+  "synth_phonetic/train_phonetic.jsonl"
+ ],
+ "synth": [
+  "synth/train_alias.jsonl",
+  "synth/train_iface.jsonl"
+ ],
+ "extra": [],
+ "strip_punct_p": 0.8,
+ "n_items_strip_punct": 1315,
+ "app_filter": "agent/clef/app_filter/pack_b",
+ "decoy_apps": 2,
+ "tier1_avg": 8.57,
+ "full_catalog_p": 0.25,
+ "n_items_full_catalog": 2563,
+ "asr_noise": {
+  "items_clean": 3907,
+  "utts_full_hyp": 1029,
+  "utts_word_table": 7112,
+  "p_item": 3.5999999999999996,
+  "p_hist": 0.8999999999999999,
+  "asr": "v2",
+  "source": "b0",
+  "q": 2.7,
+  "utts_b0": 8502,
+  "utts_b0_late": 1178,
+  "utts_fallback_table": 3972,
+  "utts_mix_table": 4169,
+  "table_mix": 1.7999999999999998,
+  "rejects": {
+   "num": 2151,
+   "time": 4534,
+   "cond": 91,
+   "neg": 804,
+   "ent": 242,
+   "wer": 589
+  },
+  "utts_gave_up_clean": 269,
+  "b0_texts": 27330
+ },
+ "asr_errors": "agent/runs/asr/asr_errors_v2.jsonl",
+ "asr_subst": "agent/runs/asr/asr_subst_v2.json",
+ "n_items": 4267,
+ "n_examples": 21091,
+ "skipped": 0,
+ "spans": {
+  "choice": 47381,
+  "lm": 11256
+ },
+ "shard": null,
+ "subset_of": "agent/clef/data/fmtA_v4_full",
+ "subset_args": {
+  "src": "agent/clef/data/fmtA_v4_full",
+  "out": "agent/clef/data/fmtA_v4_btc_sub",
+  "target": 11500,
+  "min_tool": 8,
+  "min_kind": 150,
+  "w_train_only": 0.35,
+  "seed": 0
+ },
+ "subset_stats": {
+  "n_items": 4267,
+  "n_examples": 11503,
+  "n_examples_coverage_phase": 7691,
+  "src_items": 9870,
+  "src_examples": 24579,
+  "tools_covered": "147/147",
+  "min_tool_count": 4,
+  "names_incl_alias_covered": "386/407",
+  "kind": {
+   "al": 429,
+   "al+h": 371,
+   "base": 1416,
+   "base+h": 774,
+   "if": 221,
+   "if+h": 64,
+   "ph1": 243,
+   "ph1+h": 292,
+   "ph2": 195,
+   "ph2+h": 262
+  },
+  "kind_src": {
+   "al": 1407,
+   "al+h": 1187,
+   "base": 1416,
+   "base+h": 3170,
+   "if": 378,
+   "if+h": 64,
+   "ph1": 562,
+   "ph1+h": 719,
+   "ph2": 334,
+   "ph2+h": 633
+  },
+  "end": {
+   "ask": 347,
+   "call": 3463,
+   "stop0": 457
+  },
+  "end_src": {
+   "ask": 591,
+   "call": 8107,
+   "stop0": 1172
+  },
+  "test_app_share": 0.743,
+  "test_app_share_src": 0.691
+ },
+ "newapps_q1": 738,
+ "v3_report": {
+  "examples_subset": 11503,
+  "examples_newapps_q1": 738,
+  "examples_total": 12241,
+  "items_subset": 1416,
+  "leak_val_in": [],
+  "leak_newapps_val_test": [],
+  "tools_in_data": 435,
+  "share_items": {
+   "cond": 35.0,
+   "selfc": 8.9,
+   "ask": 13.6,
+   "multi3": 41.5
+  },
+  "cat": {
+   "full": 3244,
+   "tier": 8997
+  },
+  "asr_noise": {
+   "items_clean": 3907,
+   "utts_full_hyp": 1029,
+   "utts_word_table": 7112,
+   "p_item": 3.5999999999999996,
+   "p_hist": 0.8999999999999999,
+   "asr": "v2",
+   "source": "b0",
+   "q": 2.7,
+   "utts_b0": 8502,
+   "utts_b0_late": 1178,
+   "utts_fallback_table": 3972,
+   "utts_mix_table": 4169,
+   "table_mix": 1.7999999999999998,
+   "rejects": {
+    "num": 2151,
+    "time": 4534,
+    "cond": 91,
+    "neg": 804,
+    "ent": 242,
+    "wer": 589
+   },
+   "utts_gave_up_clean": 269,
+   "b0_texts": 27330
+  },
+  "subset_stats": {
+   "n_items": 4267,
+   "n_examples": 11503,
+   "n_examples_coverage_phase": 7691,
+   "src_items": 9870,
+   "src_examples": 24579,
+   "tools_covered": "147/147",
+   "min_tool_count": 4,
+   "names_incl_alias_covered": "386/407",
+   "kind": {
+    "al": 429,
+    "al+h": 371,
+    "base": 1416,
+    "base+h": 774,
+    "if": 221,
+    "if+h": 64,
+    "ph1": 243,
+    "ph1+h": 292,
+    "ph2": 195,
+    "ph2+h": 262
+   },
+   "kind_src": {
+    "al": 1407,
+    "al+h": 1187,
+    "base": 1416,
+    "base+h": 3170,
+    "if": 378,
+    "if+h": 64,
+    "ph1": 562,
+    "ph1+h": 719,
+    "ph2": 334,
+    "ph2+h": 633
+   },
+   "end": {
+    "ask": 347,
+    "call": 3463,
+    "stop0": 457
+   },
+   "end_src": {
+    "ask": 591,
+    "call": 8107,
+    "stop0": 1172
+   },
+   "test_app_share": 0.743,
+   "test_app_share_src": 0.691
+  }
+ },
+ "n_btc_newapps": 12241,
+ "n_pub": 8858,
+ "pub_items": "data/fc_pub/fc_pub_items.jsonl",
+ "version": "fmtA_v4",
+ "audit_removed": [
+  "public_0518#pv0",
+  "public_0518#pv1",
+  "public_0619#pv0#h5",
+  "public_0619#pv1#h5"
+ ]
+}

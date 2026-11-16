@@ -1,0 +1,7 @@
+{
+ "k_bm25": 4,
+ "k_emb": 5,
+ "rel": 0.0,
+ "model": "model/",
+ "note": "h\u1ee3p BM25 top-k \u222a emb top-k \u222a lu\u1eadt history/x-ref"
+}

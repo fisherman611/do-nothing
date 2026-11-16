@@ -1,0 +1,6 @@
+**/__pycache__
+**/*.pyc
+**/.cache
+*.tar.gz
+result/
+data/
