@@ -38,11 +38,15 @@ class BudgetExceeded(Exception):
     """D0: hết ngân sách thời gian của mẫu giữa một bước → dừng, nộp các call đã có (không phải lỗi)."""
 
 
+SAMPLING = {}   # thử nghiệm giải mã: --temperature/--top-p/--sampling-seed; mặc định rỗng = greedy seed 0
+
+
 def request_json(url, key, model, prompt, max_tokens, retries=8, deadline=None, **extra):
     """POST /v1/completions → JSON đầy đủ (choices[0].text, .logprobs, usage).
     `deadline` (time.time() tuyệt đối, D0/§1v): mỗi request chỉ được chờ tới hạn đó; quá hạn → BudgetExceeded thay vì chờ
     tới 600 s × 8 lần (review/01 §3.4: vLLM treo thì một mẫu có thể chờ nhiều phút, vượt xa 30 s)."""
     body = {"model": model, "prompt": prompt, "max_tokens": max_tokens, "temperature": 0, "seed": 0, **extra}
+    body.update(SAMPLING)
     data = json.dumps(body).encode()
     for k in range(retries):
         timeout = 600.0
@@ -454,6 +458,9 @@ def main():
     ap.add_argument("--retry-star", action="store_true", help="N1b (cần --retry-empty): tool đọc có `query` BẮT BUỘC trả rỗng → tìm lại với query=\"*\" (zaic_tools liệt kê toàn bộ). Tách cờ để --retry-empty một mình tái lập đúng bản 62.76")
     ap.add_argument("--c3", action="store_true", help="C3/N4: tool đọc có tham số nơi chốn trả rỗng → sửa địa danh theo âm (agent/geo_fix.py) rồi tìm lại một lần; mã IATA bịa sửa trước khi gọi")
     ap.add_argument("--q1-debias", action="store_true", help="PriDe: hỏi Q1 hai lần (thứ tự phương án gốc và đảo ngược), lấy trung bình xác suất theo phương án. Tự bật --log-probs; +1 request mỗi bước")
+    ap.add_argument("--temperature", type=float, help="THỬ NGHIỆM: lấy mẫu thay greedy (cần --top-p, --sampling-seed)")
+    ap.add_argument("--top-p", type=float, default=1.0)
+    ap.add_argument("--sampling-seed", type=int, default=0)
     ap.add_argument("--ask-tau", type=float, help="Q1: hỏi lại nếu P(sys.ask_missing_info) > τ và tool argmax là tool ghi (PLAN_generalize_tools §3.1; τ = 0.2). Tự bật --log-probs")
     ap.add_argument("--asr-timings", help="JSON {id: giây ASR} cộng vào elapsed_seconds của <out>.timings.jsonl")
     ap.add_argument("--ids", help="file id, mỗi dòng một id")
@@ -470,6 +477,8 @@ def main():
     ap.add_argument("--fmt-from", help="config.json của run train hoặc <data>.meta.json: lấy style/q2/q1_desc từ đó, "
                     "ghi đè 3 cờ trên (tránh lệch format train / suy luận)")
     args = ap.parse_args()
+    if args.temperature is not None:
+        SAMPLING.update(temperature=args.temperature, top_p=args.top_p, seed=args.sampling_seed)
     if args.n8_tau is not None or args.i5 is not None or args.i5b is not None or args.q1_debias:
         args.log_probs = True
     if args.fmt_from:
